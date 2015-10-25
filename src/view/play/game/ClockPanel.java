@@ -1,4 +1,4 @@
-package view.play;
+package view.play.game;
 
 import view.base.Label;
 import view.base.Panel;

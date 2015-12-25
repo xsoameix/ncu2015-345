@@ -11,7 +11,7 @@ import model.setting.*;
  * 			name
  * 			image
  */
-public class Setting {
+public class Setting{
 	private Profile profile;
 	private KeyBinding keyBinding;
 	public Setting(){

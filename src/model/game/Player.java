@@ -1,15 +1,26 @@
 package model.game;
 
+import model.game.field.dynamic.Character;
 import model.setting.Profile;
 
-public class Player {
+public class Player{
 	private Profile profile;
+	
+	private int ID;
+	private int teamID;
+
 	private Character character;
+	private int kill;
+	private int death;
+	private int money;
+	
+	public Player() {
+		
+	}
 
 	public Character getCharacter() {
 		return character;
 	}
-
 	public void setCharacter(Character character) {
 		this.character = character;
 	}

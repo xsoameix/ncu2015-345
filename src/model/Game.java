@@ -1,27 +1,37 @@
 package model;
 
-import model.game.Player;
-import model.game.field.Field;
+import java.util.Vector;
 
-public class Game {
-	private Player players[];
+import model.game.Field;
+import model.game.Player;
+import model.game.Rule;
+import model.game.Team;
+import model.game.field.Map;
+
+public class Game{
+	private Vector<Team> teams;
+	private int time;
 	private Field field;
-	private Result result;
 	
+	private Rule rule;	
+
+	public Game(){
+		field=new Field();
+	}
+	
+	public void setMap(Map map){
+		field.setMap(map);
+	}
 	public Field getField() {
 		return field;
 	}
-	public Player[] getPlayers() {
-		return players;
+
+	public Rule getRule() {
+		return rule;
 	}
-	public void setPlayers(Player players[]) {
-		this.players = players;
-	}
-	public Result getResult() {
-		return result;
-	}
-	public void setResult(Result result) {
-		this.result = result;
+
+	public void setRule(Rule rule) {
+		this.rule = rule;
 	}
 	
 }

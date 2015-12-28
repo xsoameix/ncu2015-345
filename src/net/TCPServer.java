@@ -23,8 +23,9 @@ public class TCPServer implements Runnable {
     private static final int STATE_INITIAL = 0;
     private static final int STATE_RUNNING = 1;
 
-    private Thread              thread;
     private FakeServerModel         model;
+    private Thread              thread;
+    private int                 port;
     private Vector<InetAddress> IPTable;
     private Vector<Thread>      threads;
     private SinkChannel         ctrlIn;
@@ -39,9 +40,10 @@ public class TCPServer implements Runnable {
         this.state = new AtomicInteger(STATE_INITIAL);
     }
 
-    public void initTCPServer() {
-        thread = new Thread(this);
-        thread.start();
+    public void initialize(int port) {
+        this.port = port;
+        this.thread = new Thread(this);
+        this.thread.start();
     }
 
     public void run() {
@@ -64,7 +66,7 @@ public class TCPServer implements Runnable {
             syncOut.configureBlocking(false);
             server = ServerSocketChannel.open();
             server.configureBlocking(false);
-            InetSocketAddress addr = new InetSocketAddress("127.0.0.1", 5000);
+            InetSocketAddress addr = new InetSocketAddress(port);
             server.bind(addr);
             server.register(selector, SelectionKey.OP_ACCEPT);
             while (true) {
@@ -92,6 +94,7 @@ public class TCPServer implements Runnable {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            state.set(STATE_INITIAL);
         }
     }
 
@@ -142,10 +145,11 @@ public class TCPServer implements Runnable {
             thread.join();
         } catch (Exception e) {
             e.printStackTrace();
+            state.set(STATE_RUNNING);
         }
     }
 
-    public Vector<InetAddress> getClientIPTable() {
+    public Vector<InetAddress> getIPTable() {
         return IPTable;
     }
 }

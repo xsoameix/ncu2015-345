@@ -3,6 +3,7 @@ package net;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.StandardSocketOptions;
 import java.nio.ByteBuffer;
 import java.nio.channels.Pipe;
 import java.nio.channels.Pipe.SinkChannel;
@@ -24,7 +25,6 @@ public class TCPServer implements Runnable {
     private static final int STATE_RUNNING = 1;
 
     private FakeServerModel         model;
-    private Thread              thread;
     private int                 port;
     private Vector<InetAddress> IPTable;
     private Vector<Thread>      threads;
@@ -42,14 +42,13 @@ public class TCPServer implements Runnable {
 
     public void initialize(int port) {
         this.port = port;
-        this.thread = new Thread(this);
-        this.thread.start();
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     public void run() {
         try {
             assert state.get() == STATE_INITIAL : "server should be initial";
-            state.set(STATE_RUNNING);
             AtomicInteger counter = new AtomicInteger(1);
             IPTable = new Vector<InetAddress>();
             threads = new Vector<Thread>();
@@ -65,10 +64,12 @@ public class TCPServer implements Runnable {
             syncOut = syncPipe.source();
             syncOut.configureBlocking(false);
             server = ServerSocketChannel.open();
+            server.setOption(StandardSocketOptions.SO_REUSEADDR, true);
             server.configureBlocking(false);
             InetSocketAddress addr = new InetSocketAddress(port);
             server.bind(addr);
             server.register(selector, SelectionKey.OP_ACCEPT);
+            state.set(STATE_RUNNING);
             while (true) {
                 int channels = selector.select();
                 if (channels == 0) continue;
@@ -82,6 +83,8 @@ public class TCPServer implements Runnable {
                         threads.add(thread);
                         counter.getAndIncrement();
                     } else if (key.isReadable()) {
+                        server.close();
+                        selector.close();
                         ByteBuffer buf =
                             ByteBuffer.allocate(Integer.SIZE / Byte.SIZE);
                         buf.putInt(PIPE_SYNC);
@@ -118,9 +121,7 @@ public class TCPServer implements Runnable {
                             while (itor.hasNext()) {
                                 Thread thread = itor.next();
                                 try {
-                                    if (thread != Thread.currentThread()) {
-                                        thread.join();
-                                    }
+                                    thread.join();
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -131,7 +132,6 @@ public class TCPServer implements Runnable {
                 }
                 selector.selectedKeys().clear();
             }
-            server.close();
             buf.clear();
             syncOut.read(buf);
             syncIn.close();
@@ -142,7 +142,6 @@ public class TCPServer implements Runnable {
             ctrlOut.close();
             threads.clear();
             IPTable.clear();
-            thread.join();
         } catch (Exception e) {
             e.printStackTrace();
             state.set(STATE_RUNNING);

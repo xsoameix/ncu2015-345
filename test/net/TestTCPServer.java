@@ -19,7 +19,7 @@ public class TestTCPServer {
 
     public static final long BIND_TIME      = 60; // TCP bind (ms)
     public static final long HANDSHAKE_TIME = 60; // TCP handshake (ms)
-    public static final long TRANSFER_TIME  =  5; // TCP data transfer (ms)
+    public static final long TRANSFER_TIME  = 20; // TCP data transfer (ms)
 
     public static final String host = "127.0.0.1";
     public static final int    port = 5000;

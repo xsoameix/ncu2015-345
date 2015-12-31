@@ -11,7 +11,7 @@ public class TestClientModel extends TestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		clientModel = new ClientModel(new StubViewController());
+		clientModel = new ClientModel();
 		model = new StubModel();
 		clientModel.setModel(model);
 	}

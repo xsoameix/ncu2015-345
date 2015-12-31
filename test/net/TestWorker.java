@@ -58,8 +58,9 @@ public class TestWorker {
                     actual.add(new String(body, StandardCharsets.UTF_8));
                 }
             };
+            FakeSession session = new FakeSession(model);
             Worker worker = new Worker(socket,
-                    IPTable, ctrlOut, counter, model);
+                    IPTable, ctrlOut, counter, session);
             Thread workerThread = new Thread(worker);
             workerThread.start();
             Thread.sleep(TRANSFER_TIME);

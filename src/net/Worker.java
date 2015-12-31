@@ -19,19 +19,19 @@ public class Worker implements Runnable {
     private Vector<InetAddress> IPTable;
     private SourceChannel       ctrlOut;
     private AtomicInteger       counter;
-    private FakeServerModel         model;
+    private FakeSession             session;
 
     public Worker(
             SocketChannel       socket,
             Vector<InetAddress> IPTable,
             SourceChannel       ctrlOut,
             AtomicInteger       counter,
-            FakeServerModel         model) {
+            FakeSession             session) {
         this.socket  = socket;
         this.IPTable = IPTable;
         this.ctrlOut = ctrlOut;
         this.counter = counter;
-        this.model   = model;
+        this.session = session;
     }
 
     public void run() {
@@ -65,7 +65,7 @@ public class Worker implements Runnable {
                                 if (bodybuf.hasRemaining()) continue;
                                 bodybuf.flip();
                                 byte body[] = bodybuf.array();
-                                model.set(body);
+                                session.onData(body);
                                 bodybuf.clear();
                                 state = READ_SIZE;
                             }

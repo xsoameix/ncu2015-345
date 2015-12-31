@@ -76,8 +76,9 @@ public class TCPServer implements Runnable {
                 for (SelectionKey key : selector.selectedKeys()) {
                     if (key.isAcceptable()) {
                         SocketChannel client = server.accept();
+                        FakeSession session = new FakeSession(model);
                         Worker worker = new Worker(client,
-                                IPTable, ctrlOut, counter, model);
+                                IPTable, ctrlOut, counter, session);
                         Thread thread = new Thread(worker);
                         thread.start();
                         threads.add(thread);

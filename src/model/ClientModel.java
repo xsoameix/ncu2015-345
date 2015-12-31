@@ -48,6 +48,14 @@ public class ClientModel {
 
 	/* for outside API end */
 
+	/* API for UDP start */
+
+	public void set(Byte[] packet) {
+
+	}
+
+	/* API for UDP start */
+
 	public Model getModel() {
 		return model;
 	}

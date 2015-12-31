@@ -6,56 +6,45 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import view.Config;
-import view.PanelEnum;
 import view.PlayPanel;
 import view.base.Button;
 import view.base.Dialog;
+import view.base.Panel;
+import view.play.GamePanel;
 
-public class MenuDialog extends Dialog{
-	private PlayPanel parent;
-	
+public class MenuDialog extends Dialog implements ActionListener{
+	private Panel parent;
 	private Button backButton;
 	private Button leaveButton;
 	private void setComponents() {
 		setLayout(new FlowLayout());
-		backButton=new Button("Back");
-		backButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
+		backButton=new Button("back");
+		backButton.setActionCommand(backButton.getName());
+		backButton.addActionListener(parent);
 		add(backButton);
 		
-		leaveButton=new Button("Leave");
-		leaveButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-				parent.toPanel(PanelEnum.ESTABLISH);
-			}
-		});
+		leaveButton=new Button("leave");
+		leaveButton.setActionCommand(backButton.getName());
+		leaveButton.addActionListener(parent);
 		add(leaveButton);
 		
-		
 		//for test!
-		Button tmpButton=new Button("To Result");
-		tmpButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-				parent.toPanel(PanelEnum.RESULT);
-			}
-		});
+		Button tmpButton=new Button("result");
+		tmpButton.setActionCommand(backButton.getName());
+		tmpButton.addActionListener(parent);
 		add(tmpButton);
 	}
-	public MenuDialog(PlayPanel parent, String name) {
-		super((Frame)parent.getTopLevelAncestor(), name, false);
-		this.parent=parent;
+	public MenuDialog(Panel panel, String name) {
+		super((Frame) panel.getTopLevelAncestor(), name, false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(Config.dialogDimension);
-		
+		parent=panel;
 		setComponents();
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		dispose();
+		parent.fireActionEvent(e);
 	}
 
 

@@ -11,8 +11,6 @@ import view.base.Panel;
 import view.base.TextField;
 
 public class ProfilePanel extends Panel {
-	private SettingPanel parent;
-	
 	private Label nameLabel;
 	private TextField nameTextField;
 	private Label imageLabel;
@@ -33,18 +31,26 @@ public class ProfilePanel extends Panel {
 		add(imageContentLabel);
 		
 		applyButton=new Button("Apply");
+		applyButton.addActionListener(this);
 		backButton=new Button("Back");
-		backButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				parent.toPanel(PanelEnum.SETTING);
-			}
-		});
+		backButton.setActionCommand("back");
+		backButton.addActionListener(this);
 		add(applyButton);
 		add(backButton);
 	}
-	public ProfilePanel(SettingPanel parent){
-		this.parent=parent;
+	public ProfilePanel(){
 		setComponents();
+	}
+	
+	@Override 
+	public void actionPerformed(ActionEvent e){
+		switch(e.getActionCommand()){
+		case "profile":
+			getDisplayPanel().toPanel(PanelEnum.KEYBINDING);
+			break;
+		case "back":
+			getDisplayPanel().first();
+			break;
+		}
 	}
 }

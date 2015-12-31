@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import view.PanelEnum;
-import view.SettingPanel;
 import view.base.Button;
 import view.base.Label;
 import view.base.Panel;

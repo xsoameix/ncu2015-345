@@ -1,14 +1,11 @@
-package view;
+package view.setting;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import model.Setting;
+import view.PanelEnum;
 import view.base.extend.DisplayPanel;
-import view.setting.KeyBindingPanel;
-import view.setting.ProfilePanel;
-import view.setting.SettingMenuPanel;
-import view.setting.VolumnPanel;
 
 public class SettingPanel extends DisplayPanel {
 	private Setting setting;

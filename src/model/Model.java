@@ -55,7 +55,7 @@ public class Model {
 
 	}
 
-	protected void requestSetPlayerNumber(int time) {
+	protected void requestSetPlayerNumber(int number) {
 
 	}
 
@@ -79,11 +79,11 @@ public class Model {
 	}
 
 	public boolean addPlayer(Profile profile) {
-
+		return true;
 	}
 
 	public boolean removePlayer(Profile profile) {
-
+		return true;
 	}
 
 	public void gameOver(Result result) {
@@ -95,15 +95,15 @@ public class Model {
 	}
 
 	public boolean addBullet(Bullet bullet) {
-
+		return true;
 	}
 
 	public boolean removeBullet(Bullet bullet) {
-
+		return true;
 	}
 
 	public boolean removeObstacle(Obstacle obstale) {
-
+		return true;
 	}
 
 	public void setMap(Map map) {

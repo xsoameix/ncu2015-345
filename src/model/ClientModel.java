@@ -30,9 +30,11 @@ public class ClientModel {
 		model.requestSetLocation(x, y);
 	}
 
+	/*
 	public void requestKeyInput(int key) {
 		model.requestKeyInput(key);
 	}
+	*/
 
 	// host
 	public Boolean requestEstablishRoom(int port) {

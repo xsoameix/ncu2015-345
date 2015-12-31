@@ -22,6 +22,23 @@ public class Game{
 	public void setMap(Map map){
 		field.setMap(map);
 	}
+	
+	public Vector<Team> getTeam(){
+		return teams;
+	}
+	
+	public void addTeam(Team team){
+		teams.add(team);
+	}
+	
+	public void remove(Team team){
+		teams.remove(team);
+	}
+	
+	public void setField(Field field){
+		this.field = field;
+	}
+	
 	public Field getField() {
 		return field;
 	}
@@ -32,6 +49,14 @@ public class Game{
 
 	public void setRule(Rule rule) {
 		this.rule = rule;
+	}
+	
+	public int getTime(){
+		return time;
+	}
+	
+	public void setTime(int time){
+		this.time = time;
 	}
 	
 }

@@ -25,9 +25,15 @@ public class Map{
 	public Dimension getSize() {
 		return size;
 	}
+	
+	public void setDimension(Dimension size){
+		this.size = size;
+	}
+	
 	public void setSize(Dimension size) {
 		this.size = size;
 	}
+	
 	public MapBlock getMapBlock(int x, int y) {
 		return mapBlocks[y][x];
 	}

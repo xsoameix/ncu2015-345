@@ -2,7 +2,7 @@ package model.game.field;
 
 import java.awt.Point;
 
-public class DynamicObject {
+public class FieldObject {
 	private Point location;
 	
 	public Point getLocation(){

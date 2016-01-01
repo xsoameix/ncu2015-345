@@ -12,4 +12,6 @@ public class DynamicObject {
 	public void setLocation(Point location){
 		this.location = location;
 	}
+	
+	
 }

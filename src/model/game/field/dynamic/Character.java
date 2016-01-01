@@ -14,4 +14,6 @@ public class Character extends DynamicObject {
 	public void setDirection(int direction){
 		this.direction = direction;
 	}
+	
+	
 }

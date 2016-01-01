@@ -6,8 +6,10 @@ import model.game.Player;
 
 public class Room{
 	private ArrayList<Player> players;
+	private int playerNumber;
+	
 	public Room(){
-		players=new ArrayList<Player>();
+		this.players = new ArrayList<Player>();
 	}
 	
 //	public Game getGame() {
@@ -22,7 +24,23 @@ public class Room{
 //		
 //	}
 	
+	public ArrayList<Player> getPlayerList(){
+		return players;
+	}
+	
 	public void addPlayer(Player player){
-		players.add(player);
+		this.players.add(player);
+	}
+	
+	public void removePlayer(Player player){
+		this.players.remove(player);
+	}
+	
+	public void setPlayerNumber(int number){
+		this.playerNumber = number;
+	}
+	
+	public int getPlayerNumber(){
+		return this.playerNumber;
 	}
 }

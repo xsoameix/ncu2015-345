@@ -15,7 +15,19 @@ public class Player{
 	private int money;
 	
 	public Player() {
-		
+		this.kill = 0;
+		this.death = 0; 
+		this.money = 0;
+	}
+	
+	public Player(Character cha, Profile profile, int ID, int teamID) {
+		this.character = cha;
+		this.ID = ID;
+		this.teamID = teamID;
+		this.profile = profile;
+		this.kill = 0;
+		this.death = 0; 
+		this.money = 0;
 	}
 
 	public Character getCharacter() {

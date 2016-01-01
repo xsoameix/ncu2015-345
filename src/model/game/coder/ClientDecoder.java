@@ -3,6 +3,7 @@ package model.game.coder;
 import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,31 +12,54 @@ public class ClientDecoder {
 //	private AbstractModel model;
 	
 	public void decode(JSONObject object){
-		for(String key: object.keySet()){
+		Iterator<?> key = object.keys();
+		while(key.hasNext()){
 //			try {
 //				Method method=model.getClass().getMethod(key, new Class[]{Object.class});
 //				method.invoke(model, object.get(key));
 //			} catch (NoSuchMethodException | SecurityException | JSONException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 //				e.printStackTrace();
 //			}
-			
-			switch(key){
+			String keys = (String) key.next();
+		switch(keys){
 			case "requestSetTotalTime":
-				int totalTime=object.getInt(key);
+			try {
+				int totalTime = object.getInt(keys);
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 				break;
+				
 			case "requestSetTime":
-				int time=object.getInt(key);
+			try {
+				int time = object.getInt(keys);
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 				break;
+				
 			case "requestAddPlayer":
 				break;
+				
 			case "requestRemovePlayer":
 				break;
+				
 			case "requestStartGame":
 				break;
+				
 			case "requestSetLocation":
-				Point point=(Point) object.get(key);
+			Point point = null;
+			try {
+				point = (Point)object.get(keys);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 				System.out.println(point.toString());
 				break;
+				
 			case "requestFire":
 				break;
 			}

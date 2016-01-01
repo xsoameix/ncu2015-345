@@ -1,53 +1,66 @@
 package model;
 
-public class ClientModel{
-	//server side
-//	private TCPServer tcpServer;
-//	private UDPClient udpClient;
-	
-	//client side
-//	private TCPClient tcpClient;
-//	private UDPServer udpServer;
-	
-	private Setting setting;
-	private Room room;
-	private Game game;
-	
-	//host
-	public void establishRoom() {
-//		room=new Room();
-		/*	tcpServer=new TCPServer();
-		 * 	
-		 * 	
-		 * 	enterRoom();
-		 * */
-	}
-	//client
-	public void enterRoom() {
-//		room=new Room();//get room from server? or get data from server and set to new room?
-//		Player player=new Player();
-//		player.setProfile(setting.getProfile());
-//		room.addPlayer(player);
-		/*	tcpClient=new TCPClient();
-		 * 	
-		 * 
-		 * 
-		 * */
-	}
-	public Room getRoom() {
-		return room;
-	}
-	public Setting getSetting() {
-		return setting;
-	}
-	public void setSetting(Setting setting) {
-		this.setting = setting;
-	}
-	public Game getGame() {
-		return game;
-	}
-	public void setGame(Game game) {
-		this.game = game;
+public class ClientModel {
+
+	private Model model;
+
+	public ClientModel() {
+		model = new Model();
 	}
 
+	/* for outside API Start */
+
+	public void requestFire() {
+		model.requestFire();
+	}
+
+	public void requestStartGame() {
+		model.requestStartGame();
+	}
+
+	public void requestSetTotalTime(int time) {
+		model.requestSetTotalTime(time);
+	}
+
+	public void requestSetPlayerNumber(int number) {
+		model.requestSetPlayerNumber(number);
+	}
+
+	public void requestSetLocation(int x, int y) {
+		model.requestSetLocation(x, y);
+	}
+
+	/*
+	public void requestKeyInput(int key) {
+		model.requestKeyInput(key);
+	}
+	*/
+
+	// host
+	public Boolean requestEstablishRoom(int port) {
+		return model.requestEstablishRoom(port);
+	}
+
+	// client
+	public Boolean requestEnterRoom(String ip, int port) {
+		return model.requestEnterRoom(ip, port);
+	}
+
+	/* for outside API end */
+
+	/* API for UDP start */
+
+	public void set(Byte[] packet) {
+
+	}
+
+	/* API for UDP start */
+
+	public Model getModel() {
+		return model;
+	}
+
+	public void setModel(Model model) {
+		this.model = model;
+	}
 }

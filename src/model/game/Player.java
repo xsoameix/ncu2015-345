@@ -26,7 +26,7 @@ public class Player {
 		return character;
 	}
 
-	public void setCharacter(Character character) {
+	public synchronized void setCharacter(Character character) {
 		this.character = character;
 	}
 
@@ -34,7 +34,7 @@ public class Player {
 		return profile;
 	}
 
-	public void setProfile(Profile profile) {
+	public synchronized void setProfile(Profile profile) {
 		this.profile = profile;
 	}
 
@@ -42,7 +42,7 @@ public class Player {
 		return ID;
 	}
 
-	public void setID(int iD) {
+	public synchronized void setID(int iD) {
 		ID = iD;
 	}
 
@@ -50,7 +50,7 @@ public class Player {
 		return teamID;
 	}
 
-	public void setTeamID(int teamID) {
+	public synchronized void setTeamID(int teamID) {
 		this.teamID = teamID;
 	}
 
@@ -58,15 +58,15 @@ public class Player {
 		return kill;
 	}
 
-	public void setKill(int kill) {
+	public synchronized void setKill(int kill) {
 		this.kill = kill;
 	}
 
-	public int getDeath() {
+	public synchronized int getDeath() {
 		return death;
 	}
 
-	public void setDeath(int death) {
+	public synchronized void setDeath(int death) {
 		this.death = death;
 	}
 
@@ -74,7 +74,7 @@ public class Player {
 		return money;
 	}
 
-	public void setMoney(int money) {
+	public synchronized void setMoney(int money) {
 		this.money = money;
 	}
 

@@ -16,16 +16,15 @@ public class ServerModel {
 	private Room room;
 	private Profile profile;
 	private Game game;
-	private Player player;
-	private Character character;
 	private ServerDecoder decoder;
 	private TCPServer tcpServer;
-	//private FakeUDPClient udpClient;
+
+	// private FakeUDPClient udpClient;
 
 	public ServerModel() {
 		// TODO Auto-generated constructor stub
 		tcpServer = new TCPServer(new FakeServerModel());
-//		udpClient = new FakeUDPClient();
+		// udpClient = new FakeUDPClient();
 	}
 
 	public boolean initialize(int port) {
@@ -50,6 +49,10 @@ public class ServerModel {
 		room.setPlayerNumber(playernumber);
 	}
 
+	public void setTime(int second) {
+		// udp brocase time
+	}
+	
 	public boolean startGame() {
 		return true;
 	}
@@ -72,7 +75,9 @@ public class ServerModel {
 		location.x = x;
 		location.y = y;
 		assert location != null : "[ServerModel] setLocation : Point location is null";
-		character.setLocation(location);
+		// call rule to move
+		// if true then setLocation
+		// character.setLocation(location);
 		return true;
 	}
 

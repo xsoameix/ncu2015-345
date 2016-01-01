@@ -1,8 +1,8 @@
 package model.game.field.dynamic;
 
-import model.game.field.DynamicObject;
+import model.game.field.FieldObject;
 
-public class Character extends DynamicObject {
+public class Character extends FieldObject {
 	private int direction;
 	
 	public int getDirection(){

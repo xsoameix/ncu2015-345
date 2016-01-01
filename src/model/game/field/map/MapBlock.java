@@ -3,10 +3,10 @@ package model.game.field.map;
 import java.awt.Dimension;
 import java.util.Vector;
 
-import model.game.field.DynamicObject;
+import model.game.field.FieldObject;
 
 public class MapBlock{
-	private Vector<DynamicObject> objects;
+	private Vector<FieldObject> objects;
 	private static Dimension size;
 	public int type;//remove!
 	
@@ -25,15 +25,15 @@ public class MapBlock{
 		this.type = type;
 	}
 	
-	public Vector<DynamicObject> getDynamicObjectList(){
+	public Vector<FieldObject> getDynamicObjectList(){
 		return objects;
 	}
 	
-	public void addDynamicObject(DynamicObject object){
+	public void addDynamicObject(FieldObject object){
 		objects.add(object);
 	}
 	
-	public void removeDynamicObject(DynamicObject object){
+	public void removeDynamicObject(FieldObject object){
 		objects.remove(object);
 	}
 }

@@ -1,9 +1,9 @@
 package model.game.coder;
 
-import java.awt.Point;
 import java.util.Iterator;
 
 import model.Model;
+import model.game.Player;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,15 +52,14 @@ public class ClientDecoder {
 			case "removePlayer":
 				break;
 			case "setLocation":
-				Point point = null;
+				Player player = null;
 				try {
-					point = (Point) object.get(keys);
+					player = (Player) object.get(keys);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				model.setLocation(point.x, point.y);
-				System.out.println(point.toString());
+				model.setLocation(player);
 				break;
 			case "setMoney":
 				//

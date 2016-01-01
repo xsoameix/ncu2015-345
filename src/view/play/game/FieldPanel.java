@@ -1,19 +1,21 @@
 package view.play.game;
 
-import model.game.Coord;
-import model.game.field.Field;
-import view.base.Panel;
-import view.play.game.field.CharacterComponent;
+
+import model.game.Field;
+import view.base.extend.AbstractView;
+import view.play.game.field.FieldObjectView;
 import view.play.game.field.MapPanel;
 
-public class FieldPanel extends Panel{
+public class FieldPanel extends AbstractView{
 	private Field field;
 	
-	private MapPanel mapPanel;
-	private Coord cameraCoord;
-	private CharacterComponent characters[];
+	private MapPanel mapPanel;//show background?
+	//private Dimension cameraDimension;	get from field.getCharacter?
+	
+	//private FieldObjectView fieldObjects[];//tank, bullet, obstacle... maybe no this variable?
 
 	public FieldPanel(){
+		setLayout(null);
 		mapPanel=new MapPanel();
 		add(mapPanel);
 	}
@@ -23,17 +25,4 @@ public class FieldPanel extends Panel{
 	public Field getField(){
 		return field;
 	}
-	public Coord getCameraCoord() {
-		return cameraCoord;
-	}
-	public void setCameraCoord(Coord cameraCoord) {
-		this.cameraCoord = cameraCoord;
-	}
-	public CharacterComponent[] getCharacters() {
-		return characters;
-	}
-	public void setCharacters(CharacterComponent characters[]) {
-		this.characters = characters;
-	}
-
 }

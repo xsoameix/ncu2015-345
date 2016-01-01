@@ -1,63 +1,52 @@
 package view;
 
-import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import model.ClientModel;
+import view.base.extend.DisplayPanel;
+import view.play.EstablishPanel;
+import view.play.GamePanel;
+import view.play.ResultPanel;
+import view.play.RoomPanel;
 
-import model.Application;
-import view.base.Panel;
-import view.play.*;
-
-public class PlayPanel extends Panel {
-	private MainFrame parent;
-	private Application application;
-	
-	private CardLayout cardLayout;
+public class PlayPanel extends DisplayPanel{
+	private ClientModel clientModel;
 	
 	private EstablishPanel establishPanel;
 	private RoomPanel roomPanel;
 	private GamePanel gamePanel;
 	private ResultPanel resultPanel;
 
-	public PlayPanel(MainFrame parent) {
-		this.parent = parent;
-		this.application = parent.getApplication();
+	public PlayPanel() {
 		setComponents();
-	}	
-	
+	}
 	private void setComponents() {
-		cardLayout=new CardLayout();
-		setLayout(cardLayout);
-		
-		establishPanel=new EstablishPanel(this);
-		roomPanel=new RoomPanel(this);
-		gamePanel=new GamePanel(this);
-		resultPanel=new ResultPanel(this);
+		establishPanel=new EstablishPanel();
+		addActionListener(establishPanel);
+		roomPanel=new RoomPanel();
+		gamePanel=new GamePanel();
+		resultPanel=new ResultPanel();
 		
 		add(establishPanel, PanelEnum.ESTABLISH);
 		add(roomPanel, PanelEnum.ROOM);
 		add(gamePanel, PanelEnum.GAME);
 		add(resultPanel, PanelEnum.RESULT);
 	}
-	private void add(Panel panel, PanelEnum panelEnum){
-		add(panel, panelEnum.toString());
+	public ClientModel getMainModel() {
+		return clientModel;
 	}
-
-	public void toPanel(PanelEnum panelEnum){
-		cardLayout.show(this, panelEnum.toString());
-	}
-	public void back(){
-		parent.toPanel(PanelEnum.MAINMENU);
+	public void setMainModel(ClientModel mainModel) {
+		this.clientModel = mainModel;
 	}
 	
-	public void setHost(boolean isHost) {
-		establishPanel.setHost(isHost);
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch(e.getActionCommand()){
+		case "host":
+		case "client":
+			getDisplayPanel().toPanel(PanelEnum.PLAY);
+			fireActionEvent(e);
+			break;
+		}
 	}
-	public void establishRoom() {
-		application.establishRoom();
-		roomPanel.setRoom(application.getRoom());
-	}
-	public void establishGame() {
-		application.getRoom().establishGame();
-	}
-
 
 }

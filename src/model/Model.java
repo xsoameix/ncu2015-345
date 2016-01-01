@@ -1,19 +1,20 @@
 package model;
 
 import java.awt.Point;
+import java.io.CharConversionException;
 import java.nio.charset.StandardCharsets;
 
-import org.json.JSONObject;
-
 import model.game.Player;
+import model.game.Result;
 import model.game.coder.ClientDecoder;
 import model.game.coder.ClientEncoder;
 import model.game.field.Map;
 import model.game.field.dynamic.Bullet;
+import model.game.field.dynamic.Character;
 import model.game.field.dynamic.Obstacle;
 import model.setting.Profile;
-import net.FakeTCPClient;
-import net.FakeTCPServer;
+
+import org.json.JSONObject;
 
 public class Model {
 	// server side
@@ -21,28 +22,38 @@ public class Model {
 
 	// client side
 	private FakeTCPClient tcpClient;
-	private FakeTCPServer tcpServer;
+	private FakeUDPServer udpServer;
+	private ServerModel serverModel;
 	private Setting setting;
 	private Room room;
 	private Game game;
-	private Profile profile;
-	private ClientEncoder Encoder;
-	private ClientDecoder Decoder;
+	private ClientEncoder encoder;
+	private ClientDecoder decoder;
+	private Player player;
+	private Character character;
+
+	public Model() {
+		// TODO Auto-generated constructor stub
+		room = new Room();
+		game = new Game();
+		setting = new Setting();
+		encoder = new ClientEncoder();
+		decoder = new ClientDecoder();
+	}
 
 	/* for client model start */
 	// host
 	protected boolean requestEstablishRoom(int port) {
-		room = new Room();
-		Player player = new Player();
-		tcpServer = new FakeTCPServer();
-		room.addPlayer(player);
+		tcpClient = new FakeTCPClient();
+		udpServer = new FakeUDPServer();
+		serverModel = new ServerModel();
 		return true;
 	}
 
 	// client
 	protected boolean requestEnterRoom(String ip, int port) {
-		room = new Room();
-		Player player = new Player();
+		character = new Character();
+		player = new Player(character, setting.getProfile());
 		player.setProfile(setting.getProfile());
 		room.addPlayer(player);
 		tcpClient = new FakeTCPClient();
@@ -50,22 +61,22 @@ public class Model {
 	}
 
 	protected void requestFire() {
-		JSONObject content = Encoder.encodeObject("requestFire", null);
+		JSONObject content = encoder.encodeObject("requestFire", null);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
 	protected void requestStartGame() {
-		JSONObject content = Encoder.encodeObject("requestStartGame", null);
+		JSONObject content = encoder.encodeObject("requestStartGame", null);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
 	protected void requestSetTotalTime(int time) {
-		JSONObject content = Encoder.encodeObject("requestSetTotalTime", time);
+		JSONObject content = encoder.encodeObject("requestSetTotalTime", time);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
 	protected void requestSetPlayerNumber(int number) {
-		JSONObject content = Encoder.encodeObject("requestSetPlayerNumber", number);
+		JSONObject content = encoder.encodeObject("requestSetPlayerNumber", number);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
@@ -73,15 +84,15 @@ public class Model {
 		Point location = null;
 		location.x = x;
 		location.y = y;
-		JSONObject content = Encoder.encodeObject("requestSetLocation", location);
+		JSONObject content = encoder.encodeObject("requestSetLocation", location);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
 	/*
-	protected void requestKeyInput(int key) {
-
-	}
-	*/
+	 * protected void requestKeyInput(int key) {
+	 * 
+	 * }
+	 */
 
 	/* for client model end */
 
@@ -133,7 +144,7 @@ public class Model {
 
 	public void set(Byte[] packet) {
 		JSONObject jsonObj = null;
-	    byte[] str = packet.toString().getBytes(StandardCharsets.UTF_8);
+		byte[] str = packet.toString().getBytes(StandardCharsets.UTF_8);
 		try {
 			String content = new String(str, StandardCharsets.UTF_8);
 			jsonObj = new JSONObject(content);
@@ -141,15 +152,15 @@ public class Model {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Decoder.decode(jsonObj);
+		decoder.decode(jsonObj);
 	}
 
 	public void startGame() {
-		
+
 	}
 
 	public void setLocation(int x, int y) {
-		
+
 	}
 
 	/* for UDP end */
@@ -167,7 +178,7 @@ public class Model {
 	}
 
 	public Profile getProfile() {
-		return profile;
+		return setting.getProfile();
 	}
 
 	public int getTime() {

@@ -2,14 +2,13 @@ package model.game.coder;
 
 import java.awt.Point;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
+import model.game.Result;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Obstacle;
 import model.setting.Profile;
-import model.game.Player;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ServerEncoder {
 	

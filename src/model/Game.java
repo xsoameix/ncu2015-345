@@ -8,37 +8,37 @@ import model.game.Rule;
 import model.game.Team;
 import model.game.field.Map;
 
-public class Game{
+public class Game {
 	private Vector<Team> teams;
 	private int time;
 	private Field field;
-	
-	private Rule rule;	
 
-	public Game(){
-		field=new Field();
+	private Rule rule;
+
+	public Game() {
+		field = new Field();
 	}
-	
-	public void setMap(Map map){
+
+	public void setMap(Map map) {
 		field.setMap(map);
 	}
-	
-	public Vector<Team> getTeam(){
+
+	public Vector<Team> getTeams() {
 		return teams;
 	}
-	
-	public void addTeam(Team team){
+
+	public void addTeam(Team team) {
 		teams.add(team);
 	}
-	
-	public void remove(Team team){
+
+	public void remove(Team team) {
 		teams.remove(team);
 	}
-	
-	public void setField(Field field){
+
+	public void setField(Field field) {
 		this.field = field;
 	}
-	
+
 	public Field getField() {
 		return field;
 	}
@@ -50,13 +50,13 @@ public class Game{
 	public void setRule(Rule rule) {
 		this.rule = rule;
 	}
-	
-	public int getTime(){
+
+	public int getTime() {
 		return time;
 	}
-	
-	public void setTime(int time){
+
+	public void setTime(int time) {
 		this.time = time;
 	}
-	
+
 }

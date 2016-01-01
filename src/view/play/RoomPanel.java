@@ -1,25 +1,26 @@
 package view.play;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import model.Room;
+import model.game.Player;
 import view.base.Button;
 import view.base.Panel;
 import view.play.room.GameSettingPanel;
-import view.play.room.PlayerPanel;
+import view.play.room.PlayerView;
+import view.play.room.PlayersPanel;
 
 public class RoomPanel extends Panel{
 	private Room room;
 	
-	private PlayerPanel playersPanel;
+	private PlayersPanel playersPanel;
 	private GameSettingPanel gameSettingPanel;
 	
 	private Button buttons[];
 	
-	
-	
 	private void setPanels(){
-		playersPanel=new PlayerPanel();
+		playersPanel=new PlayersPanel();
 		gameSettingPanel=new GameSettingPanel();
 		add(playersPanel);
 		add(gameSettingPanel);
@@ -61,5 +62,12 @@ public class RoomPanel extends Panel{
 			break;
 		}
 	}
-
+	public void addPlayer(Player player) {
+		playersPanel.add(new PlayerView(player));
+	}
+	public void removePlayer(Player player) {
+		for(Component component: playersPanel.getComponents())
+			if(((PlayerView)component).getPlayer().equals(player))
+				playersPanel.remove(component);
+	}
 }

@@ -1,8 +1,8 @@
 package model.game.field.dynamic;
 
-import model.game.field.DynamicObject;
+import model.game.field.FieldObject;
 
-public class Obstacle extends DynamicObject{
+public class Obstacle extends FieldObject{
 	private boolean breakable;
 	
 	public boolean getIsBreakable(){

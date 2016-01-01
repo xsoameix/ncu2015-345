@@ -30,12 +30,6 @@ public class ClientModel {
 		model.requestSetLocation(x, y);
 	}
 
-	/*
-	public void requestKeyInput(int key) {
-		model.requestKeyInput(key);
-	}
-	*/
-
 	// host
 	public Boolean requestEstablishRoom(int port) {
 		return model.requestEstablishRoom(port);
@@ -48,19 +42,15 @@ public class ClientModel {
 
 	/* for outside API end */
 
-	/* API for UDP start */
-
-	public void set(Byte[] packet) {
-
-	}
-
-	/* API for UDP start */
-
 	public Model getModel() {
 		return model;
 	}
 
 	public void setModel(Model model) {
 		this.model = model;
+	}
+
+	public void setPlayPanel(PlayPanel playPanel) {
+		model.setPlayPanel(playPanel);
 	}
 }

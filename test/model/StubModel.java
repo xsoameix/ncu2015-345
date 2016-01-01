@@ -35,8 +35,4 @@ public class StubModel extends Model {
 	protected void requestSetLocation(int x, int y) {
 		requestSetLocation = true;
 	}
-
-	protected void requestKeyInput(int key) {
-		requestKeyInput = true;
-	}
 }

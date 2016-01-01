@@ -1,10 +1,8 @@
 package model.game.field.dynamic;
 
-import java.awt.Point;
+import model.game.field.FieldObject;
 
-import model.game.field.DynamicObject;
-
-public class Character extends DynamicObject {
+public class Character extends FieldObject {
 	private int direction;
 	
 	public int getDirection(){

@@ -1,67 +1,102 @@
 package model.game.coder;
 
-import java.awt.Point;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.Vector;
+
+import model.Model;
+import model.game.Player;
+import model.game.Result;
+import model.game.Team;
+import model.game.field.Turf;
+import model.game.field.dynamic.Bullet;
+import model.game.field.dynamic.Obstacle;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ClientDecoder {
-//	private AbstractModel model;
-	
-	public void decode(JSONObject object){
+	// private AbstractModel model;
+	private Model model;
+
+	public ClientDecoder(Model model) {
+		// TODO Auto-generated constructor stub
+		this.model = model;
+	}
+
+	public void decode(JSONObject object) {
 		Iterator<?> key = object.keys();
-		while(key.hasNext()){
-//			try {
-//				Method method=model.getClass().getMethod(key, new Class[]{Object.class});
-//				method.invoke(model, object.get(key));
-//			} catch (NoSuchMethodException | SecurityException | JSONException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-//				e.printStackTrace();
-//			}
+		while (key.hasNext()) {
 			String keys = (String) key.next();
-		switch(keys){
-			case "requestSetTotalTime":
 			try {
-				int totalTime = object.getInt(keys);
+				switch (keys) {
+				case "removeObstacle":
+					Obstacle obstacle = (Obstacle) object.get(keys);
+					model.removeObstacle(obstacle);
+					break;
+				case "setTotalTime":
+					int totalTime = object.getInt(keys);
+					model.setTotalTime(totalTime);
+					break;
+				case "setTime":
+					int time = object.getInt(keys);
+					model.setTime(time);
+					break;
+				case "setPlayerNumber":
+					int playerNumber = object.getInt(keys);
+					model.setPlayerNumber(playerNumber);
+					break;
+				case "addPlayer":
+					Player player = (Player) object.get(keys);
+					model.addPlayer(player);
+					break;
+				case "removePlayer":
+					player = null;
+					player = (Player) object.get(keys);
+					model.removePlayer(player);
+					break;
+				case "setLocation":
+					player = null;
+					player = (Player) object.get(keys);
+					model.setLocation(player);
+					break;
+				case "setMoney":
+					Vector<Team> teams = (Vector<Team>) object.get(keys);
+					model.setMoney(teams);
+					break;
+				case "setKillNumber":
+					player = null;
+					player = (Player) object.get(keys);
+					model.setKillNumber(player);
+					break;
+				case "addBullet":
+					Bullet bullet = (Bullet) object.get(keys);
+					model.addBullet(bullet);
+					break;
+				case "removeBullet":
+					bullet = null;
+					bullet = (Bullet) object.get(keys);
+					model.removeBullet(bullet);
+					break;
+				case "updateBullet":
+					bullet = null;
+					bullet = (Bullet) object.get(keys);
+					model.updateBullet(bullet);
+					break;
+				case "changeTurfColor":
+					Turf turf = (Turf) object.get(keys);
+					model.changeTurfColor(turf);
+					break;
+				case "startGame":
+					model.startGame();
+					break;
+				case "gameOver":
+					Result result = (Result) object.get(keys);
+					model.gameOver(result);
+					break;
+				}
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
-				break;
-				
-			case "requestSetTime":
-			try {
-				int time = object.getInt(keys);
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-				break;
-				
-			case "requestAddPlayer":
-				break;
-				
-			case "requestRemovePlayer":
-				break;
-				
-			case "requestStartGame":
-				break;
-				
-			case "requestSetLocation":
-			Point point = null;
-			try {
-				point = (Point)object.get(keys);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-				System.out.println(point.toString());
-				break;
-				
-			case "requestFire":
-				break;
 			}
 		}
 	}

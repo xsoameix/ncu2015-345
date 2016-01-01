@@ -3,74 +3,99 @@ package model.game;
 import java.awt.Dimension;
 import java.util.Vector;
 
-import model.game.field.DynamicObject;
+import model.game.field.FieldObject;
 import model.game.field.Map;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Character;
 import model.game.field.dynamic.Obstacle;
 
-public class Field{
-	private Vector<DynamicObject> objects;
-//	private int backgroundID
+public class Field {
+	// private int backgroundID
 	private Map map;
-	
-	//put into some container?
-	//private FieldObject fieldObjects[];
-	
+
+	// put into some container?
+	// private FieldObject fieldObjects[];
+
 	private Vector<Character> characters;
 	private Vector<Bullet> bullets;
 	private Vector<Obstacle> obstacles;
 
-	public Field(){
+	public Field() {
+		map = new Map();
+		characters = new Vector<>();
+		bullets = new Vector<>();
+		obstacles = new Vector<>();
 	}
-	
+
 	public Dimension getSize() {
 		return getMap().getSize();
 	}
-	
+
 	public Map getMap() {
 		return map;
 	}
-	
-	public void setMap(Map map) {
+
+	public synchronized void setMap(Map map) {
 		this.map = map;
 	}
 
-	public Vector<Character> getCharacterList(){
+	public Vector<Character> getCharacterList() {
 		return characters;
 	}
-	
-	public Vector<Bullet> getBulletList(){
+
+	public Vector<Bullet> getBulletList() {
 		return bullets;
 	}
-	
-	public Vector<Obstacle> getObstacleList(){
+
+	public synchronized Bullet getBullet(int ID) {
+		synchronized (bullets) {
+			for (int i = 0; i < bullets.size(); i++) {
+				if (bullets.get(i).getID() == ID) {
+					return bullets.get(i);
+				}
+			}
+			return null;
+		}
+	}
+
+	public Vector<Obstacle> getObstacleList() {
 		return obstacles;
 	}
-	
-	public void addCharacter(Character cha){
-		this.characters.add(cha);
+
+	public synchronized void addCharacter(Character cha) {
+		synchronized (characters) {
+			this.characters.add(cha);
+		}
 	}
-	
-	public void removeCharacter(Character cha){
-		this.characters.remove(cha);
+
+	public synchronized void removeCharacter(Character cha) {
+		synchronized (characters) {
+			this.characters.remove(cha);
+		}
 	}
-	
-	public void addBullet(Bullet bullet){
-		this.bullets.add(bullet);
+
+	public synchronized void addBullet(Bullet bullet) {
+		synchronized (bullet) {
+			this.bullets.add(bullet);
+		}
 	}
-	
-	public void removeBullet(Bullet bullet){
-		this.bullets.remove(bullet);
+
+	public synchronized void removeBullet(Bullet bullet) {
+		synchronized (bullet) {
+			this.bullets.remove(bullet);
+		}
 	}
-	
-	public void addObstacle(Obstacle obstacle){
-		this.objects.addElement(obstacle);
+
+	public synchronized void addObstacle(Obstacle obstacle) {
+		synchronized (obstacles) {
+			this.obstacles.addElement(obstacle);
+		}
 	}
-	
-	public void removeObstacle(Obstacle obstacle){
-		this.objects.remove(obstacle);
+
+	public synchronized void removeObstacle(Obstacle obstacle) {
+		synchronized (obstacles) {
+			this.obstacles.remove(obstacle);
+		}
 	}
-	
-	
+
 }

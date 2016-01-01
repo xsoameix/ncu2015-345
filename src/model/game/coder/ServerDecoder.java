@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.Iterator;
 
 import model.ServerModel;
+import model.game.Player;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,37 +20,40 @@ public class ServerDecoder {
 	public void decode(JSONObject object) {
 		Iterator<?> key = object.keys();
 		while (key.hasNext()) {
-			String keys = (String) key.next();
-			switch (keys) {
-			case "requestSetTotalTime":
-				try {
+			try {
+				String keys = (String) key.next();
+				switch (keys) {
+				case "requestSetTotalTime":
 					int totalTime = object.getInt(keys);
 					serverModel.setTotalTime(totalTime);
-				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				break;
-			case "requestSetPlayerNumber":
-				break;
-			case "requestAddPlayer":
-				break;
-			case "requestRemovePlayer":
-				break;
-			case "requestStartGame":
-				break;
-			case "requestSetLocation":
-				Point point = null;
-				try {
+					break;
+				case "requestSetPlayerNumber":
+					int playerNumber = object.getInt(keys);
+					serverModel.setPlayerNumber(playerNumber);
+					break;
+				case "requestAddPlayer":
+					Player player = (Player) object.get(keys);
+					serverModel.addPlayer(player);
+					break;
+				case "requestRemovePlayer":
+					player = (Player) object.get(keys);
+					serverModel.removePalyer(player);
+					break;
+				case "requestStartGame":
+					serverModel.startGame();
+					break;
+				case "requestSetLocation":
+					Point point = null;
 					point = (Point) object.get(keys);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					serverModel.setLocation(point);
+					break;
+				case "requestFire":
+					serverModel.fire();
+					break;
 				}
-				System.out.println(point.toString());
-				break;
-			case "requestFire":
-				break;
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 	}

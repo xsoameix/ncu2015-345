@@ -1,6 +1,5 @@
 package model.game.coder;
 
-import java.awt.Point;
 import java.util.Vector;
 
 import model.game.Player;
@@ -31,12 +30,12 @@ public class ServerEncoder {
 		return encodeObject("setPlayerNumber", playernumber);
 	}
 
-	public JSONObject addPlayer(Profile profile) {
-		return encodeObject("addPlayer", profile);
+	public JSONObject addPlayer(Player player) {
+		return encodeObject("addPlayer", player);
 	}
 
-	public JSONObject removePlayer(Profile profile) {
-		return encodeObject("removePlayer", profile);
+	public JSONObject removePlayer(Player player) {
+		return encodeObject("removePlayer", player);
 	}
 
 	public JSONObject setLocation(Player player) {

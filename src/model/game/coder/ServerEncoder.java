@@ -5,9 +5,9 @@ import java.util.Vector;
 import model.game.Player;
 import model.game.Result;
 import model.game.Team;
+import model.game.field.Turf;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Obstacle;
-import model.setting.Profile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,8 +62,8 @@ public class ServerEncoder {
 		return encodeObject("updateBullet", bullet);
 	}
 
-	public JSONObject changeFlagColor(int team) {
-		return encodeObject("changeFlagColor", team);
+	public JSONObject changeFlagColor(Turf turf) {
+		return encodeObject("changeTurfColor", turf);
 	}
 
 	public JSONObject startGame() {

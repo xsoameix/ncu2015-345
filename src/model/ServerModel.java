@@ -52,7 +52,7 @@ public class ServerModel {
 	public void setTime(int second) {
 		// udp brocase time
 	}
-	
+
 	public boolean startGame() {
 		return true;
 	}
@@ -69,12 +69,10 @@ public class ServerModel {
 		return true;
 	}
 
-	public boolean setLocation(int x, int y) {
+	public boolean setLocation(Point point) {
+		assert point != null : "[ServerModel] setLocation : Point location is null";
+		int x = point.x, y = point.y;
 		assert x > 0 && y > 0 : "[ServerModel] setLocation : location error x " + x + " y " + y;
-		Point location = null;
-		location.x = x;
-		location.y = y;
-		assert location != null : "[ServerModel] setLocation : Point location is null";
 		// call rule to move
 		// if true then setLocation
 		// character.setLocation(location);

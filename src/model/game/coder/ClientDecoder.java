@@ -7,6 +7,7 @@ import model.Model;
 import model.game.Player;
 import model.game.Result;
 import model.game.Team;
+import model.game.field.Turf;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Obstacle;
 
@@ -81,8 +82,9 @@ public class ClientDecoder {
 					bullet = (Bullet) object.get(keys);
 					model.updateBullet(bullet);
 					break;
-				case "changeFlagColor":
-					//
+				case "changeTurfColor":
+					Turf turf = (Turf) object.get(keys);
+					model.changeTurfColor(turf);
 					break;
 				case "startGame":
 					model.startGame();

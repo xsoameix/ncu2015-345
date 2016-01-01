@@ -12,6 +12,7 @@ import model.game.Team;
 import model.game.coder.ClientDecoder;
 import model.game.coder.ClientEncoder;
 import model.game.field.Map;
+import model.game.field.Turf;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Character;
 import model.game.field.dynamic.Obstacle;
@@ -168,16 +169,16 @@ public class Model {
 		}
 	}
 
-	public void changeTurfColor(int team) {
+	public void changeTurfColor(Turf turf) {
 		// change turf color
 
 	}
 
-	public synchronized boolean removeObstacle(Obstacle obstale) {
+	public synchronized boolean removeObstacle(Obstacle obstacle) {
 		synchronized (game.getField().getObstacleList()) {
 			for (int i = 0; i < game.getField().getObstacleList().size(); i++) {
 				Obstacle tmp = game.getField().getObstacleList().get(i);
-				if (tmp != null && tmp.getID() == obstale.getID()) {
+				if (tmp != null && tmp.getID() == obstacle.getID()) {
 					game.getField().getObstacleList().remove(tmp);
 				}
 			}
@@ -207,7 +208,9 @@ public class Model {
 	}
 
 	public void setLocation(Player Player) {
-
+		Character oldCharacter = game.getTeam(player.getTeamID()).getPlayer(player.getTeamID()).getCharacter();
+		oldCharacter.setDirection(player.getCharacter().getDirection());
+		oldCharacter.setLocation(player.getCharacter().getLocation());
 	}
 
 	/* for UDP end */

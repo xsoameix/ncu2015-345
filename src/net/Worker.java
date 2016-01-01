@@ -71,6 +71,7 @@ public class Worker implements Runnable {
                             }
                         } else if (key.channel().equals(ctrlOut)) {
                             socket.close();
+                            selector.close();
                             return;
                         }
                     }

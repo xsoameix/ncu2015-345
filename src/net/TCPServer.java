@@ -106,7 +106,7 @@ public class TCPServer implements Runnable {
         try {
             assert state.get() == STATE_RUNNING : "server should be running";
             state.set(STATE_INITIAL);
-            ByteBuffer buf = ByteBuffer.allocate(4);
+            ByteBuffer buf = ByteBuffer.allocate(Integer.SIZE / Byte.SIZE);
             buf.putInt(PIPE_EXIT);
             buf.flip();
             ctrlIn.write(buf);
@@ -133,11 +133,12 @@ public class TCPServer implements Runnable {
                 }
                 selector.selectedKeys().clear();
             }
+            buf.flip();
             buf.clear();
             syncOut.read(buf);
             syncIn.close();
             syncOut.close();
-            buf.flip();
+            buf.clear();
             ctrlOut.read(buf);
             ctrlIn.close();
             ctrlOut.close();

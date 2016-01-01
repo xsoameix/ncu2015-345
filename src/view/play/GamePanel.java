@@ -9,10 +9,13 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 
 import model.Game;
+import model.game.Result;
 import view.base.*;
 import view.play.game.*;
 
 public class GamePanel extends Panel{
+	private RenderThread renderThread;
+	
 	//panels
 	private ClockPanel clockPanel;
 	private TeamPanel teamPanel;
@@ -27,6 +30,7 @@ public class GamePanel extends Panel{
 	
 	public GamePanel(){
 		setComponents();
+		renderThread=new RenderThread(this);
 	}
 	private void setComponents(){
 		GridBagLayout gridBagLayout=new GridBagLayout();
@@ -118,5 +122,12 @@ public class GamePanel extends Panel{
 			getDisplayPanel().next();
 			break;
 		}
+	}
+	
+	public FieldPanel getFieldPanel() {
+		return fieldPanel;
+	}
+	public void gameOver(Result result) {
+		getDisplayPanel().next();
 	}
 }

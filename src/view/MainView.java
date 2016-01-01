@@ -2,7 +2,8 @@ package view;
 
 import model.ClientModel;
 import view.base.extend.DisplayPanel;
-import view.controller.ViewController;
+import view.play.PlayPanel;
+import view.setting.SettingPanel;
 
 /**
  * view, view logic
@@ -37,10 +38,4 @@ public class MainView extends DisplayPanel{
 	public void setModel(ClientModel clientModel) {
 		this.clientModel=clientModel;
 	}
-
-	public void setController(ViewController viewController) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

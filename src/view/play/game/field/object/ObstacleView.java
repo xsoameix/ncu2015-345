@@ -4,13 +4,16 @@ import model.game.field.dynamic.Obstacle;
 import view.play.game.field.FieldObjectView;
 
 public class ObstacleView extends FieldObjectView{
-	private Obstacle obstacle;
 
-	public Obstacle getObstacle() {
-		return obstacle;
+	public ObstacleView(Obstacle obstacle) {
+		super(obstacle);
 	}
-
-	public void setObstacle(Obstacle obstacle) {
-		this.obstacle = obstacle;
-	}
+//
+//	public Obstacle getObstacle() {
+//		return obstacle;
+//	}
+//
+//	public void setObstacle(Obstacle obstacle) {
+//		this.obstacle = obstacle;
+//	}
 }

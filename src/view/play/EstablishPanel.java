@@ -88,6 +88,7 @@ public class EstablishPanel extends AbstractView{
 			
 		//button
 		case "establish":
+			getDisplayPanel().next();
 			//clientModel.requestStartGame
 			break;
 		case "start":

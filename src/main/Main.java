@@ -2,14 +2,15 @@ package main;
 import javax.swing.SwingUtilities;
 
 import model.*;
-import view.MainFrame;
+import view.MainView;
 
 public class Main {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new MainFrame(new Application());
+				MainView mainView=new MainView();
+				mainView.setModel(new ClientModel());
 			}
 		});
 	}

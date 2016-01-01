@@ -1,7 +1,8 @@
 package model;
 
 import java.awt.Point;
-import java.io.CharConversionException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
 import model.game.Player;
@@ -13,6 +14,7 @@ import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Character;
 import model.game.field.dynamic.Obstacle;
 import model.setting.Profile;
+import net.TCPClient;
 
 import org.json.JSONObject;
 
@@ -21,8 +23,8 @@ public class Model {
 	// private ServerModel serverModel
 
 	// client side
-	private FakeTCPClient tcpClient;
-	private FakeUDPServer udpServer;
+	private TCPClient tcpClient;
+	//private FakeUDPServer udpServer;
 	private ServerModel serverModel;
 	private Setting setting;
 	private Room room;
@@ -44,19 +46,25 @@ public class Model {
 	/* for client model start */
 	// host
 	protected boolean requestEstablishRoom(int port) {
-		tcpClient = new FakeTCPClient();
-		udpServer = new FakeUDPServer();
 		serverModel = new ServerModel();
-		return true;
+		return serverModel.initialize(port);
 	}
 
 	// client
 	protected boolean requestEnterRoom(String ip, int port) {
+		tcpClient = new TCPClient();
+		//udpServer = new FakeUDPServer();
+		try {
+			tcpClient.initialize(InetAddress.getByName(ip), port);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// udp init
 		character = new Character();
 		player = new Player(character, setting.getProfile());
 		player.setProfile(setting.getProfile());
-		room.addPlayer(player);
-		tcpClient = new FakeTCPClient();
+		tcpClient.send(encoder.requestAddPlayer(player).toString().getBytes(StandardCharsets.UTF_8));
 		return true;
 	}
 

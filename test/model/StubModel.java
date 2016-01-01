@@ -7,6 +7,7 @@ public class StubModel extends Model {
 	boolean requestSetPlayerNumber = false;
 	boolean requestSetLocation = false;
 	boolean requestKeyInput = false;
+	boolean set = false;
 
 	protected boolean requestEstablishRoom(int port) {
 		return true;
@@ -35,8 +36,8 @@ public class StubModel extends Model {
 	protected void requestSetLocation(int x, int y) {
 		requestSetLocation = true;
 	}
-
-	protected void requestKeyInput(int key) {
-		requestKeyInput = true;
+	
+	public void set(Byte[] packet) {
+		set = true;
 	}
 }

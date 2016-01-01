@@ -55,4 +55,11 @@ public class TestClientModel extends TestCase {
 	public void testRequestEnterRoom() {
 		assertTrue(clientModel.requestEnterRoom("123.0.0.1", 80));
 	}
+
+	@Test
+	public void testSet() {
+		Byte[] packet = {};
+		clientModel.set(packet);
+		assertEquals(model.set,true);
+	}
 }

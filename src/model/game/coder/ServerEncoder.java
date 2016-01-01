@@ -39,8 +39,8 @@ public class ServerEncoder {
 		return encodeObject("removePlayer", profile);
 	}
 
-	public JSONObject setLocation(Point point) {
-		return encodeObject("setLocation", point);
+	public JSONObject setLocation(Player player) {
+		return encodeObject("setLocation", player);
 	}
 
 	public JSONObject setMoney(Vector<Team> teams) {

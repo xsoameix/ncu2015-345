@@ -4,9 +4,11 @@ import java.awt.Point;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Vector;
 
 import model.game.Player;
 import model.game.Result;
+import model.game.Team;
 import model.game.coder.ClientDecoder;
 import model.game.coder.ClientEncoder;
 import model.game.field.Map;
@@ -24,7 +26,7 @@ public class Model {
 
 	// client side
 	private TCPClient tcpClient;
-	//private FakeUDPServer udpServer;
+	// private FakeUDPServer udpServer;
 	private ServerModel serverModel;
 	private Setting setting;
 	private Room room;
@@ -40,7 +42,7 @@ public class Model {
 		game = new Game();
 		setting = new Setting();
 		encoder = new ClientEncoder();
-		decoder = new ClientDecoder();
+		decoder = new ClientDecoder(this);
 	}
 
 	/* for client model start */
@@ -53,7 +55,7 @@ public class Model {
 	// client
 	protected boolean requestEnterRoom(String ip, int port) {
 		tcpClient = new TCPClient();
-		//udpServer = new FakeUDPServer();
+		// udpServer = new FakeUDPServer();
 		try {
 			tcpClient.initialize(InetAddress.getByName(ip), port);
 		} catch (UnknownHostException e) {
@@ -89,18 +91,12 @@ public class Model {
 	}
 
 	protected void requestSetLocation(int x, int y) {
-		Point location = null;
+		Point location = new Point();
 		location.x = x;
 		location.y = y;
 		JSONObject content = encoder.encodeObject("requestSetLocation", location);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
-
-	/*
-	 * protected void requestKeyInput(int key) {
-	 * 
-	 * }
-	 */
 
 	/* for client model end */
 
@@ -109,7 +105,21 @@ public class Model {
 		game.setTime(time);
 	}
 
-	public void setPlayerNumber(int playnumber) {
+	public synchronized void setMoney(Vector<Team> teams) {
+		for (int i = 0; i < teams.size(); i++) {
+			Team tmp = teams.get(i);
+			if (game.getTeam(tmp.getID()) != null) {
+				game.getTeam(tmp.getID()).updateMoney(tmp);
+			}
+		}
+	}
+
+	public synchronized void setKillNumber(Player player) {
+		int newPlayerID = player.getTeamID();
+		game.getTeam(newPlayerID).getPlayer(newPlayerID).setKill(player.getKill());
+	}
+
+	public synchronized void setPlayerNumber(int playnumber) {
 		room.setPlayerNumber(playnumber);
 	}
 
@@ -131,19 +141,48 @@ public class Model {
 		game.setTime(time);
 	}
 
-	public boolean addBullet(Bullet bullet) {
-		game.getField().getBulletList().add(bullet);
-		return true;
+	public synchronized boolean addBullet(Bullet bullet) {
+		synchronized (game.getField().getBulletList()) {
+			game.getField().getBulletList().add(bullet);
+			return true;
+		}
 	}
 
-	public boolean removeBullet(Bullet bullet) {
-		game.getField().getBulletList().remove(bullet);
-		return true;
+	public synchronized void updateBullet(Bullet bullet) {
+		synchronized (game.getField().getBulletList()) {
+			Bullet oldBullet = game.getField().getBullet(bullet.getID());
+			oldBullet.setDirection(bullet.getDirection());
+			oldBullet.setLocation(bullet.getLocation());
+		}
 	}
 
-	public boolean removeObstacle(Obstacle obstale) {
-		game.getField().getObstacleList().remove(obstale);
-		return true;
+	public synchronized boolean removeBullet(Bullet bullet) {
+		synchronized (game.getField().getBulletList()) {
+			for (int i = 0; i < game.getField().getBulletList().size(); i++) {
+				Bullet tmp = game.getField().getBulletList().get(i);
+				if (tmp != null && tmp.getID() == bullet.getID()) {
+					game.getField().getBulletList().remove(tmp);
+				}
+			}
+			return true;
+		}
+	}
+
+	public void changeTurfColor(int team) {
+		// change turf color
+
+	}
+
+	public synchronized boolean removeObstacle(Obstacle obstale) {
+		synchronized (game.getField().getObstacleList()) {
+			for (int i = 0; i < game.getField().getObstacleList().size(); i++) {
+				Obstacle tmp = game.getField().getObstacleList().get(i);
+				if (tmp != null && tmp.getID() == obstale.getID()) {
+					game.getField().getObstacleList().remove(tmp);
+				}
+			}
+			return true;
+		}
 	}
 
 	public void setMap(Map map) {
@@ -167,7 +206,7 @@ public class Model {
 
 	}
 
-	public void setLocation(int x, int y) {
+	public void setLocation(Player Player) {
 
 	}
 

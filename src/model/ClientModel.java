@@ -42,14 +42,6 @@ public class ClientModel {
 
 	/* for outside API end */
 
-	/* API for UDP start */
-
-	public void set(Byte[] packet) {
-		model.set(packet);
-	}
-
-	/* API for UDP start */
-
 	public Model getModel() {
 		return model;
 	}

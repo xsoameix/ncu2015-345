@@ -17,6 +17,7 @@ public class Game {
 
 	public Game() {
 		field = new Field();
+		teams = new Vector<Team>();
 	}
 
 	public void setMap(Map map) {
@@ -27,15 +28,30 @@ public class Game {
 		return teams;
 	}
 
-	public void addTeam(Team team) {
-		teams.add(team);
+	public synchronized Team getTeam(int ID) {
+		synchronized (teams) {
+			for (int i = 0; i < teams.size(); i++) {
+				if (teams.get(i).getID() == ID) {
+					return teams.get(i);
+				}
+			}
+			return null;
+		}
 	}
 
-	public void remove(Team team) {
-		teams.remove(team);
+	public synchronized void addTeam(Team team) {
+		synchronized (teams) {
+			teams.add(team);
+		}
 	}
 
-	public void setField(Field field) {
+	public synchronized void remove(Team team) {
+		synchronized (teams) {
+			teams.remove(team);
+		}
+	}
+
+	public synchronized void setField(Field field) {
 		this.field = field;
 	}
 
@@ -47,7 +63,7 @@ public class Game {
 		return rule;
 	}
 
-	public void setRule(Rule rule) {
+	public synchronized void setRule(Rule rule) {
 		this.rule = rule;
 	}
 
@@ -55,7 +71,7 @@ public class Game {
 		return time;
 	}
 
-	public void setTime(int time) {
+	public synchronized void setTime(int time) {
 		this.time = time;
 	}
 

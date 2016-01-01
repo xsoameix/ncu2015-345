@@ -51,7 +51,7 @@ public class ClientModel {
 	/* API for UDP start */
 
 	public void set(Byte[] packet) {
-
+		model.set(packet);
 	}
 
 	/* API for UDP start */

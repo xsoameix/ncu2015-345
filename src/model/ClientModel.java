@@ -3,6 +3,7 @@ package model;
 public class ClientModel {
 
 	private Model model;
+	private PlayPanel playPanel;
 
 	public ClientModel() {
 		model = new Model();
@@ -48,5 +49,9 @@ public class ClientModel {
 
 	public void setModel(Model model) {
 		this.model = model;
+	}
+
+	public void setPlayPanel(PlayPanel playPanel) {
+		this.playPanel = playPanel;
 	}
 }

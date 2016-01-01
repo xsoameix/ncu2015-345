@@ -17,12 +17,14 @@ public class ServerModel {
 	private Game game;
 	private Player player;
 	private Character character;
-	private ServerDecoder Decoder;
+	private ServerDecoder decoder;
 	private FakeTCPServer tcpServer;
+	private FakeUDPClient udpClient;
 
 	public ServerModel() {
 		// TODO Auto-generated constructor stub
 		tcpServer = new TCPServer();
+		udpClient = new FakeUDPClient();
 	}
 
 	public Room getRoom() {
@@ -46,6 +48,7 @@ public class ServerModel {
 	}
 
 	public boolean addPlayer(Player player) {
+		assert !room.getPlayerList().contains(player) : "[ServerModel] addPlayer : player alreadt exist";
 		room.addPlayer(player);
 		return true;
 	}
@@ -55,7 +58,6 @@ public class ServerModel {
 		return true;
 	}
 
-	// 还没写
 	public boolean setLocation(int x, int y) {
 		Point location = null;
 		location.x = x;
@@ -64,23 +66,22 @@ public class ServerModel {
 		return true;
 	}
 
-	// 还没写
 	public boolean fire() {
 		// character.newbullet();
 		return true;
 	}
 
-	public void set(byte[] packet) {
+	public void set(byte[] packet) {     
 		JSONObject jsonObj = null;
 		byte[] str = packet.toString().getBytes(StandardCharsets.UTF_8);
 		try {
 			String content = new String(str, StandardCharsets.UTF_8);
-			jsonObj = new JSONObject();
+			jsonObj = new JSONObject(content);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Decoder.decode(jsonObj);
+		decoder.decode(jsonObj);
 	}
 
 }

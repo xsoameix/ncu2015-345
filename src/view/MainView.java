@@ -2,6 +2,7 @@ package view;
 
 import model.ClientModel;
 import view.base.extend.DisplayPanel;
+import view.play.PlayPanel;
 import view.setting.SettingPanel;
 
 /**

@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import view.Config;
-import view.PlayPanel;
 import view.base.Button;
 import view.base.Dialog;
 import view.base.Panel;

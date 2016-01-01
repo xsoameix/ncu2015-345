@@ -1,19 +1,19 @@
 package view.play.game.field;
 
-import model.game.field.DynamicObject;
+import model.game.field.FieldObject;
 import view.base.Component;
 
 public class FieldObjectView extends Component{
-	private DynamicObject object;
+	private FieldObject object;
 
-	public FieldObjectView(DynamicObject object){
+	public FieldObjectView(FieldObject object){
 		setObject(object);
 	}
 	
-	public DynamicObject getObject() {
+	public FieldObject getObject() {
 		return object;
 	}
-	public void setObject(DynamicObject object) {
+	public void setObject(FieldObject object) {
 		this.object = object;
 	}
 	

@@ -1,66 +1,90 @@
 package model.game.coder;
 
 import java.awt.Point;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Iterator;
+
+import model.Model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ClientDecoder {
-//	private AbstractModel model;
-	
-	public void decode(JSONObject object){
+	// private AbstractModel model;
+	private Model model;
+
+	public ClientDecoder(Model model) {
+		// TODO Auto-generated constructor stub
+		this.model = model;
+	}
+
+	public void decode(JSONObject object) {
 		Iterator<?> key = object.keys();
-		while(key.hasNext()){
-//			try {
-//				Method method=model.getClass().getMethod(key, new Class[]{Object.class});
-//				method.invoke(model, object.get(key));
-//			} catch (NoSuchMethodException | SecurityException | JSONException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-//				e.printStackTrace();
-//			}
+		while (key.hasNext()) {
 			String keys = (String) key.next();
-		switch(keys){
-			case "requestSetTotalTime":
-			try {
-				int totalTime = object.getInt(keys);
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			switch (keys) {
+			case "removeObstacle":
+				//
 				break;
-				
-			case "requestSetTime":
-			try {
-				int time = object.getInt(keys);
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			case "setTotalTime":
+				try {
+					int totalTime = object.getInt(keys);
+					model.setTotalTime(totalTime);
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				break;
-				
-			case "requestAddPlayer":
+			case "setTime":
+				try {
+					int time = object.getInt(keys);
+					model.setTime(time);
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				break;
-				
-			case "requestRemovePlayer":
+			case "setPlayerNumber":
+				//
 				break;
-				
-			case "requestStartGame":
+			case "addPlayer":
+				//
 				break;
-				
-			case "requestSetLocation":
-			Point point = null;
-			try {
-				point = (Point)object.get(keys);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			case "removePlayer":
+				break;
+			case "setLocation":
+				Point point = null;
+				try {
+					point = (Point) object.get(keys);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				model.setLocation(point.x, point.y);
 				System.out.println(point.toString());
 				break;
-				
-			case "requestFire":
+			case "setMoney":
+				//
+				break;
+			case "setKillNumber":
+				//
+				break;
+			case "addBullet":
+				//
+				break;
+			case "removeBullet":
+				//
+				break;
+			case "updateBullet":
+				//
+				break;
+			case "changeFlagColor":
+				//
+				break;
+			case "startGame":
+				// call ui to start game
+				break;
+			case "gameOver":
+				//
 				break;
 			}
 		}

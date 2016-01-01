@@ -36,6 +36,7 @@ public class Model {
 	private ClientDecoder decoder;
 	private Player player;
 	private Character character;
+	private PlayPanel playPanel;
 
 	public Model() {
 		// TODO Auto-generated constructor stub
@@ -214,6 +215,10 @@ public class Model {
 	}
 
 	/* for UDP end */
+
+	public void setPlayPanel(PlayPanel playPanel) {
+		this.playPanel = playPanel;
+	}
 
 	public Room getRoom() {
 		return room;

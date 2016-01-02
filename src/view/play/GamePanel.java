@@ -103,13 +103,16 @@ public class GamePanel extends Panel{
 	public void setField(){
 		fieldPanel.setField(getGame().getField());
 	}
-
+	public FieldPanel getFieldPanel() {
+		return fieldPanel;
+	}
 	public Game getGame() {
 		return game;
 	}
 	public void setGame(Game game) {
 		this.game = game;
 	}
+
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -124,8 +127,10 @@ public class GamePanel extends Panel{
 		}
 	}
 	
-	public FieldPanel getFieldPanel() {
-		return fieldPanel;
+
+	public void startGame(){
+		getDisplayPanel().next();
+		renderThread.start();
 	}
 	public void gameOver(Result result) {
 		getDisplayPanel().next();

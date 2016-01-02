@@ -4,13 +4,13 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
 
 import model.Room;
 import model.game.field.FieldObject;
 import model.game.field.Map;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Character;
+import model.game.field.dynamic.Obstacle;
 import model.game.field.map.MapBlock;
 
 public class Rule {
@@ -26,6 +26,12 @@ public class Rule {
 		this.room = room;
 	}
 	
+	//Call this function to get FieldObject's current mapBlock
+	public MapBlock getCurrentMapBlock(FieldObject objects){
+		return map.getMapBlock(objects.getLocation().x/MapBlock.getDimension().width,
+						       objects.getLocation().y/MapBlock.getDimension().height);
+	}
+	
 	public boolean tankMovingCheck(FieldObject current){
 		if(IsCollusion(current) == null)
 			return true;
@@ -34,6 +40,7 @@ public class Rule {
 	}
 	
 	public FieldObject IsCollusion(FieldObject current){
+		
 		// = List.iterator();
 		Iterator<FieldObject> iter;
 		Rectangle CurrentRectangle = null;
@@ -78,21 +85,23 @@ public class Rule {
 		return null;
 	}
 	
-	public void TankHitTank(){
-		
-	}
 	
-	public void TankHitObstacle(){
-		
-	}
-	
-	public void BulletHitTank(Bullet bullet, Character character){
-		int characterID = character.getID();
+	public void BulletHitTank(Bullet bullet, Character tank){
+		int characterID = tank.getID();
 		int bulletID = bullet.getID();
+		
 		//Born Location
 		Point bornLocation = new Point(100,100);
-		//Bullet hit tank, bullet display
+		
+		//Bullet hit tank, remove the bullet from the bulletList in field and mapBlock
 		field.removeBullet(bullet);
+		MapBlock bulletMapBlock = getCurrentMapBlock(bullet);
+		bulletMapBlock.removeDynamicObject(bullet);
+		
+		//Bullet hit tank, remove tank from the mapBlock
+		MapBlock tankMapBlock = getCurrentMapBlock(tank);
+		tankMapBlock.removeDynamicObject(tank);
+		
 		ArrayList<Player> playersList = room.getPlayerList();
 		Iterator<Player> iter = playersList.iterator();
 		Player attacker = null;
@@ -120,15 +129,40 @@ public class Rule {
 		attacker.setKill(newKill);
 		attacker.setMoney(newMoney);
 		
-		//call UDP to boardcast
+		//call UDP to Boardcast
 	}
 	
-	public void BulletHitObstacle(){
+	public void BulletHitObstacle(Bullet bullet, Obstacle obstacle){
+		//remove the bullet from the bulletList in field and mapBlock
+		field.removeBullet(bullet);
+		MapBlock bulletMapBlock = getCurrentMapBlock(bullet);
+		bulletMapBlock.removeDynamicObject(bullet);
 		
+		//remove the obstacle from the obstacleList in field and mapBlock if it is breakable
+		if(obstacle.getIsBreakable() == true){
+			field.removeObstacle(obstacle);
+			MapBlock obstacleMapBlock = getCurrentMapBlock(obstacle);
+			obstacleMapBlock.removeDynamicObject(obstacle);
+		}
 	}
 	
-	public void BulletHitBullet(){
-		
+	
+	public void BulletHitBullet(Bullet bullet1, Bullet bullet2){
+		//remove the bullet
+		field.removeBullet(bullet1);
+		MapBlock bullet1MapBlock = getCurrentMapBlock(bullet1);
+		bullet1MapBlock.removeDynamicObject(bullet1);
+		field.removeBullet(bullet2);
+		MapBlock bullet2MapBlock = getCurrentMapBlock(bullet2);
+		bullet1MapBlock.removeDynamicObject(bullet2);
+	}
+	
+	public void TankHitTank(){
+		//Don't move
+	}
+	
+	public void TankHitObstacle(){
+		//Don't move
 	}
 	
 	

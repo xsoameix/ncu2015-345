@@ -1,6 +1,9 @@
 package model.game.field;
 
 import java.awt.Point;
+import java.awt.Rectangle;
+
+import model.game.field.map.MapBlock;
 
 public class FieldObject {
 	private Point location;
@@ -20,6 +23,14 @@ public class FieldObject {
 
 	public void setID(int iD) {
 		ID = iD;
+	}
+	
+	public Rectangle getRectangle(){
+		Rectangle rect = new Rectangle(location.x/MapBlock.getDimension().width,
+				                       location.x/MapBlock.getDimension().height,
+				                       MapBlock.getDimension().width,
+				                       MapBlock.getDimension().height);
+		return rect;
 	}
 
 }

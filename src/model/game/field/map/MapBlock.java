@@ -36,4 +36,8 @@ public class MapBlock{
 	public void removeDynamicObject(FieldObject object){
 		objects.remove(object);
 	}
+	
+	public static Dimension getDimension(){
+		return size;
+	}
 }

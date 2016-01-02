@@ -2,7 +2,6 @@ package model.game;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -37,12 +36,68 @@ public class Rule {
 						       objects.getLocation().y/MapBlock.getDimension().height);
 	}
 	
-	public boolean tankMovingCheck(FieldObject current){
-		if(IsCollusion(current) == null)
+	//check whether tank can move or not
+    //Add this current object into the mapBlocks when it can moving     
+    //Remove this current object from the mapBlocks when it can moving
+	//Return false when this object can't move
+	public boolean MovingCheck(FieldObject current){
+		FieldObject collusionObject = IsCollusion(current);
+		//
+		int currentPosX;
+		int currentPosY;
+		Rectangle rect = null;
+		//
+		if(collusionObject == null || (collusionObject instanceof Turf))
+		{
+			//get current object location in blocks
+			currentPosX = current.getLocation().x/MapBlock.getDimension().width;
+			currentPosY = current.getLocation().y/MapBlock.getDimension().height;
+			
+			for(int row = currentPosY; row <= currentPosY+1; row++){
+				for(int col = currentPosX; col <= currentPosY+1; col++){
+					
+					//get the Rectangle of the 4 blocks which was near the current object
+					rect = new Rectangle(col*MapBlock.getDimension().width,
+							             row*MapBlock.getDimension().height,
+							             MapBlock.getDimension().width, 
+							             MapBlock.getDimension().height);
+					
+					//if the current object intersects with these 4 mapBlocks which near it, add itself to the mapBlock
+					//otherwise, remove current object from these mapBlocks
+					if(current instanceof Bullet){
+						if(((Bullet)current).getRectangle().intersects(rect))
+							map.getMapBlock(col, row).addDynamicObject(current);
+						else
+							map.getMapBlock(col, row).removeDynamicObject(current);
+					}
+					else{ //tank
+						if(current.getRectangle().intersects(rect))
+							map.getMapBlock(col, row).addDynamicObject(current);
+						else
+							map.getMapBlock(col, row).removeDynamicObject(current);
+					}
+				}
+			}
 			return true;
-		else
-			return false;
+		}
+		else{    //deal with bullet collusion
+			if(current instanceof Bullet){
+				 //Bullet hits Bullet
+				if(collusionObject instanceof Bullet)
+					BulletHit((Bullet)current, (Bullet)collusionObject);
+				 //Bullet hits Tank
+				else if(collusionObject instanceof Character)
+					BulletHit((Bullet)current, (Character)collusionObject);
+				 //Bullet hits Obstacle
+				else if(collusionObject instanceof Obstacle)
+					BulletHit((Bullet)current, (Obstacle)collusionObject);
+				return false;
+			}
+			else //tank collusion do nothing
+				return false;
+		}
 	}
+	
 	
 	public FieldObject IsCollusion(FieldObject current){
 		
@@ -62,14 +117,14 @@ public class Rule {
 		int posX = current.getLocation().x/MapBlock.getDimension().width;
 		int posy = current.getLocation().y/MapBlock.getDimension().height;
 		
-		for(int i = posy-1; i <= posy+1; i++){
-			for(int j = posX-1; j <= posX+1; j++)
+		for(int row = posy-1; row <= posy+1; row++){
+			for(int col = posX-1; col <= posX+1; col++)
 			{
-				if(i!=posy && j!=posX)
+				if(row!=posy && col!=posX)
 					//MapBlock has nothing(just a background)
-					if(! map.getMapBlock(i, j).getDynamicObjectList().isEmpty());
+					if(! map.getMapBlock(row, col).getDynamicObjectList().isEmpty());
 					{
-						iter = map.getMapBlock(i, j).getDynamicObjectList().iterator();
+						iter = map.getMapBlock(row, col).getDynamicObjectList().iterator();
 						
 						while( iter.hasNext()){
 							//current crash with MapBlock's dynamicObjects
@@ -135,7 +190,7 @@ public class Rule {
 		attacker.setKill(newKill);
 		attacker.setMoney(newMoney);
 		
-		//call UDP to Boardcast
+		//call UDP to Broadcast
 	}
 	
 	public void BulletHit(Bullet bullet, Obstacle obstacle){
@@ -168,7 +223,8 @@ public class Rule {
 	}
 	
 	public void TankHit(Bullet bullet){
-		//Don't move
+		//Do nothing
+		//Bullet Thread deal with this event
 	}
 	
 	public void TankHit(Obstacle obstacle){
@@ -190,7 +246,7 @@ public class Rule {
 	}
 	
 	
-	
+	//Money Thread call this function to updata money 
 	
 	
 	

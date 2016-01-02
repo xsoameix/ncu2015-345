@@ -11,6 +11,6 @@ public class Session {
 	}
 
 	public void onData(byte body[]) {
-		serverModel.set(body);
+		serverModel.set(id, body);
 	}
 }

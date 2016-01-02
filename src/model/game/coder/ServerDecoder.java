@@ -17,7 +17,7 @@ public class ServerDecoder {
 		this.serverModel = serverModel;
 	}
 
-	public void decode(JSONObject object) {
+	public void decode(int id, JSONObject object) {
 		Iterator<?> key = object.keys();
 		while (key.hasNext()) {
 			try {
@@ -45,10 +45,10 @@ public class ServerDecoder {
 				case "requestSetLocation":
 					Point point = null;
 					point = (Point) object.get(keys);
-					serverModel.setLocation(point);
+					serverModel.setLocation(id, point);
 					break;
 				case "requestFire":
-					serverModel.fire();
+					serverModel.fire(id);
 					break;
 				}
 			} catch (JSONException e1) {

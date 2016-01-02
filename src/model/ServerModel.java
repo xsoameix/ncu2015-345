@@ -2,11 +2,10 @@ package model;
 
 import java.awt.Point;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import model.game.Player;
 import model.game.coder.ServerDecoder;
-import model.game.field.dynamic.Character;
-import model.setting.Profile;
 import net.FakeServerModel;
 import net.TCPServer;
 
@@ -14,10 +13,10 @@ import org.json.JSONObject;
 
 public class ServerModel {
 	private Room room;
-	private Profile profile;
 	private Game game;
 	private ServerDecoder decoder;
 	private TCPServer tcpServer;
+	private AtomicInteger atomicInteger;
 
 	// private FakeUDPClient udpClient;
 
@@ -25,6 +24,7 @@ public class ServerModel {
 		// TODO Auto-generated constructor stub
 		tcpServer = new TCPServer(new FakeServerModel());
 		// udpClient = new FakeUDPClient();
+		atomicInteger = new AtomicInteger();
 	}
 
 	public boolean initialize(int port) {
@@ -49,11 +49,12 @@ public class ServerModel {
 		room.setPlayerNumber(playernumber);
 	}
 
-	public void setTime(int second) {
-		// udp brocase time
-	}
+	// public void setTime(int second) {
+	// // udp brocase time
+	// }
 
 	public boolean startGame() {
+		// call udp brocast
 		return true;
 	}
 
@@ -69,22 +70,22 @@ public class ServerModel {
 		return true;
 	}
 
-	public boolean setLocation(Point point) {
+	public boolean setLocation(int id, Point point) {
 		assert point != null : "[ServerModel] setLocation : Point location is null";
 		int x = point.x, y = point.y;
 		assert x > 0 && y > 0 : "[ServerModel] setLocation : location error x " + x + " y " + y;
 		// call rule to move
 		// if true then setLocation
-		// character.setLocation(location);
+		
 		return true;
 	}
 
-	public boolean fire() {
+	public boolean fire(int id) {
 		// character.newbullet();
 		return true;
 	}
 
-	public void set(byte[] packet) {
+	public void set(int id, byte[] packet) {
 		assert packet != null : "[ServerModel] set : byte[] packet is null";
 		JSONObject jsonObj = null;
 		byte[] str = packet.toString().getBytes(StandardCharsets.UTF_8);
@@ -95,7 +96,11 @@ public class ServerModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		decoder.decode(jsonObj);
+		decoder.decode(id, jsonObj);
+	}
+
+	public int getSessionID() {
+		return atomicInteger.get();
 	}
 
 }

@@ -9,6 +9,7 @@ import model.game.field.dynamic.Character;
 import model.game.field.dynamic.Obstacle;
 import view.PanelEnum;
 import view.base.extend.DisplayPanel;
+import view.play.room.RoomPanel;
 
 public class PlayPanel extends DisplayPanel{
 	private ClientModel clientModel;

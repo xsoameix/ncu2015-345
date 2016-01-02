@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 import org.junit.Test;
 
 public class TestUDPClient implements Runnable {
+	public static final long BIND_TIME      = 100;
 	int port = 5000;
     String packet = "hello world";
 	
@@ -32,11 +33,14 @@ public class TestUDPClient implements Runnable {
 		TestUDPClient server= new TestUDPClient();
 		Thread thread = new Thread(server);
 		thread.start();		
+		Thread.sleep(BIND_TIME);
 		
 		//create UDP client
 		UDPClient client=new UDPClient();
 		client.initialize(port);
+		Thread.sleep(BIND_TIME);
 		client.send(packet);
+		Thread.sleep(BIND_TIME);
 		
 		//close work
 		thread.join();

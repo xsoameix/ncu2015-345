@@ -87,7 +87,40 @@ public class Rule {
 	}
 	
 	public void BulletHitTank(Bullet bullet, Character character){
-	
+		int characterID = character.getID();
+		int bulletID = bullet.getID();
+		//Born Location
+		Point bornLocation = new Point(100,100);
+		//Bullet hit tank, bullet display
+		field.removeBullet(bullet);
+		ArrayList<Player> playersList = room.getPlayerList();
+		Iterator<Player> iter = playersList.iterator();
+		Player attacker = null;
+		Player beAttacked = null;
+		
+		//Find the Player who fire and who was hit by the bullet
+		while (iter.hasNext()){
+			Player player = iter.next();
+			if(player.getID() == characterID)
+				beAttacked = player;
+			else if(player.getID() == bulletID)
+				attacker = player;
+		}
+		
+		//beAttacked's character location set to bornLocation and add one death
+		assert beAttacked!=null: "Failed to find the player who was hit by bullet in the [BulletHitTank]";
+		beAttacked.getCharacter().setLocation(bornLocation);
+		int newDeath = beAttacked.getDeath()+1;
+		beAttacked.setDeath(newDeath);
+		
+		//attacker add one kill and add $200
+		assert attacker!=null: "Failed to find the player who fire in the [BulletHitTank]";
+		int newKill = attacker.getKill()+1;
+		int newMoney = attacker.getMoney()+200;
+		attacker.setKill(newKill);
+		attacker.setMoney(newMoney);
+		
+		//call UDP to boardcast
 	}
 	
 	public void BulletHitObstacle(){

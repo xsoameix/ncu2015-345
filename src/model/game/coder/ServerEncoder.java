@@ -2,17 +2,18 @@ package model.game.coder;
 
 import java.util.Vector;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+
+import model.Room;
 import model.game.Player;
 import model.game.Result;
 import model.game.Team;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Obstacle;
 import model.game.field.dynamic.Turf;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
 
 public class ServerEncoder {
 
@@ -32,8 +33,8 @@ public class ServerEncoder {
 		return encodeObject("setPlayerNumber", playernumber);
 	}
 
-	public JSONObject addPlayer(Player player) {
-		return encodeObject("addPlayer", player);
+	public JSONObject addPlayer(Room room) {
+		return encodeObject("addPlayer", room);
 	}
 
 	public JSONObject removePlayer(Player player) {

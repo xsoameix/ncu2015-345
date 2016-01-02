@@ -46,22 +46,25 @@ public class ClientModel {
 
 	/* for outside API start */
 	// host
-	protected boolean requestEstablishRoom(int port) {
+	public boolean requestEstablishRoom(int port) {
 		serverModel = new ServerModel();
 		return serverModel.initialize(port);
 	}
 
 	// client
-	protected boolean requestEnterRoom(String ip, int port) {
+	public boolean requestEnterRoom(String ip, int port) {
 		tcpClient = new TCPClient();
 		udpServer = new UDPServer(this);
 		try {
 			tcpClient.initialize(InetAddress.getByName(ip), port);
+			udpServer.initialize(port);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		udpServer.initialize(port);
 		character = new Character();
 		player = new Player(character, setting.getProfile());
 		player.setProfile(setting.getProfile());
@@ -69,27 +72,27 @@ public class ClientModel {
 		return true;
 	}
 
-	protected void requestFire() {
+	public void requestFire() {
 		JSONObject content = encoder.encodeObject("requestFire", null);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
-	protected void requestStartGame() {
+	public void requestStartGame() {
 		JSONObject content = encoder.encodeObject("requestStartGame", null);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
-	protected void requestSetTotalTime(int time) {
+	public void requestSetTotalTime(int time) {
 		JSONObject content = encoder.encodeObject("requestSetTotalTime", time);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
-	protected void requestSetPlayerNumber(int number) {
+	public void requestSetPlayerNumber(int number) {
 		JSONObject content = encoder.encodeObject("requestSetPlayerNumber", number);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
-	protected void requestSetLocation(int x, int y) {
+	public void requestSetLocation(int x, int y) {
 		Point location = new Point();
 		location.x = x;
 		location.y = y;
@@ -121,8 +124,8 @@ public class ClientModel {
 		room.setPlayerNumber(playnumber);
 	}
 
-	public boolean addPlayer(Player player) {
-		room.addPlayer(player);
+	public boolean addPlayer(Room room) {
+		this.room.addPlayer(room);
 		return true;
 	}
 
@@ -202,13 +205,25 @@ public class ClientModel {
 	}
 
 	public void startGame() {
-		playPanel.startGame();
+		for (int i = 0; i < room.getPlayerList().size(); i++) {
+			if (room.getPlayerList().get(i).getID() % 2 == 0) {
+				game.getTeam(2).addPlayer(room.getPlayerList().get(i));
+			} else if (room.getPlayerList().get(i).getID() % 2 == 1) {
+				game.getTeam(1).addPlayer(room.getPlayerList().get(i));
+			}
+		}
+		// playPanel.startGame();
 	}
 
-	public void setLocation(Player Player) {
-		Character oldCharacter = game.getTeam(player.getTeamID()).getPlayer(player.getTeamID()).getCharacter();
-		oldCharacter.setDirection(player.getCharacter().getDirection());
-		oldCharacter.setLocation(player.getCharacter().getLocation());
+	public void setLocation(Player newPlayer) {
+		if (game.getPlayer(newPlayer.getID()) != null) {
+			Character oldCharacter = game.getPlayer(newPlayer.getID()).getCharacter();
+			oldCharacter.setDirection(newPlayer.getCharacter().getDirection());
+			oldCharacter.setLocation(newPlayer.getCharacter().getLocation());
+		} else {
+			System.out.println("[ClientModel] setLocation player is null player ID : " + newPlayer.getID());
+		}
+
 	}
 
 	/* for UDP end */

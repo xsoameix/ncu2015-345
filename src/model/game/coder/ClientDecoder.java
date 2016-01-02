@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import model.ClientModel;
+import model.Room;
 import model.game.Player;
 import model.game.Result;
 import model.game.Team;
@@ -52,8 +53,8 @@ public class ClientDecoder {
 					model.setPlayerNumber(playerNumber);
 					break;
 				case "addPlayer":
-					player = gson.fromJson(object.get(keys).toString(), Player.class);
-					model.addPlayer(player);
+					Room room  = gson.fromJson(object.get(keys).toString(), Room.class);
+					model.addPlayer(room);
 					break;
 				case "removePlayer":
 					player = gson.fromJson(object.get(keys).toString(), Player.class);

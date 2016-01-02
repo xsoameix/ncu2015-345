@@ -8,9 +8,10 @@ public class Team {
 	private int money;
 	private int turfNumber;
 
-	public Team() {
+	public Team(int ID) {
 		// TODO Auto-generated constructor stub
 		players = new Vector<>();
+		this.ID = ID;
 	}
 
 	public int getID() {

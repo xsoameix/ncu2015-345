@@ -18,7 +18,23 @@ public class Room {
 
 	public synchronized void addPlayer(Player player) {
 		synchronized (players) {
-			this.players.add(player);
+			players.add(player);
+		}
+	}
+
+	public synchronized void addPlayer(Room room) {
+		synchronized (players) {
+			for (int i = 0; i < room.getPlayerList().size(); i++) {
+				boolean exist = false;
+				for (int j = 0; j < players.size(); j++) {
+					if (players.get(j).getID() == room.getPlayerList().get(i).getID()) {
+						exist = true;
+					}
+				}
+				if (exist == false) {
+					this.players.add(room.getPlayerList().get(i));
+				}
+			}
 		}
 	}
 

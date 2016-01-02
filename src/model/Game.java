@@ -19,6 +19,8 @@ public class Game {
 	public Game() {
 		field = new Field();
 		teams = new Vector<Team>();
+		teams.add(new Team(1));
+		teams.add(new Team(2));
 	}
 
 	public void setMap(Map map) {

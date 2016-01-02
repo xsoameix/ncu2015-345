@@ -189,12 +189,11 @@ public class ClientModel {
 		game.getField().setMap(map);
 	}
 
-	public void set(Byte[] packet) {
+	public void set(byte[] packet) {
 		JSONObject jsonObj = null;
-		byte[] str = packet.toString().getBytes(StandardCharsets.UTF_8);
 		try {
-			String content = new String(str, StandardCharsets.UTF_8);
-			jsonObj = new JSONObject(content);
+			System.out.println("[ClientModel] set " + new String(packet));
+			jsonObj = new JSONObject(new String(packet));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

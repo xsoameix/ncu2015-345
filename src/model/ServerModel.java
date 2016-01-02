@@ -85,10 +85,9 @@ public class ServerModel {
 	public void set(int id, byte[] packet) {
 		assert packet != null : "[ServerModel] set : byte[] packet is null";
 		JSONObject jsonObj = null;
-		byte[] str = packet.toString().getBytes(StandardCharsets.UTF_8);
 		try {
-			String content = new String(str, StandardCharsets.UTF_8);
-			jsonObj = new JSONObject(content);
+			System.out.println("[ServerModel] set " + new String(packet));
+			jsonObj = new JSONObject(new String(packet));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

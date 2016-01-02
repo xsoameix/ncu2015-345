@@ -1,10 +1,12 @@
 package model.game.field.dynamic;
 
+import java.awt.Rectangle;
+
 import model.game.field.FieldObject;
+import model.game.field.map.MapBlock;
 
 public class Bullet extends FieldObject {
 	private int direction;
-	private int playerId;
 
 	public int getDirection() {
 		return direction;
@@ -13,13 +15,14 @@ public class Bullet extends FieldObject {
 	public void setDirection(int dir) {
 		this.direction = dir;
 	}
-
-	public int getPlayerId() {
-		return playerId;
-	}
-
-	public void setPlayerId(int playerId) {
-		this.playerId = playerId;
+	
+	@Override
+	public Rectangle getRectangle(){
+		Rectangle rect = new Rectangle(this.getLocation().x/MapBlock.getSize().width,
+									   this.getLocation().x/MapBlock.getSize().height,
+				                       30,
+				                       10);
+		return rect;
 	}
 
 }

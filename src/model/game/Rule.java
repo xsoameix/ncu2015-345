@@ -4,10 +4,13 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Vector;
 
+import model.Game;
 import model.Room;
 import model.game.field.FieldObject;
 import model.game.field.Map;
+import model.game.field.dynamic.Turf;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Character;
 import model.game.field.dynamic.Obstacle;
@@ -15,15 +18,17 @@ import model.game.field.map.MapBlock;
 
 public class Rule {
 	
+	private Game game;
 	private Map map;
 	private Field field;
 	private Room room;
 	//private Vector<DynamicObject> List;
 	
-	public Rule(Map map, Field field, Room room){
+	public Rule(Game game, Map map, Field field, Room room){
 		this.map = map;
 		this.field = field;
 		this.room = room;
+		this.game = game;
 	}
 	
 	//Call this function to get FieldObject's current mapBlock
@@ -65,6 +70,7 @@ public class Rule {
 					if(! map.getMapBlock(i, j).getDynamicObjectList().isEmpty());
 					{
 						iter = map.getMapBlock(i, j).getDynamicObjectList().iterator();
+						
 						while( iter.hasNext()){
 							//current crash with MapBlock's dynamicObjects
 							FieldObject fieldObject = iter.next();
@@ -86,7 +92,7 @@ public class Rule {
 	}
 	
 	
-	public void BulletHitTank(Bullet bullet, Character tank){
+	public void BulletHit(Bullet bullet, Character tank){
 		int characterID = tank.getID();
 		int bulletID = bullet.getID();
 		
@@ -102,7 +108,7 @@ public class Rule {
 		MapBlock tankMapBlock = getCurrentMapBlock(tank);
 		tankMapBlock.removeDynamicObject(tank);
 		
-		ArrayList<Player> playersList = room.getPlayerList();
+		Vector<Player> playersList = room.getPlayerList();
 		Iterator<Player> iter = playersList.iterator();
 		Player attacker = null;
 		Player beAttacked = null;
@@ -132,7 +138,7 @@ public class Rule {
 		//call UDP to Boardcast
 	}
 	
-	public void BulletHitObstacle(Bullet bullet, Obstacle obstacle){
+	public void BulletHit(Bullet bullet, Obstacle obstacle){
 		//remove the bullet from the bulletList in field and mapBlock
 		field.removeBullet(bullet);
 		MapBlock bulletMapBlock = getCurrentMapBlock(bullet);
@@ -147,7 +153,7 @@ public class Rule {
 	}
 	
 	
-	public void BulletHitBullet(Bullet bullet1, Bullet bullet2){
+	public void BulletHit(Bullet bullet1, Bullet bullet2){
 		//remove the bullet
 		field.removeBullet(bullet1);
 		MapBlock bullet1MapBlock = getCurrentMapBlock(bullet1);
@@ -157,13 +163,35 @@ public class Rule {
 		bullet2MapBlock.removeDynamicObject(bullet2);
 	}
 	
-	public void TankHitTank(){
+	public void TankHit(Character tank){
 		//Don't move
 	}
 	
-	public void TankHitObstacle(){
+	public void TankHit(Bullet bullet){
 		//Don't move
 	}
+	
+	public void TankHit(Obstacle obstacle){
+		//Don't move
+	}
+	
+	public void TankHit(Turf turf){
+		Vector<Team> teams = game.getTeams();
+		Iterator<Team> iter = teams.iterator();
+		Team team = null;
+		int money;
+		while(iter.hasNext()){
+			team = iter.next();
+			if(team.getID() == turf.getTeamID()){
+				money = ((Team)iter).getMoney()+100;
+				((Team)iter).setMoney(money);
+			}
+		}
+	}
+	
+	
+	
+	
 	
 	
 }

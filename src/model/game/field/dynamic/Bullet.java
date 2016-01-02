@@ -7,6 +7,7 @@ import model.game.field.map.MapBlock;
 
 public class Bullet extends FieldObject {
 	private int direction;
+	private int playerID;
 
 	public int getDirection() {
 		return direction;
@@ -14,6 +15,14 @@ public class Bullet extends FieldObject {
 
 	public void setDirection(int dir) {
 		this.direction = dir;
+	}
+	
+	public int getPlayerID(){
+		return playerID;
+	}
+	
+	public void setPlayerID(int id){
+		this.playerID = id;
 	}
 	
 	@Override

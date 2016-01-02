@@ -7,7 +7,7 @@ import model.game.field.FieldObject;
 
 public class Turf extends FieldObject {
 	private int teamID;
-	private Point location;// pixel
+	private Point locationInBlocks;// pixel
 	private Dimension size;// pixel
 
 	public int getTeamID() {
@@ -18,12 +18,12 @@ public class Turf extends FieldObject {
 		this.teamID = id;
 	}
 
-	public Point getLocation() {
-		return location;
+	public Point getLocationInBlocks() {
+		return locationInBlocks;
 	}
 
-	public void setLocation(Point location) {
-		this.location = location;
+	public void setLocationInBlocks(Point location) {
+		this.locationInBlocks = location;
 	}
 
 	public Dimension getDimension() {

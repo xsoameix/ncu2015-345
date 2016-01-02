@@ -136,7 +136,7 @@ public class Model {
 	}
 
 	public void gameOver(Result result) {
-
+		// call playPanel to game over
 	}
 
 	public void setTime(int time) {
@@ -172,7 +172,7 @@ public class Model {
 
 	public void changeTurfColor(Turf turf) {
 		// change turf color
-
+		
 	}
 
 	public synchronized boolean removeObstacle(Obstacle obstacle) {

@@ -154,7 +154,7 @@ public class Rule {
 		bullet1MapBlock.removeDynamicObject(bullet1);
 		field.removeBullet(bullet2);
 		MapBlock bullet2MapBlock = getCurrentMapBlock(bullet2);
-		bullet1MapBlock.removeDynamicObject(bullet2);
+		bullet2MapBlock.removeDynamicObject(bullet2);
 	}
 	
 	public void TankHitTank(){

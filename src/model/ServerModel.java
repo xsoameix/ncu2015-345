@@ -4,12 +4,13 @@ import java.awt.Point;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.json.JSONObject;
+
 import model.game.Player;
 import model.game.coder.ServerDecoder;
 import net.FakeServerModel;
 import net.TCPServer;
-
-import org.json.JSONObject;
+import net.UDPClient;
 
 public class ServerModel {
 	private Room room;
@@ -17,19 +18,18 @@ public class ServerModel {
 	private ServerDecoder decoder;
 	private TCPServer tcpServer;
 	private AtomicInteger atomicInteger;
-
-	// private FakeUDPClient udpClient;
+	private UDPClient udpClient;
 
 	public ServerModel() {
 		// TODO Auto-generated constructor stub
 		tcpServer = new TCPServer(new FakeServerModel());
-		// udpClient = new FakeUDPClient();
+		udpClient = new UDPClient();
 		atomicInteger = new AtomicInteger();
 	}
 
 	public boolean initialize(int port) {
 		tcpServer.initialize(port);
-		// udp init
+		udpClient.initialize(port);
 		return true;
 	}
 

@@ -7,6 +7,7 @@ import model.game.Player;
 import model.game.Rule;
 import model.game.Team;
 import model.game.field.Map;
+import model.game.field.dynamic.Turf;
 
 public class Game {
 	private Vector<Team> teams;
@@ -86,4 +87,14 @@ public class Game {
 		this.time = time;
 	}
 
+	public synchronized Turf getTurf(int id) {
+		synchronized (field.getTurfs()) {
+			for (int i = 0; i < field.getTurfs().size(); i++) {
+				if (field.getTurfs().get(i).getID() == id) {
+					return field.getTurfs().get(i);
+				}
+			}
+			return null;
+		}
+	}
 }

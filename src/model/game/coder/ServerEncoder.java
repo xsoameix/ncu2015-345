@@ -5,9 +5,9 @@ import java.util.Vector;
 import model.game.Player;
 import model.game.Result;
 import model.game.Team;
-import model.game.field.Turf;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Obstacle;
+import model.game.field.dynamic.Turf;
 
 import org.json.JSONException;
 import org.json.JSONObject;

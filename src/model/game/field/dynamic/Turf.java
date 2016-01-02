@@ -1,7 +1,9 @@
-package model.game.field;
+package model.game.field.dynamic;
 
 import java.awt.Dimension;
 import java.awt.Point;
+
+import model.game.field.FieldObject;
 
 public class Turf extends FieldObject {
 	private int teamID;

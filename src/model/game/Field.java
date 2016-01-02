@@ -4,10 +4,10 @@ import java.awt.Dimension;
 import java.util.Vector;
 
 import model.game.field.Map;
-import model.game.field.Turf;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Character;
 import model.game.field.dynamic.Obstacle;
+import model.game.field.dynamic.Turf;
 
 public class Field {
 	// private int backgroundID
@@ -60,8 +60,8 @@ public class Field {
 		}
 	}
 
-	public Vector<Obstacle> getTurfs() {
-		return obstacles;
+	public Vector<Turf> getTurfs() {
+		return turfs;
 	}
 
 	public Vector<Obstacle> getObstacles() {

@@ -167,7 +167,9 @@ public class ClientModel {
 	}
 
 	public void changeTurfColor(Turf turf) {
-		// change turf color
+		if (game.getTurf(turf.getID()) != null) {
+			game.getTurf(turf.getID()).setID(turf.getID());
+		}
 
 	}
 
@@ -201,7 +203,7 @@ public class ClientModel {
 	}
 
 	public void startGame() {
-
+		playPanel.startGame();
 	}
 
 	public void setLocation(Player Player) {

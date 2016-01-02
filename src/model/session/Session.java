@@ -8,6 +8,7 @@ public class Session {
 
 	public Session(ServerModel model) {
 		this.serverModel = model;
+		id = serverModel.getSessionID();
 	}
 
 	public void onData(byte body[]) {

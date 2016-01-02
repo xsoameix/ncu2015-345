@@ -49,10 +49,6 @@ public class ServerModel {
 		room.setPlayerNumber(playernumber);
 	}
 
-	// public void setTime(int second) {
-	// // udp brocase time
-	// }
-
 	public boolean startGame() {
 		// call udp brocast
 		return true;
@@ -76,12 +72,13 @@ public class ServerModel {
 		assert x > 0 && y > 0 : "[ServerModel] setLocation : location error x " + x + " y " + y;
 		// call rule to move
 		// if true then setLocation
-		
+		game.getPlayer(id).getCharacter().setLocation(point);
 		return true;
 	}
 
 	public boolean fire(int id) {
-		// character.newbullet();
+		// new bullet
+		// bullet direction = character direction
 		return true;
 	}
 

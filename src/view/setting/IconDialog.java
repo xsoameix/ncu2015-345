@@ -4,11 +4,9 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.ImageIcon;
 
 import view.Config;
-import view.PanelEnum;
 import view.base.Button;
 import view.base.Dialog;
 import view.base.Panel;

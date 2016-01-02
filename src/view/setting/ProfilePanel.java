@@ -1,17 +1,13 @@
 package view.setting;
 
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javafx.scene.Parent;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 
 import model.setting.Profile;
 import view.PanelEnum;
@@ -23,6 +19,7 @@ import view.base.TextField;
 
 public class ProfilePanel extends Panel {
 	private Profile profile;
+	private Profile newProfile;
 	
 	private Component[] nullGrids;
 	private Label nameLabel;
@@ -36,7 +33,8 @@ public class ProfilePanel extends Panel {
 	
 	private void setComponents(){
 		setLayout(new GridBagLayout());
-		setBorder(BorderFactory.createEmptyBorder(100, 100, 50, 200));
+		setBorder(BorderFactory.createEmptyBorder(10, 100, 200, 100));
+		Font font = new Font("Serif", Font.BOLD, 30);
 		
 		nullGrids = new Component[2];
 		for(int i = 0; i<nullGrids.length; i++) {
@@ -44,9 +42,13 @@ public class ProfilePanel extends Panel {
 		}
 		
 		nameLabel=new Label("Your Name:");
+		nameLabel.setFont(font);
 		nameTextField=new TextField();
+		nameTextField.setFont(font);
 		imageLabel=new Label("Your Image:");
+		imageLabel.setFont(font);
 		imageContentButton=new Button("Choose Image!!");
+		imageContentButton.setFont(font);
 		imageContentButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -57,9 +59,11 @@ public class ProfilePanel extends Panel {
 		iconDialog=new IconDialog(this, "Choose Image");
 		
 		applyButton=new Button("Apply");
+		applyButton.setFont(font);
 		applyButton.setActionCommand("apply");
 		applyButton.addActionListener(this);
 		backButton=new Button("Back");
+		backButton.setFont(font);
 		backButton.setActionCommand("back");
 		backButton.addActionListener(this);
 		
@@ -68,7 +72,6 @@ public class ProfilePanel extends Panel {
 		c.gridy=0;
 		c.gridwidth=1;
 		c.gridheight=2;
-		c.weightx=0.5;
 		c.weighty=0;
 		c.insets=new Insets(5, 5, 5, 5);
 		c.anchor=GridBagConstraints.CENTER;
@@ -115,6 +118,7 @@ public class ProfilePanel extends Panel {
 	}
 	public ProfilePanel(){
 		setComponents();
+		newProfile = new Profile();
 	}
 	
 	public void setProfile(Profile profile) {
@@ -126,12 +130,13 @@ public class ProfilePanel extends Panel {
 		switch(e.getActionCommand()){
 		case "profile":
 			getDisplayPanel().toPanel(PanelEnum.PROFILE);
-			nameTextField.setText("Name");
+			nameTextField.setText(newProfile.getName());
 			nameTextField.setEditable(true);
 			break;
 		case "apply":
 			getDisplayPanel().first();
-			//profile.setName(nameTextField.getText());
+			newProfile.setName(nameTextField.getText());
+			//profile=newProfile;
 			break;
 		case "back":
 			getDisplayPanel().first();
@@ -142,7 +147,7 @@ public class ProfilePanel extends Panel {
 				int i=Integer.valueOf(e.getActionCommand().substring("icon".length()));
 				imageContentButton.setText(e.getActionCommand().toString());
 				imageContentButton.setIcon(new ImageIcon("image/icon"+Integer.toString(i)+".jpg"));
-				//profile.setIconID(i);
+				newProfile.setIconID(i);
 				iconDialog.dispose();
 			}
 			break;

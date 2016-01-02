@@ -2,7 +2,6 @@ package view.setting;
 
 import java.io.File;
 import java.io.IOException;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -16,12 +15,11 @@ public class SoundPlayer {
 	FloatControl volumeControl;
 	
 	public SoundPlayer() {
-		initialize();
 	}
 	
-	public void initialize() {
+	public void initialize(String filename) {
 		try {
-			audioInputStream=AudioSystem.getAudioInputStream(new File("music/AUG-8013.wav"));
+			audioInputStream=AudioSystem.getAudioInputStream(new File(filename));
 		} catch (UnsupportedAudioFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -33,31 +31,37 @@ public class SoundPlayer {
 		try {
 			clip = AudioSystem.getClip();
 		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		try {
 			clip.open(audioInputStream);
 		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 				
 	    volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		volumeControl.setValue(1.0f);
+		volumeControl.setValue(1.5f);
 		clip.start();
 	}
 	
 	public void setVolume(float value) {
-		float setting=(value>volumeControl.getMaximum()) ? volumeControl.getMaximum():value;
-		volumeControl.setValue(setting);
+		volumeControl.setValue(value);
 	}
 	
 	public float getVolume() {
 		return volumeControl.getValue();
+	}
+	
+	
+	public boolean limit(float value) {
+		float maximum=6;
+		float minimum=-6;
+		
+		if(value>minimum && value < maximum)
+			return true;
+		return false;
 	}
 }

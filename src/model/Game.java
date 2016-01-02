@@ -7,6 +7,7 @@ import model.game.Player;
 import model.game.Rule;
 import model.game.Team;
 import model.game.field.Map;
+import model.game.field.dynamic.Turf;
 
 public class Game {
 	private Vector<Team> teams;
@@ -33,6 +34,17 @@ public class Game {
 			for (int i = 0; i < teams.size(); i++) {
 				if (teams.get(i).getID() == ID) {
 					return teams.get(i);
+				}
+			}
+			return null;
+		}
+	}
+
+	public synchronized Player getPlayer(int ID) {
+		synchronized (teams) {
+			for (int i = 0; i < teams.size(); i++) {
+				if (teams.get(i).getPlayer(ID) != null) {
+					return teams.get(i).getPlayer(ID);
 				}
 			}
 			return null;
@@ -75,4 +87,14 @@ public class Game {
 		this.time = time;
 	}
 
+	public synchronized Turf getTurf(int id) {
+		synchronized (field.getTurfs()) {
+			for (int i = 0; i < field.getTurfs().size(); i++) {
+				if (field.getTurfs().get(i).getID() == id) {
+					return field.getTurfs().get(i);
+				}
+			}
+			return null;
+		}
+	}
 }

@@ -3,22 +3,22 @@ package model.game.coder;
 import java.util.Iterator;
 import java.util.Vector;
 
-import model.Model;
-import model.game.Player;
-import model.game.Result;
-import model.game.Team;
-import model.game.field.Turf;
-import model.game.field.dynamic.Bullet;
-import model.game.field.dynamic.Obstacle;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import model.ClientModel;
+import model.game.Player;
+import model.game.Result;
+import model.game.Team;
+import model.game.field.dynamic.Bullet;
+import model.game.field.dynamic.Obstacle;
+import model.game.field.dynamic.Turf;
+
 public class ClientDecoder {
 	// private AbstractModel model;
-	private Model model;
+	private ClientModel model;
 
-	public ClientDecoder(Model model) {
+	public ClientDecoder(ClientModel model) {
 		// TODO Auto-generated constructor stub
 		this.model = model;
 	}

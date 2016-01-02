@@ -2,34 +2,34 @@ package model;
 
 import java.awt.Point;
 import java.nio.charset.StandardCharsets;
-
-import model.game.Player;
-import model.game.coder.ServerDecoder;
-import model.game.field.dynamic.Character;
-import model.setting.Profile;
-import net.FakeServerModel;
-import net.TCPServer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONObject;
 
+import model.game.Player;
+import model.game.coder.ServerDecoder;
+import net.FakeServerModel;
+import net.TCPServer;
+import net.UDPClient;
+
 public class ServerModel {
 	private Room room;
-	private Profile profile;
 	private Game game;
 	private ServerDecoder decoder;
 	private TCPServer tcpServer;
-
-	// private FakeUDPClient udpClient;
+	private AtomicInteger atomicInteger;
+	private UDPClient udpClient;
 
 	public ServerModel() {
 		// TODO Auto-generated constructor stub
 		tcpServer = new TCPServer(new FakeServerModel());
-		// udpClient = new FakeUDPClient();
+		udpClient = new UDPClient();
+		atomicInteger = new AtomicInteger();
 	}
 
 	public boolean initialize(int port) {
 		tcpServer.initialize(port);
-		// udp init
+		udpClient.initialize(port);
 		return true;
 	}
 
@@ -49,11 +49,8 @@ public class ServerModel {
 		room.setPlayerNumber(playernumber);
 	}
 
-	public void setTime(int second) {
-		// udp brocase time
-	}
-
 	public boolean startGame() {
+		// call udp brocast
 		return true;
 	}
 
@@ -69,22 +66,23 @@ public class ServerModel {
 		return true;
 	}
 
-	public boolean setLocation(Point point) {
+	public boolean setLocation(int id, Point point) {
 		assert point != null : "[ServerModel] setLocation : Point location is null";
 		int x = point.x, y = point.y;
 		assert x > 0 && y > 0 : "[ServerModel] setLocation : location error x " + x + " y " + y;
 		// call rule to move
 		// if true then setLocation
-		// character.setLocation(location);
+		game.getPlayer(id).getCharacter().setLocation(point);
 		return true;
 	}
 
-	public boolean fire() {
-		// character.newbullet();
+	public boolean fire(int id) {
+		// new bullet
+		// bullet direction = character direction
 		return true;
 	}
 
-	public void set(byte[] packet) {
+	public void set(int id, byte[] packet) {
 		assert packet != null : "[ServerModel] set : byte[] packet is null";
 		JSONObject jsonObj = null;
 		byte[] str = packet.toString().getBytes(StandardCharsets.UTF_8);
@@ -95,7 +93,11 @@ public class ServerModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		decoder.decode(jsonObj);
+		decoder.decode(id, jsonObj);
+	}
+
+	public int getSessionID() {
+		return atomicInteger.get();
 	}
 
 }

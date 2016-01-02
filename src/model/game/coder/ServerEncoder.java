@@ -21,6 +21,34 @@ public class ServerEncoder {
 		return encodeObject("removeObstacle", obstacle);
 	}
 
+	public JSONObject setMoney(Vector<Team> teams) {
+		return encodeObject("setMoney", teams);
+	}
+
+	public JSONObject setKillNumber(Player player) {
+		return encodeObject("setKillNumber", player);
+	}
+
+	public JSONObject changeFlagColor(Turf turf) {
+		return encodeObject("changeTurfColor", turf);
+	}
+
+	public JSONObject gameOver(Result result) {
+		return encodeObject("gameOver", result);
+	}
+
+	public JSONObject addBullet(Bullet bullet) {
+		return encodeObject("addBullet", bullet);
+	}
+
+	public JSONObject removeBullet(Bullet bullet) {
+		return encodeObject("removeBullet", bullet);
+	}
+
+	public JSONObject updateBullet(Bullet bullet) {
+		return encodeObject("updateBullet", bullet);
+	}
+
 	public JSONObject setTotalTime(int second) {
 		return encodeObject("setTotalTime", second);
 	}
@@ -45,36 +73,8 @@ public class ServerEncoder {
 		return encodeObject("setLocation", player);
 	}
 
-	public JSONObject setMoney(Vector<Team> teams) {
-		return encodeObject("setMoney", teams);
-	}
-
-	public JSONObject setKillNumber(Player player) {
-		return encodeObject("setKillNumber", player);
-	}
-
-	public JSONObject addBullet(Bullet bullet) {
-		return encodeObject("addBullet", bullet);
-	}
-
-	public JSONObject removeBullet(Bullet bullet) {
-		return encodeObject("removeBullet", bullet);
-	}
-
-	public JSONObject updateBullet(Bullet bullet) {
-		return encodeObject("updateBullet", bullet);
-	}
-
-	public JSONObject changeFlagColor(Turf turf) {
-		return encodeObject("changeTurfColor", turf);
-	}
-
 	public JSONObject startGame() {
 		return encodeObject("startGame", null);
-	}
-
-	public JSONObject gameOver(Result result) {
-		return encodeObject("gameOver", result);
 	}
 
 	public JSONObject encodeObject(String key, Object value) {

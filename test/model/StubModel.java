@@ -8,32 +8,32 @@ public class StubModel extends ClientModel {
 	boolean requestSetLocation = false;
 	boolean requestKeyInput = false;
 
-	protected boolean requestEstablishRoom(int port) {
+	public boolean requestEstablishRoom(int port) {
 		return true;
 	}
 
-	protected boolean requestEnterRoom(String ip, int port) {
+	public boolean requestEnterRoom(String ip, int port) {
 		return true;
 	}
 
-	protected void requestFire() {
+	public void requestFire() {
 		super.requestFire();
 		requestFire = true;
 	}
 
-	protected void requestStartGame() {
+	public void requestStartGame() {
 		requestStartGame = true;
 	}
 
-	protected void requestSetTotalTime(int time) {
+	public void requestSetTotalTime(int time) {
 		requestSetTotalTime = true;
 	}
 
-	protected void requestSetPlayerNumber(int time) {
+	public void requestSetPlayerNumber(int time) {
 		requestSetPlayerNumber = true;
 	}
 
-	protected void requestSetLocation(int x, int y) {
+	public void requestSetLocation(int x, int y) {
 		requestSetLocation = true;
 	}
 }

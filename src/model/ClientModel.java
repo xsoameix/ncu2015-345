@@ -32,7 +32,7 @@ public class ClientModel {
 	private Game game;
 	private ClientEncoder encoder;
 	private ClientDecoder decoder;
-	private Player player;
+	private Player individual;
 	private Character character;
 	private PlayPanel playPanel;
 
@@ -66,9 +66,9 @@ public class ClientModel {
 			e.printStackTrace();
 		}
 		character = new Character();
-		player = new Player(character, setting.getProfile());
-		player.setProfile(setting.getProfile());
-		tcpClient.send(encoder.requestAddPlayer(player).toString().getBytes(StandardCharsets.UTF_8));
+		individual = new Player(character, setting.getProfile());
+		individual.setProfile(setting.getProfile());
+		tcpClient.send(encoder.requestAddPlayer(individual).toString().getBytes(StandardCharsets.UTF_8));
 		return true;
 	}
 
@@ -116,8 +116,8 @@ public class ClientModel {
 	}
 
 	public synchronized void setKillNumber(Player player) {
-		int newPlayerID = player.getTeamID();
-		game.getTeam(newPlayerID).getPlayer(newPlayerID).setKill(player.getKill());
+		int newPlayerID = player.getID();
+		game.getPlayer(newPlayerID).setKill(player.getKill());
 	}
 
 	public synchronized void setPlayerNumber(int playnumber) {
@@ -135,7 +135,7 @@ public class ClientModel {
 	}
 
 	public void gameOver(Result result) {
-		playPanel.gameOver(result);
+		// playPanel.gameOver(result);
 	}
 
 	public void setTime(int time) {
@@ -188,10 +188,6 @@ public class ClientModel {
 		}
 	}
 
-	public void setMap(Map map) {
-		game.getField().setMap(map);
-	}
-
 	public void set(byte[] packet) {
 		JSONObject jsonObj = null;
 		try {
@@ -207,8 +203,10 @@ public class ClientModel {
 	public void startGame() {
 		for (int i = 0; i < room.getPlayerList().size(); i++) {
 			if (room.getPlayerList().get(i).getID() % 2 == 0) {
+				room.getPlayerList().get(i).setTeamID(2);
 				game.getTeam(2).addPlayer(room.getPlayerList().get(i));
 			} else if (room.getPlayerList().get(i).getID() % 2 == 1) {
+				room.getPlayerList().get(i).setTeamID(1);
 				game.getTeam(1).addPlayer(room.getPlayerList().get(i));
 			}
 		}
@@ -227,6 +225,14 @@ public class ClientModel {
 	}
 
 	/* for UDP end */
+
+	public void setMap(Map map) {
+		game.getField().setMap(map);
+	}
+
+	public Player getIndividual() {
+		return individual;
+	}
 
 	public void setPlayPanel(PlayPanel playPanel) {
 		this.playPanel = playPanel;

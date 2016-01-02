@@ -1,14 +1,9 @@
 package model.game.field.dynamic;
 
-import java.awt.Dimension;
-import java.awt.Point;
-
 import model.game.field.FieldObject;
 
 public class Turf extends FieldObject {
-	private int teamID;
-	private Point location;// pixel
-	private Dimension size;// pixel
+	private int teamID = 0;
 
 	public int getTeamID() {
 		return teamID;
@@ -18,19 +13,4 @@ public class Turf extends FieldObject {
 		this.teamID = id;
 	}
 
-	public Point getLocation() {
-		return location;
-	}
-
-	public void setLocation(Point location) {
-		this.location = location;
-	}
-
-	public Dimension getDimension() {
-		return size;
-	}
-
-	public void setDimension(Dimension size) {
-		this.size = size;
-	}
 }

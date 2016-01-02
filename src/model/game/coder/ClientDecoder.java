@@ -53,7 +53,7 @@ public class ClientDecoder {
 					model.setPlayerNumber(playerNumber);
 					break;
 				case "addPlayer":
-					Room room  = gson.fromJson(object.get(keys).toString(), Room.class);
+					Room room = gson.fromJson(object.get(keys).toString(), Room.class);
 					model.addPlayer(room);
 					break;
 				case "removePlayer":

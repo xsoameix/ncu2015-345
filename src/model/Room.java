@@ -1,18 +1,18 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 import model.game.Player;
 
 public class Room {
-	private ArrayList<Player> players;
+	private Vector<Player> players;
 	private int playerNumber;
 
 	public Room() {
-		this.players = new ArrayList<Player>();
+		this.players = new Vector<Player>();
 	}
 
-	public ArrayList<Player> getPlayerList() {
+	public Vector<Player> getPlayerList() {
 		return players;
 	}
 

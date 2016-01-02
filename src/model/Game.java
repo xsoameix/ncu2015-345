@@ -13,7 +13,6 @@ public class Game {
 	private Vector<Team> teams;
 	private int time;
 	private Field field;
-
 	private Rule rule;
 
 	public Game() {
@@ -21,6 +20,7 @@ public class Game {
 		teams = new Vector<Team>();
 		teams.add(new Team(1));
 		teams.add(new Team(2));
+		rule = new Rule();
 	}
 
 	public void setMap(Map map) {

@@ -3,14 +3,17 @@ package model.game.coder;
 import java.awt.Point;
 import java.util.Iterator;
 
-import model.ServerModel;
-import model.game.Player;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+
+import model.ServerModel;
+import model.game.Player;
+
 public class ServerDecoder {
 	private ServerModel serverModel;
+	private Player player;
 
 	public ServerDecoder(ServerModel serverModel) {
 		// TODO Auto-generated constructor stub
@@ -18,6 +21,7 @@ public class ServerDecoder {
 	}
 
 	public void decode(int id, JSONObject object) {
+		Gson gson = new Gson();
 		Iterator<?> key = object.keys();
 		while (key.hasNext()) {
 			try {
@@ -32,19 +36,22 @@ public class ServerDecoder {
 					serverModel.setPlayerNumber(playerNumber);
 					break;
 				case "requestAddPlayer":
-					Player player = (Player) object.get(keys);
+					player = gson.fromJson(object.get(keys).toString(), Player.class);
+					assert player != null : "[ServerDecoder] decode Player is null";
+					player.setID(id);
 					serverModel.addPlayer(player);
 					break;
 				case "requestRemovePlayer":
-					player = (Player) object.get(keys);
+					player = gson.fromJson(object.get(keys).toString(), Player.class);
+					assert player != null : "[ServerDecoder] decode Player is null";
+					player.setID(id);
 					serverModel.removePalyer(player);
 					break;
 				case "requestStartGame":
 					serverModel.startGame();
 					break;
 				case "requestSetLocation":
-					Point point = null;
-					point = (Point) object.get(keys);
+					Point point = gson.fromJson(object.get(keys).toString(), Point.class);
 					serverModel.setLocation(id, point);
 					break;
 				case "requestFire":

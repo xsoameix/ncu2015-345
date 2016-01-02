@@ -6,6 +6,9 @@ import java.util.Vector;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import model.ClientModel;
 import model.game.Player;
 import model.game.Result;
@@ -17,6 +20,8 @@ import model.game.field.dynamic.Turf;
 public class ClientDecoder {
 	// private AbstractModel model;
 	private ClientModel model;
+	private Player player;
+	private Bullet bullet;
 
 	public ClientDecoder(ClientModel model) {
 		// TODO Auto-generated constructor stub
@@ -24,13 +29,14 @@ public class ClientDecoder {
 	}
 
 	public void decode(JSONObject object) {
+		Gson gson = new Gson();
 		Iterator<?> key = object.keys();
 		while (key.hasNext()) {
 			String keys = (String) key.next();
 			try {
 				switch (keys) {
 				case "removeObstacle":
-					Obstacle obstacle = (Obstacle) object.get(keys);
+					Obstacle obstacle = gson.fromJson(object.get(keys).toString(), Obstacle.class);
 					model.removeObstacle(obstacle);
 					break;
 				case "setTotalTime":
@@ -46,51 +52,47 @@ public class ClientDecoder {
 					model.setPlayerNumber(playerNumber);
 					break;
 				case "addPlayer":
-					Player player = (Player) object.get(keys);
+					player = gson.fromJson(object.get(keys).toString(), Player.class);
 					model.addPlayer(player);
 					break;
 				case "removePlayer":
-					player = null;
-					player = (Player) object.get(keys);
+					player = gson.fromJson(object.get(keys).toString(), Player.class);
 					model.removePlayer(player);
 					break;
 				case "setLocation":
-					player = null;
-					player = (Player) object.get(keys);
+					player = gson.fromJson(object.get(keys).toString(), Player.class);
 					model.setLocation(player);
 					break;
 				case "setMoney":
-					Vector<Team> teams = (Vector<Team>) object.get(keys);
+					Vector<Team> teams = gson.fromJson(object.get(keys).toString(), new TypeToken<Vector<Team>>() {
+					}.getType());
 					model.setMoney(teams);
 					break;
 				case "setKillNumber":
-					player = null;
-					player = (Player) object.get(keys);
+					player = gson.fromJson(object.get(keys).toString(), Player.class);
 					model.setKillNumber(player);
 					break;
 				case "addBullet":
-					Bullet bullet = (Bullet) object.get(keys);
+					bullet = gson.fromJson(object.get(keys).toString(), Bullet.class);
 					model.addBullet(bullet);
 					break;
 				case "removeBullet":
-					bullet = null;
-					bullet = (Bullet) object.get(keys);
+					bullet = gson.fromJson(object.get(keys).toString(), Bullet.class);
 					model.removeBullet(bullet);
 					break;
 				case "updateBullet":
-					bullet = null;
-					bullet = (Bullet) object.get(keys);
+					bullet = gson.fromJson(object.get(keys).toString(), Bullet.class);
 					model.updateBullet(bullet);
 					break;
 				case "changeTurfColor":
-					Turf turf = (Turf) object.get(keys);
+					Turf turf = gson.fromJson(object.get(keys).toString(), Turf.class);
 					model.changeTurfColor(turf);
 					break;
 				case "startGame":
 					model.startGame();
 					break;
 				case "gameOver":
-					Result result = (Result) object.get(keys);
+					Result result = gson.fromJson(object.get(keys).toString(), Result.class);
 					model.gameOver(result);
 					break;
 				}

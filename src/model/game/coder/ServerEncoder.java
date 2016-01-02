@@ -12,6 +12,8 @@ import model.game.field.dynamic.Turf;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+
 public class ServerEncoder {
 
 	public JSONObject removeObstacle(Obstacle obstacle) {
@@ -75,9 +77,10 @@ public class ServerEncoder {
 	}
 
 	public JSONObject encodeObject(String key, Object value) {
+		Gson gson = new Gson();
 		JSONObject object = new JSONObject();
 		try {
-			object.put(key, value);
+			object.put(key, gson.toJson(value));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,6 +1,6 @@
 package model;
 
-public class StubModel extends Model {
+public class StubModel extends ClientModel {
 	boolean requestFire = false;
 	boolean requestStartGame = false;
 	boolean requestSetTotalTime = false;
@@ -17,6 +17,7 @@ public class StubModel extends Model {
 	}
 
 	protected void requestFire() {
+		super.requestFire();
 		requestFire = true;
 	}
 

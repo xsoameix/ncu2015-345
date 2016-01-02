@@ -3,8 +3,8 @@ package model.game;
 import java.awt.Dimension;
 import java.util.Vector;
 
-import model.game.field.FieldObject;
 import model.game.field.Map;
+import model.game.field.Turf;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Character;
 import model.game.field.dynamic.Obstacle;
@@ -19,12 +19,14 @@ public class Field {
 	private Vector<Character> characters;
 	private Vector<Bullet> bullets;
 	private Vector<Obstacle> obstacles;
+	private Vector<Turf> turfs;
 
 	public Field() {
 		map = new Map();
 		characters = new Vector<>();
 		bullets = new Vector<>();
 		obstacles = new Vector<>();
+		turfs = new Vector<>();
 	}
 
 	public Dimension getSize() {
@@ -58,7 +60,11 @@ public class Field {
 		}
 	}
 
-	public Vector<Obstacle> getObstacleList() {
+	public Vector<Obstacle> getTurfs() {
+		return obstacles;
+	}
+
+	public Vector<Obstacle> getObstacles() {
 		return obstacles;
 	}
 

@@ -11,7 +11,7 @@ import view.base.Frame;
 public class MainFrame extends Frame implements ActionListener{
 	public MainFrame(){
 		//frame initialization
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(Config.frameDimension);
 		
 		//show frame

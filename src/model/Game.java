@@ -39,6 +39,17 @@ public class Game {
 		}
 	}
 
+	public synchronized Player getPlayer(int ID) {
+		synchronized (teams) {
+			for (int i = 0; i < teams.size(); i++) {
+				if (teams.get(i).getPlayer(ID) != null) {
+					return teams.get(i).getPlayer(ID);
+				}
+			}
+			return null;
+		}
+	}
+
 	public synchronized void addTeam(Team team) {
 		synchronized (teams) {
 			teams.add(team);

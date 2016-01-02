@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Vector;
 
+import org.json.JSONObject;
+
 import model.game.Player;
 import model.game.Result;
 import model.game.Team;
@@ -18,8 +20,7 @@ import model.game.field.dynamic.Character;
 import model.game.field.dynamic.Obstacle;
 import model.setting.Profile;
 import net.TCPClient;
-
-import org.json.JSONObject;
+import view.play.PlayPanel;
 
 public class Model {
 	// server side
@@ -176,11 +177,11 @@ public class Model {
 	}
 
 	public synchronized boolean removeObstacle(Obstacle obstacle) {
-		synchronized (game.getField().getObstacleList()) {
-			for (int i = 0; i < game.getField().getObstacleList().size(); i++) {
-				Obstacle tmp = game.getField().getObstacleList().get(i);
+		synchronized (game.getField().getObstacles()) {
+			for (int i = 0; i < game.getField().getObstacles().size(); i++) {
+				Obstacle tmp = game.getField().getObstacles().get(i);
 				if (tmp != null && tmp.getID() == obstacle.getID()) {
-					game.getField().getObstacleList().remove(tmp);
+					game.getField().getObstacles().remove(tmp);
 				}
 			}
 			return true;

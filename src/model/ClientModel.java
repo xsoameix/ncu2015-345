@@ -1,5 +1,7 @@
 package model;
 
+import view.play.PlayPanel;
+
 public class ClientModel {
 
 	private Model model;
@@ -50,7 +52,7 @@ public class ClientModel {
 		this.model = model;
 	}
 
-	public void setPlayPanel(PlayPanel playPanel) {
+	public void setPlayPanel(PlayPanel playPanel){
 		model.setPlayPanel(playPanel);
 	}
 }

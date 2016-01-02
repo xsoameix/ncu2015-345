@@ -211,7 +211,6 @@ public class KeyBindingPanel extends Panel{
 		public KeyText(KeyMap keyMap){
 			this.setKeyMap(keyMap);
 			this.setBackground(Color.white);
-			this.setText("test");
 			this.setFocusable(true);
 			this.setEditable(false);
 			this.addFocusListener(new FocusListener() {

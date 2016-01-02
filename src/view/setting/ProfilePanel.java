@@ -27,9 +27,7 @@ public class ProfilePanel extends Panel {
 	private Label imageLabel;
 	private Button imageContentButton;
 	private IconDialog iconDialog;
-	
 	private Button applyButton;
-	private Button backButton;
 	
 	private void setComponents(){
 		setLayout(new GridBagLayout());
@@ -62,10 +60,6 @@ public class ProfilePanel extends Panel {
 		applyButton.setFont(font);
 		applyButton.setActionCommand("apply");
 		applyButton.addActionListener(this);
-		backButton=new Button("Back");
-		backButton.setFont(font);
-		backButton.setActionCommand("back");
-		backButton.addActionListener(this);
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx=0;
@@ -106,15 +100,10 @@ public class ProfilePanel extends Panel {
 		
 		c.gridx=1;
 		c.gridy=14;
-		c.gridwidth=1;
+		c.gridwidth=0;
 		c.anchor=GridBagConstraints.EAST;
 		c.fill=GridBagConstraints.HORIZONTAL;
 		add(applyButton,c);
-		
-		c.gridx=3;
-		c.gridwidth=0;
-		c.anchor=GridBagConstraints.EAST;
-		add(backButton,c);
 	}
 	public ProfilePanel(){
 		setComponents();
@@ -136,10 +125,7 @@ public class ProfilePanel extends Panel {
 		case "apply":
 			getDisplayPanel().first();
 			newProfile.setName(nameTextField.getText());
-			//profile=newProfile;
-			break;
-		case "back":
-			getDisplayPanel().first();
+			profile=newProfile;
 			break;
 			
 		default:

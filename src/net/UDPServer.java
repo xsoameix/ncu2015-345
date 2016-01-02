@@ -11,6 +11,8 @@ import java.nio.channels.Pipe.SinkChannel;
 import java.nio.channels.Pipe.SourceChannel;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import model.ClientModel;
+
 public class UDPServer extends Thread{
 	private int port;
 	final int SIZE = 8192;
@@ -70,8 +72,8 @@ public class UDPServer extends Thread{
 	                	if (key.channel().equals(server)){
 	                		ByteBuffer packet = ByteBuffer.allocate(SIZE);
 		                    server.receive(packet);
-		                    byte[] sendpacket = new byte[packet.remaining()];
-		                    packet.get(sendpacket);
+		                    byte[] sendpacket = new byte[SIZE];
+		                    sendpacket = packet.array();
 		                    clientModel.set(sendpacket);
 	                	}else if(key.channel().equals(ctrlOut)){
 	                		server.close();

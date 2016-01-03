@@ -13,7 +13,7 @@ public class TestUDPClient implements Runnable {
 	public static final long BIND_TIME      = 100;
 	int port = 5000;
     String packet = "hello world";
-    FakeTCPServerModel TCPserver = new FakeTCPServerModel();
+    TCPServer TCPserver = new TCPServer();
 	
 	//test initialize() method
 	@Test

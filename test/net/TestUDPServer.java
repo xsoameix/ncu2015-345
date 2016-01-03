@@ -6,7 +6,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Vector;
 import org.junit.Test;
-import net.FakeUDPClientModel;
 import net.UDPServer;
 
 public class TestUDPServer {
@@ -98,5 +97,10 @@ public class TestUDPServer {
 		public void set(byte[] bytes){
 			assertEquals(bytePacket,bytes);
 		}
+	}
+	
+	class FakeUDPClientModel {
+		 public void set(byte [] packet){
+		    }
 	}
 }

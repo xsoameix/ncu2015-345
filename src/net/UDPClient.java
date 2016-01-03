@@ -23,7 +23,6 @@ public class UDPClient {
     public void initialize(int port){
     	assert port>1024 && port<65536:"port over range";
     	IPData = tcpServer.getIPTable();
-    	getIP = IPData.get(0);
     	setPort = port;
     	state = STATE_CONNECTED;
     }

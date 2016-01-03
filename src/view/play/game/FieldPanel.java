@@ -1,7 +1,6 @@
 package view.play.game;
 
 
-import java.awt.Component;
 import java.awt.GridLayout;
 
 import javax.swing.JLayeredPane;
@@ -29,14 +28,10 @@ public class FieldPanel extends AbstractView{
 	public FieldPanel(){
 		setLayout(new GridLayout());
 		pane=new JLayeredPane();
-		super.add(pane);
+		add(pane);
 		
 		mapPanel=new MapPanel();
-		add(mapPanel);
-	}
-	@Override
-	public Component add(Component comp) {
-		return pane.add(comp);
+		pane.add(mapPanel, new Integer(0));
 	}
 	public void setField(Field field) {
 		this.field=field;
@@ -68,8 +63,7 @@ public class FieldPanel extends AbstractView{
 			}
 	}
 	public void addCharacter(Character character){
-		add(new CharacterView(character));
-		setComponentZOrder(mapPanel, getComponentCount()-1);
+		pane.add(new CharacterView(character), new Integer(100));
 	}
 	public void removeCharacter(Character character){
 		for(int i=1; i<getComponentCount(); i++)

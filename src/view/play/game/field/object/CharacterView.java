@@ -30,7 +30,7 @@ public class CharacterView extends FieldObjectView{
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		System.out.println(getObject().getDirection());
+//		System.out.println(getObject().getDirection());
 		setLocation(getObject().getLocation());
 		g.drawImage(images[getObject().getDirection()].getImage(), 0, 0, null);
 	}

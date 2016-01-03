@@ -26,7 +26,7 @@ public class MapPanel extends Panel{
 		mapBlockPanels=new MapBlockPanel[size.height][size.width];
 		
 		loadData();
-//		setComponents();
+		setComponents();
 	}
 	private void loadData(){
 		for(int y=0; y<map.getSize().height; y++)

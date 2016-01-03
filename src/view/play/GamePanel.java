@@ -41,12 +41,17 @@ public class GamePanel extends AbstractView{
 		setComponents();
 		renderThread=new RenderThread(this);
 		keyInputTimer=new KeyInputTimer(this);
+		oldPoint=new Point();
 	}
 
+	private Point oldPoint;
 	public void requestInputArrowKey(){
 		if(moveUnit!=null){
 			Point newPoint=newLocation(character.getLocation());
-			clientModel.requestSetLocation(newPoint.x, newPoint.y);
+			if(!oldPoint.equals(newPoint)){
+				clientModel.requestSetLocation(newPoint.x, newPoint.y);
+				oldPoint=new Point(newPoint);
+			}
 		}
 	}
 	private int unitSize=8;
@@ -196,9 +201,8 @@ public class GamePanel extends AbstractView{
 	private void addPlayers(Vector<Player> playerList) {
 		int size=playerList.size();
 		for(int i=0; i<size; i++){
-			CharacterView characterView=new CharacterView(playerList.get(i).getCharacter());
+//			CharacterView characterView=new CharacterView(playerList.get(i).getCharacter());
 			fieldPanel.addCharacter(playerList.get(i).getCharacter());
-			fieldPanel.setComponentZOrder(characterView, 1);
 			if(playerList.get(i).getCharacter().getID()==clientModel.getIndividual().getCharacter().getID())
 				character=playerList.get(i).getCharacter();
 		}

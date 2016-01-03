@@ -1,17 +1,20 @@
 package model.game.field.dynamic;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import model.game.field.FieldObject;
 import model.game.field.map.MapBlock;
 
 public class Bullet extends FieldObject {
-	private int direction;
+	private int direction = 1;
 	private int playerID;
 
-	public Bullet(int playerID, int ID) {
+	public Bullet(int playerID, int ID, int direction,Point location) {
 		// TODO Auto-generated constructor stub
 		this.playerID = playerID;
+		this.direction = direction;
+		setLocation(new Point(location.x+16,location.y+16));
 		setID(ID);
 	}
 
@@ -33,12 +36,7 @@ public class Bullet extends FieldObject {
 
 	@Override
 	public Rectangle getRectangle() {
-		Rectangle rect = new Rectangle(
-				(this.getLocation().x / MapBlock.getSize().width)
-						* MapBlock.getSize().width,
-				(this.getLocation().x / MapBlock.getSize().height)
-						* MapBlock.getSize().height,
-				30, 10);
+		Rectangle rect = new Rectangle((this.getLocation().x / MapBlock.getSize().width) * MapBlock.getSize().width, (this.getLocation().x / MapBlock.getSize().height) * MapBlock.getSize().height, 30, 10);
 		return rect;
 	}
 

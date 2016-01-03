@@ -14,12 +14,11 @@ public class Map {
 
 	public Map() {
 		// default map
-		// setSize(new Dimension(50,20));
-		// mapBlocks=new MapBlock[20][50];
-		// for(int y=0; y<size.height; y++)
-		// for(int x=0; x<size.width; x++)
-		// mapBlocks[y][x]=new MapBlock();
-
+		 setSize(new Dimension(50,20));
+		 mapBlocks=new MapBlock[20][50];
+		 for(int y=0; y<size.height; y++)
+		 for(int x=0; x<size.width; x++)
+		 mapBlocks[y][x]=new MapBlock();
 	}
 
 	public Map(Dimension size, MapBlock mapBlocks[][]) {

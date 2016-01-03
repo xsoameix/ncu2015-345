@@ -64,6 +64,13 @@ public class Field {
 		return turfs;
 	}
 
+	public void addTurf(Turf turf) {
+		// TODO Auto-generated method stub
+		synchronized (turfs) {
+			this.turfs.add(turf);
+		}
+	}
+
 	public Vector<Obstacle> getObstacles() {
 		return obstacles;
 	}

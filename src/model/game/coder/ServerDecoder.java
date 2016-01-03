@@ -41,6 +41,7 @@ public class ServerDecoder {
 						player = gson.fromJson(object.get(keys).toString(), Player.class);
 						assert player != null : "[ServerDecoder] decode Player is null";
 						player.setID(id);
+						player.getCharacter().setPlayerID(id);
 						serverModel.addPlayer(player);
 						break;
 					case "requestRemovePlayer":

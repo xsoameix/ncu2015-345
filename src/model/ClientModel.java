@@ -34,11 +34,12 @@ public class ClientModel {
 	private ClientDecoder decoder;
 	private Player individual;
 	private Character character;
-	private PlayPanel playPanel;
+	private FakePlayPanel playPanel;
 
 	public ClientModel() {
-		room = new Room();
+		playPanel = new FakePlayPanel();
 		game = new Game();
+		room = new Room();
 		setting = new Setting();
 		encoder = new ClientEncoder();
 		decoder = new ClientDecoder(this);
@@ -124,13 +125,17 @@ public class ClientModel {
 		room.setPlayerNumber(playnumber);
 	}
 
-	public boolean addPlayer(Room room) {
+	public synchronized boolean addPlayer(Room room) {
 		this.room.addPlayer(room);
+		for (int i = 0; i < room.getPlayerList().size(); i++) {
+			playPanel.addPlayer(room.getPlayerList().get(i));
+		}
 		return true;
 	}
 
-	public boolean removePlayer(Player player) {
+	public synchronized boolean removePlayer(Player player) {
 		room.removePlayer(player);
+		playPanel.removePlayer(player);
 		return true;
 	}
 
@@ -145,6 +150,7 @@ public class ClientModel {
 	public synchronized boolean addBullet(Bullet bullet) {
 		synchronized (game.getField().getBulletList()) {
 			game.getField().getBulletList().add(bullet);
+			this.playPanel.addBullet(bullet);
 			return true;
 		}
 	}
@@ -163,6 +169,7 @@ public class ClientModel {
 				Bullet tmp = game.getField().getBulletList().get(i);
 				if (tmp != null && tmp.getID() == bullet.getID()) {
 					game.getField().getBulletList().remove(tmp);
+					this.playPanel.removeBullet(bullet);
 				}
 			}
 			return true;
@@ -173,7 +180,6 @@ public class ClientModel {
 		if (game.getTurf(turf.getID()) != null) {
 			game.getTurf(turf.getID()).setID(turf.getID());
 		}
-
 	}
 
 	public synchronized boolean removeObstacle(Obstacle obstacle) {
@@ -182,6 +188,7 @@ public class ClientModel {
 				Obstacle tmp = game.getField().getObstacles().get(i);
 				if (tmp != null && tmp.getID() == obstacle.getID()) {
 					game.getField().getObstacles().remove(tmp);
+					this.playPanel.removeObstacle(obstacle);
 				}
 			}
 			return true;
@@ -235,7 +242,7 @@ public class ClientModel {
 	}
 
 	public void setPlayPanel(PlayPanel playPanel) {
-		this.playPanel = playPanel;
+//		this.playPanel = playPanel;
 	}
 
 	public Room getRoom() {

@@ -27,10 +27,11 @@ public class ServerModel {
 		tcpServer = new TCPServer(this);
 		udpClient = new UDPClient();
 		atomicInteger = new AtomicInteger(1);
+		game = new Game();
 		decoder = new ServerDecoder(this);
 		encoder = new ServerEncoder();
 		room = new Room();
-		game = new Game();
+
 	}
 
 	public boolean initialize(int port) {
@@ -68,6 +69,7 @@ public class ServerModel {
 		}
 		udpClient.send(encoder.setTime(game.getTime()).toString());
 		udpClient.send(encoder.startGame().toString());
+
 		return true;
 	}
 
@@ -103,9 +105,9 @@ public class ServerModel {
 	public boolean fire(int id) throws IOException, InterruptedException {
 		// new bullet
 		// bullet direction = character direction
-		udpClient.send(encoder.addBullet(new Bullet()).toString());
-		udpClient.send(encoder.updateBullet(new Bullet()).toString());
-		udpClient.send(encoder.removeBullet(new Bullet()).toString());
+		udpClient.send(encoder.addBullet(new Bullet(1, 1)).toString());
+		udpClient.send(encoder.updateBullet(new Bullet(1, 1)).toString());
+		udpClient.send(encoder.removeBullet(new Bullet(1, 1)).toString());
 
 		// udpClient.send(encoder.removePlayer(game.getPlayer(1)).toString());
 		// udpClient.send(encoder.gameOver(new

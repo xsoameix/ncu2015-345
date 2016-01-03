@@ -52,6 +52,15 @@ public class Room {
 		this.playerNumber = number;
 	}
 
+	public Player getPlayer(int playerID) {
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getID() == playerID) {
+				return players.get(i);
+			}
+		}
+		return null;
+	}
+
 	public int getPlayerNumber() {
 		return this.playerNumber;
 	}

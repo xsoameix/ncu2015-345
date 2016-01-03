@@ -50,11 +50,13 @@ public class ServerModel {
 	}
 
 	public void setTotalTime(int second) throws IOException, InterruptedException {
+		assert second >= 0 : "[ServerModel] setTotalTime second error : " + second;
 		game.setTime(second);
 		udpClient.send(encoder.setTotalTime(second).toString());
 	}
 
 	public void setPlayerNumber(int playernumber) throws IOException, InterruptedException {
+		assert playernumber >= 2 && playernumber <= 6 : "[ServerModel] setPlayerNumber playernumber error : " + playernumber;
 		room.setPlayerNumber(playernumber);
 		udpClient.send(encoder.setPlayerNumber(playernumber).toString());
 	}
@@ -70,21 +72,21 @@ public class ServerModel {
 				game.getTeam(1).addPlayer(room.getPlayerList().get(i));
 			}
 		}
-
 		udpClient.send(encoder.setTime(game.getTime()).toString());
 		udpClient.send(encoder.startGame().toString());
 		return true;
 	}
 
 	public boolean addPlayer(Player player) throws IOException, InterruptedException {
-		assert !room.getPlayerList().contains(player) : "[ServerModel] addPlayer : player alreadt exist";
+		assert player != null : "[ServerModel] addPlayer player is null : " + player;
+		assert room.getPlayer(player.getID()) == null : "[ServerModel] addPlayer : player alreadt exist";
 		room.addPlayer(player);
 		udpClient.send(encoder.addPlayer(room).toString());
 		return true;
 	}
 
 	public boolean removePalyer(Player player) throws IOException, InterruptedException {
-		assert room.getPlayerList().contains(player) : "[ServerModel] removePalyer : player does not exist";
+		assert room.getPlayer(player.getID()) != null : "[ServerModel] removePalyer : player does not exist";
 		room.removePlayer(player);
 		udpClient.send(encoder.removePlayer(player).toString());
 		return true;
@@ -93,7 +95,7 @@ public class ServerModel {
 	public boolean setLocation(int id, Point point) throws IOException, InterruptedException {
 		assert point != null : "[ServerModel] setLocation : Point location is null";
 		int x = point.x, y = point.y;
-		assert x > 0 && y > 0 : "[ServerModel] setLocation : location error x " + x + " y " + y;
+		assert x >= 0 && y >= 0 : "[ServerModel] setLocation : location error x " + x + " y " + y;
 		// call rule to move
 		// if true then setLocation
 		if (game.getPlayer(id) != null) {

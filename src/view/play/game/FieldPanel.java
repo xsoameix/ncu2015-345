@@ -2,6 +2,7 @@ package view.play.game;
 
 
 import java.awt.GridLayout;
+import java.util.HashMap;
 
 import javax.swing.JLayeredPane;
 
@@ -32,6 +33,9 @@ public class FieldPanel extends AbstractView{
 		
 		mapPanel=new MapPanel();
 		pane.add(mapPanel, new Integer(0));
+		
+		bulletMap=new HashMap<Integer, Bullet>();
+				
 	}
 	public void setField(Field field) {
 		this.field=field;
@@ -40,10 +44,14 @@ public class FieldPanel extends AbstractView{
 		return field;
 	}
 	
+	private HashMap<Integer, Bullet> bulletMap;
 	
 	//API
 	public void addBullet(Bullet bullet){
-		add(new BulletView(bullet));
+		if(!bulletMap.containsKey(bullet.getID())){
+			add(new BulletView(bullet), new Integer(0));
+			bulletMap.put(bullet.getID(), bullet);
+		}
 	}
 	public void removeBullet(Bullet bullet){
 		for(int i=1; i<getComponentCount(); i++)
@@ -53,7 +61,7 @@ public class FieldPanel extends AbstractView{
 			}
 	}
 	public void addObstacle(Obstacle obstacle){
-		add(new ObstacleView(obstacle));
+		add(new ObstacleView(obstacle), new Integer(100));
 	}
 	public void removeObstacle(Obstacle obstacle){
 		for(int i=1; i<getComponentCount(); i++)

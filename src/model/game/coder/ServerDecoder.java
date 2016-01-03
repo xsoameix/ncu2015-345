@@ -3,6 +3,7 @@ package model.game.coder;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,10 +16,12 @@ import model.game.Player;
 public class ServerDecoder {
 	private ServerModel serverModel;
 	private Player player;
+	private AtomicInteger atomicInteger;
 
-	public ServerDecoder(ServerModel serverModel) {
+	public ServerDecoder(ServerModel serverModel, AtomicInteger atomicInteger) {
 		// TODO Auto-generated constructor stub
 		this.serverModel = serverModel;
+		this.atomicInteger = atomicInteger;
 	}
 
 	public void decode(int id, JSONObject object) {
@@ -41,6 +44,7 @@ public class ServerDecoder {
 						player = gson.fromJson(object.get(keys).toString(), Player.class);
 						assert player != null : "[ServerDecoder] decode Player is null";
 						player.setID(id);
+						player.getCharacter().setID(atomicInteger.getAndIncrement());
 						player.getCharacter().setPlayerID(id);
 						serverModel.addPlayer(player);
 						break;

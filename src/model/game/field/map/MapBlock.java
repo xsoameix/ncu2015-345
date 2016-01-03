@@ -17,10 +17,12 @@ public class MapBlock {
 	}
 
 	public MapBlock(int type) {
+		objects = new Vector<>();
 		this.type = type;
 	}
 
 	public int getType() {
+		objects = new Vector<>();
 		return type;
 	}
 

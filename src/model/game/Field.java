@@ -102,6 +102,9 @@ public class Field {
 	public synchronized void addObstacle(Obstacle obstacle) {
 		synchronized (obstacles) {
 			this.obstacles.addElement(obstacle);
+//			System.out.println("[Field] addObstacle " + obstacle.getLocation().x / 32 + " " + obstacle.getLocation().y / 32);
+			map.getMapBlock(obstacle.getLocation().x / 32, obstacle.getLocation().y / 32).addDynamicObject(obstacle);
+//			System.out.println("[Field] addObstacle " +( map.getMapBlock(obstacle.getLocation().x / 32, obstacle.getLocation().y / 32).getDynamicObjectList().get(0) instanceof Obstacle));
 		}
 	}
 

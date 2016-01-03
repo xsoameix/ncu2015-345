@@ -8,7 +8,8 @@ public class Player {
 
 	private int ID;
 	private int teamID;
-
+	private int respawnX = 1;
+	private int respawnY = 1;
 	private Character character;
 	private int kill;
 	private int death;
@@ -20,6 +21,19 @@ public class Player {
 		this.kill = 0;
 		this.death = 0;
 		this.money = 0;
+	}
+
+	public void setRespawn(int respawnX, int respawnY) {
+		this.respawnX = respawnX;
+		this.respawnY = respawnY;
+	}
+
+	public int getRespawnX() {
+		return respawnX;
+	}
+
+	public int getRespawnY() {
+		return respawnY;
 	}
 
 	public Character getCharacter() {

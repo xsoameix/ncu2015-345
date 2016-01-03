@@ -4,8 +4,8 @@ import java.awt.Point;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONObject;
 
@@ -36,10 +36,12 @@ public class ClientModel {
 	private Player individual;
 	private Character character;
 	private FakePlayPanel playPanel;
+	private AtomicInteger atomicInteger;
 
 	public ClientModel() {
+		atomicInteger = new AtomicInteger(0);
 		playPanel = new FakePlayPanel();
-		game = new Game();
+		game = new Game(atomicInteger);
 		room = new Room();
 		setting = new Setting();
 		encoder = new ClientEncoder();
@@ -228,6 +230,15 @@ public class ClientModel {
 		decoder.decode(jsonObj);
 	}
 
+	private void initPlayerRespawn() {
+		game.getPlayer(1).setRespawn(1, 1);
+//		game.getPlayer(2).setRespawn(2, 1);
+//		game.getPlayer(3).setRespawn(1, 2);
+//		game.getPlayer(4).setRespawn(18, 18);
+//		game.getPlayer(5).setRespawn(17, 18);
+//		game.getPlayer(6).setRespawn(18, 17);
+	}
+
 	public void startGame() {
 		for (int i = 0; i < room.getPlayerList().size(); i++) {
 			if (room.getPlayerList().get(i).getID() % 2 == 0) {
@@ -238,17 +249,12 @@ public class ClientModel {
 				game.getTeam(1).addPlayer(room.getPlayerList().get(i));
 			}
 		}
+		initPlayerRespawn();
 		playPanel.startGame();
 	}
 
 	public synchronized void setLocation(Player newPlayer) {
 		assert newPlayer != null : "[ClientModel] setLocation newPlayer is null";
-
-		Iterator<Player> iterator = game.getPlayerList().iterator();
-		while (iterator.hasNext()) {
-			System.out.println("[ClientModel] setLocation Player ID : " + iterator.next().getID());
-		}
-
 		assert game.getPlayer(newPlayer.getID()) != null : "[ClientModel] setLocation getPlayer is null playerID : " + newPlayer.getID();
 		if (game.getPlayer(newPlayer.getID()) != null) {
 			Character oldCharacter = game.getPlayer(newPlayer.getID()).getCharacter();

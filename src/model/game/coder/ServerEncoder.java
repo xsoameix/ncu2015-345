@@ -1,6 +1,7 @@
 package model.game.coder;
 
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +17,12 @@ import model.game.field.dynamic.Obstacle;
 import model.game.field.dynamic.Turf;
 
 public class ServerEncoder {
+	private AtomicInteger atomicInteger;
+
+	public ServerEncoder(AtomicInteger atomicInteger) {
+		// TODO Auto-generated constructor stub
+		this.atomicInteger = atomicInteger;
+	}
 
 	public JSONObject removeObstacle(Obstacle obstacle) {
 		return encodeObject("removeObstacle", obstacle);
@@ -38,6 +45,7 @@ public class ServerEncoder {
 	}
 
 	public JSONObject addBullet(Bullet bullet) {
+		bullet.setID(atomicInteger.getAndIncrement());
 		return encodeObject("addBullet", bullet);
 	}
 

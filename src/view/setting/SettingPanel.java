@@ -9,8 +9,6 @@ import view.PanelEnum;
 import view.base.extend.DisplayPanel;
 
 public class SettingPanel extends DisplayPanel {
-	private ClientModel clientModel;
-
 	private void setComponents(){
 		add(new SettingMenuPanel(), PanelEnum.SETTING);
 		add(new ProfilePanel(), PanelEnum.PROFILE);
@@ -21,9 +19,6 @@ public class SettingPanel extends DisplayPanel {
 			addActionListener((ActionListener)getComponent(i));
 		
 		toPanel(PanelEnum.SETTING);
-	}
-	public void setModel(ClientModel model){
-		this.clientModel=model;
 	}
 	public SettingPanel() {
 		setComponents();

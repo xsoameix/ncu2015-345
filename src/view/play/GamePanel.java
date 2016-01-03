@@ -15,10 +15,15 @@ import model.game.Player;
 import model.game.Result;
 import model.game.field.dynamic.Character;
 import model.setting.KeyBinding;
-import view.base.*;
+import view.base.Button;
 import view.base.extend.AbstractView;
-import view.play.game.*;
-import view.play.game.field.object.CharacterView;
+import view.play.game.ClockPanel;
+import view.play.game.FieldPanel;
+import view.play.game.MenuDialog;
+import view.play.game.MiniMapPanel;
+import view.play.game.PersonalPanel;
+import view.play.game.RenderThread;
+import view.play.game.TeamPanel;
 
 public class GamePanel extends AbstractView{
 	private RenderThread renderThread;
@@ -49,6 +54,7 @@ public class GamePanel extends AbstractView{
 		if(moveUnit!=null){
 			Point newPoint=newLocation(character.getLocation());
 			if(!oldPoint.equals(newPoint)){
+				System.out.println(newPoint.toString()+", "+oldPoint.toString());
 				clientModel.requestSetLocation(newPoint.x, newPoint.y);
 				oldPoint=new Point(newPoint);
 			}
@@ -174,9 +180,7 @@ public class GamePanel extends AbstractView{
 	
 
 	public void startGame(){
-		//switch panel
-		getDisplayPanel().next();
-		fieldPanel.setFocusable(true);
+		
 		
 		//key
 		KeyBinding keyBinding=clientModel.getSetting().getKeyBinding();
@@ -196,14 +200,17 @@ public class GamePanel extends AbstractView{
 		renderThread.start();
 		keyInputTimer.start();
 		
-		
+		//switch panel
+		getDisplayPanel().next();
+		fieldPanel.setFocusable(true);
+	
 	}
 	private void addPlayers(Vector<Player> playerList) {
 		int size=playerList.size();
 		for(int i=0; i<size; i++){
 //			CharacterView characterView=new CharacterView(playerList.get(i).getCharacter());
 			fieldPanel.addCharacter(playerList.get(i).getCharacter());
-			if(playerList.get(i).getCharacter().getID()==clientModel.getIndividual().getCharacter().getID())
+			if(playerList.get(i).getID()==clientModel.getIndividual().getID())
 				character=playerList.get(i).getCharacter();
 		}
 	}

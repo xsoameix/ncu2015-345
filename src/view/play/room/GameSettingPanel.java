@@ -5,6 +5,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import model.ClientModel;
 import view.base.Label;
 import view.base.extend.AbstractView;
 
@@ -29,7 +30,7 @@ public class GameSettingPanel extends AbstractView{
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				timeLabel.setText("Time: "+((JSlider)e.getSource()).getValue());
-				clientModel.requestSetTotalTime(((JSlider)e.getSource()).getValue()*60);
+				requestSetTotalTime(((JSlider)e.getSource()).getValue()*60);
 			}
 		});
 		add(timeSlider);
@@ -43,9 +44,22 @@ public class GameSettingPanel extends AbstractView{
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				playerNumberLabel.setText("PlayerNumber: "+((JSlider)e.getSource()).getValue()*2);
-				clientModel.requestSetPlayerNumber(((JSlider)e.getSource()).getValue()*2);
+				requestSetPlayerNumber(((JSlider)e.getSource()).getValue()*2);
 			}
 		});
 		add(playerNumberSlider);
+	}
+	
+	public void requestSetPlayerNumber(int playerNumber){
+		clientModel.requestSetPlayerNumber(playerNumber);
+	}
+	public void requestSetTotalTime(int time){
+		clientModel.requestSetTotalTime(time);
+	}
+	public void requestSetPlayerNumber(){
+		requestSetTotalTime(timeSlider.getValue()*60);
+	}
+	public void requestSetTotalTime(){
+		requestSetPlayerNumber(playerNumberSlider.getValue()*2);
 	}
 }

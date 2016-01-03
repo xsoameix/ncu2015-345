@@ -4,9 +4,9 @@ import java.awt.Graphics;
 
 import view.base.Label;
 import view.base.Panel;
+import view.base.extend.AbstractView;
 
-public class ClockPanel extends Panel{
-	private Integer time=100;
+public class ClockPanel extends AbstractView{
 	private Label clockLabel;
 	
 	public ClockPanel(){
@@ -17,6 +17,6 @@ public class ClockPanel extends Panel{
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		clockLabel.setText(String.valueOf(time));
+		clockLabel.setText(String.valueOf(clientModel.getTime()));
 	}
 }

@@ -8,6 +8,8 @@ import java.net.UnknownHostException;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
+import com.sun.corba.se.spi.orbutil.fsm.Action;
+
 import view.PanelEnum;
 import view.base.Button;
 import view.base.Label;
@@ -54,20 +56,25 @@ public class EstablishPanel extends AbstractView{
 		setComponents();
 	}
 
-	private void establish(){
+	private boolean establish(){
 		portTextField.setText("1234");
 		if(isHost){
 			if(clientModel.requestEstablishRoom(Integer.valueOf(portTextField.getText())))
-				enter();
+				return enter();
+			else
+				return false;
 		}
 		else
-			enter();
+			return enter();
 	}
-	private void enter(){
-		if(clientModel.requestEnterRoom(IPTextField.getText(), Integer.valueOf(portTextField.getText())))
-			getDisplayPanel().next();
-		else
+	private boolean enter(){
+		if(clientModel.requestEnterRoom(IPTextField.getText(), Integer.valueOf(portTextField.getText()))){
+			return true;
+		}
+		else{
 			new JOptionPane("Connect timeout! Game may be already started.");
+			return false;
+		}
 	}
 	
 	@Override
@@ -93,7 +100,8 @@ public class EstablishPanel extends AbstractView{
 			
 		//button
 		case "establish":
-			establish();
+			if(establish())
+				fireActionEvent(e);
 			break;
 		case "enter":
 			getDisplayPanel().next();

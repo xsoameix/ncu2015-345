@@ -18,8 +18,9 @@ import view.base.Component;
 import view.base.Label;
 import view.base.Panel;
 import view.base.TextField;
+import view.base.extend.AbstractView;
 
-public class ProfilePanel extends Panel {
+public class ProfilePanel extends AbstractView {
 	private Profile profile;
 	private Profile newProfile;
 	
@@ -116,10 +117,6 @@ public class ProfilePanel extends Panel {
 		newProfile = new Profile();
 	}
 	
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
-	
 	@Override 
 	public void actionPerformed(ActionEvent e){
 		switch(e.getActionCommand()){
@@ -131,7 +128,7 @@ public class ProfilePanel extends Panel {
 		case "apply":
 			getDisplayPanel().first();
 			newProfile.setName(nameTextField.getText());
-			profile=newProfile;
+			clientModel.getSetting().setProfile(newProfile);
 			break;
 			
 		default:

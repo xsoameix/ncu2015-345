@@ -22,10 +22,9 @@ import view.base.Component;
 import view.base.Label;
 import view.base.Panel;
 import view.base.TextField;
+import view.base.extend.AbstractView;
 
-public class KeyBindingPanel extends Panel{
-	
-    private KeyBinding keyBinding;
+public class KeyBindingPanel extends AbstractView{
     private KeyBinding newKeyBinding;
     private ErrorKeyBindingDialog errorKeyBindingDialog;
     private Component[] nullGrids;
@@ -167,10 +166,6 @@ public class KeyBindingPanel extends Panel{
 		errorKeyBindingDialog=new ErrorKeyBindingDialog(this, "Error type for control key.");
 	}
 	
-	public void setKeyBinding(KeyBinding keyBinding) {
-		this.keyBinding = keyBinding;
-	}
-	
 	@Override 
 	public void actionPerformed(ActionEvent e){
 		switch(e.getActionCommand()){
@@ -182,7 +177,7 @@ public class KeyBindingPanel extends Panel{
 			break;
 		case "apply":
 			getDisplayPanel().first();
-			keyBinding=newKeyBinding;
+			clientModel.getSetting().setKeyBinding(newKeyBinding);
 			break;
 		}
 	}

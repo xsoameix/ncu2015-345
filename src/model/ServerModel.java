@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Point;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONObject;
@@ -81,6 +82,9 @@ public class ServerModel {
 		assert player != null : "[ServerModel] addPlayer player is null : " + player;
 		assert room.getPlayer(player.getID()) == null : "[ServerModel] addPlayer : player alreadt exist";
 		room.addPlayer(player);
+		udpClient.send(encoder.addPlayer(room).toString());
+		udpClient.send(encoder.addPlayer(room).toString());
+		udpClient.send(encoder.addPlayer(room).toString());
 		udpClient.send(encoder.addPlayer(room).toString());
 		return true;
 	}

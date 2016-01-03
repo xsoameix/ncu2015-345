@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.json.JSONObject;
@@ -240,8 +241,14 @@ public class ClientModel {
 		playPanel.startGame();
 	}
 
-	public void setLocation(Player newPlayer) {
+	public synchronized void setLocation(Player newPlayer) {
 		assert newPlayer != null : "[ClientModel] setLocation newPlayer is null";
+
+		Iterator<Player> iterator = game.getPlayerList().iterator();
+		while (iterator.hasNext()) {
+			System.out.println("[ClientModel] setLocation Player ID : " + iterator.next().getID());
+		}
+
 		assert game.getPlayer(newPlayer.getID()) != null : "[ClientModel] setLocation getPlayer is null playerID : " + newPlayer.getID();
 		if (game.getPlayer(newPlayer.getID()) != null) {
 			Character oldCharacter = game.getPlayer(newPlayer.getID()).getCharacter();

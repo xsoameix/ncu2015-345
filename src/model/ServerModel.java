@@ -42,7 +42,7 @@ public class ServerModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		udpClient.initialize(tcpServer, port);
+		udpClient.initialize(port);
 		return true;
 	}
 

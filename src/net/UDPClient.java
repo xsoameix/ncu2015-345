@@ -15,6 +15,7 @@ public class UDPClient {
 	DatagramSocket socket;
 	int setPort;
 	TCPServer tcpServer;
+	
     public UDPClient(TCPServer tcpServer){
     	this.tcpServer=tcpServer;
     }

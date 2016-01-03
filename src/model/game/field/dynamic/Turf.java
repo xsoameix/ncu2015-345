@@ -8,21 +8,21 @@ import model.game.field.FieldObject;
 import model.game.field.map.MapBlock;
 
 public class Turf extends FieldObject {
-	private int teamID=-1;
+	private int teamID = -1;
 	private Point locationInBlocks;// pixel
-	private int timeAtOccupy=-1;
+	private int timeAtOccupy = -1;
 	private Dimension size;// pixel
-	
-	public Turf(int teamID, Point location){
-		this.teamID=teamID;
+
+	public Turf(int teamID, Point location) {
+		this.teamID = teamID;
 		setLocation(location);
 	}
-	
-	public int getTimeAtOccupy(){
+
+	public int getTimeAtOccupy() {
 		return timeAtOccupy;
 	}
-	
-	public void setTimeAtOccupy(int time){
+
+	public void setTimeAtOccupy(int time) {
 		this.timeAtOccupy = time;
 	}
 
@@ -49,13 +49,17 @@ public class Turf extends FieldObject {
 	public void getSize(Dimension size) {
 		this.size = size;
 	}
-	
+
 	@Override
-	public Rectangle getRectangle(){
-		Rectangle rect = new Rectangle((this.getLocation().x/MapBlock.getSize().width)*MapBlock.getSize().width+MapBlock.getSize().width/2,
-									   (this.getLocation().x/MapBlock.getSize().height*MapBlock.getSize().height+MapBlock.getSize().height/2),
-				                       1,
-				                       1);
+	public Rectangle getRectangle() {
+		Rectangle rect = new Rectangle(
+				(this.getLocation().x / MapBlock.getSize().width)
+						* MapBlock.getSize().width
+						+ MapBlock.getSize().width / 2,
+				(this.getLocation().x / MapBlock.getSize().height
+						* MapBlock.getSize().height
+						+ MapBlock.getSize().height / 2),
+				1, 1);
 		return rect;
 	}
 }

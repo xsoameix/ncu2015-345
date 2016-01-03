@@ -22,6 +22,11 @@ public class Map {
 
 	}
 
+	public Map(Dimension size, MapBlock mapBlocks[][]) {
+		this.size = size;
+		this.mapBlocks = mapBlocks;
+	}
+
 	public Map(String fileName) {
 		mapBlocks = new MapBlock[size.height][size.width];
 

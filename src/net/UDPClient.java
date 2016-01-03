@@ -16,11 +16,10 @@ public class UDPClient {
 	int setPort;
 	TCPServer tcpServer;
 	
-    public UDPClient(TCPServer tcpServer){
-    	this.tcpServer=tcpServer;
+    public UDPClient(){
     }
     
-    public void initialize(int port){
+    public void initialize(TCPServer tcpServer,int port){
     	assert port>1024 && port<65536:"port over range";
     	IPData = tcpServer.getIPTable();
     	setPort = port;
@@ -35,6 +34,7 @@ public class UDPClient {
     	bytePacket = packet.getBytes();
     	while(true){
     		IPTableTemp[count++] = IPData.get(0);
+    		getIP = IPData.get(0);
     		DatagramPacket sendPacket = new DatagramPacket(bytePacket, bytePacket.length, IPData.get(0), setPort);
     		socket = new DatagramSocket();
     		socket.send(sendPacket);  		

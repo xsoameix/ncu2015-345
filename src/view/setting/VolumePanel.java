@@ -31,7 +31,8 @@ public class VolumePanel extends Panel{
 	private void setComponents(){
 		setLayout(new GridBagLayout());
 		setBorder(BorderFactory.createEmptyBorder(50,100,200,100));
-		Font font = new Font("", Font.BOLD, 30);
+		Font font = new Font("Arial", Font.BOLD, 30);
+		Insets margin = new Insets(8, 10, 8, 10);
 		
 		nullGrids = new Component[3];
 		for(int i = 0; i<nullGrids.length; i++) {
@@ -55,18 +56,21 @@ public class VolumePanel extends Panel{
 		
 		volumeDownButton=new Button("DOWN");
 		volumeDownButton.setFont(font);
+		volumeDownButton.setMargin(margin);
 		volumeDownButton.setIcon(new ImageIcon("image/volumedown.png"));
 		volumeDownButton.setActionCommand("volumeDown");
 		volumeDownButton.addActionListener(this);
 		
 		volumeUpButton=new Button(" UP ");
 		volumeUpButton.setFont(font);
+		volumeUpButton.setMargin(margin);
 		volumeUpButton.setIcon(new ImageIcon("image/volumeup.png"));
 		volumeUpButton.setActionCommand("volumeUp");
 		volumeUpButton.addActionListener(this);
 		
 		backButton=new Button("Back");
 		backButton.setFont(font);
+		backButton.setMargin(margin);
 		backButton.setActionCommand("back");
 		backButton.addActionListener(this);
 		

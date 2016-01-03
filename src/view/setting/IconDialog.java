@@ -1,9 +1,13 @@
 package view.setting;
 
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.ImageIcon;
 
 import view.Config;
@@ -18,18 +22,22 @@ public class IconDialog extends Dialog implements ActionListener {
 	private Button[] icons;
 	private void setComponents() {
 		setLayout(new FlowLayout());
+		Font font = new Font("Arial", Font.BOLD, 20);
+		Insets margin = new Insets(5, 8, 5, 8);
 		
 		icons=new Button[6];
 		for(int i=0; i<icons.length; i++){
-			icons[i]=new Button("icon"+i);
+			icons[i]=new Button();
 			icons[i].setIcon(new ImageIcon("image/icon"+i+".jpg"));
-			icons[i].setActionCommand(icons[i].getName());
+			icons[i].setActionCommand("icon"+i);
 			icons[i].addActionListener(parent);
 			add(icons[i]);
 		}
 		
 		backButton=new Button("back");
 		backButton.setActionCommand(backButton.getName());
+		backButton.setFont(font);
+		backButton.setMargin(margin);
 		backButton.addActionListener(this);
 		add(backButton);
 		

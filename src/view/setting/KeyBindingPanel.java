@@ -29,16 +29,9 @@ public class KeyBindingPanel extends Panel{
     private KeyBinding newKeyBinding;
     private ErrorKeyBindingDialog errorKeyBindingDialog;
     private Component[] nullGrids;
-	private Label upLabel;
-	private Label downLabel;
-	private Label leftLabel;
-	private Label rightLabel;
-	private Label attackLabel;
-	private KeyText upTextField;
-	private KeyText downTextField;
-	private KeyText leftTextField;
-	private KeyText rightTextField;
-	private KeyText attackTextField;
+    private String[] controls;
+    private Label[] labels;
+    private KeyText[] keyTexts;
 	private Button applyButton;
 	
 	
@@ -46,41 +39,33 @@ public class KeyBindingPanel extends Panel{
 	private void setComponents(){
 		setLayout(new GridBagLayout());
 		setBorder(BorderFactory.createEmptyBorder(50,100,200,100));
-		Font font = new Font("", Font.BOLD, 30);
+		Font font = new Font("Arial", Font.BOLD, 30);
+		Insets margin = new Insets(8, 10, 8, 10);
 		
 		nullGrids = new Component[5];
 		for(int i = 0; i<nullGrids.length; i++) {
 			nullGrids[i] = new Component();
 		}
 		
-		upLabel=new Label("UP");
-		upLabel.setFont(font);
-		downLabel=new Label("DOWN");
-		downLabel.setFont(font);
-		leftLabel=new Label("LEFT");
-		leftLabel.setFont(font);
-		rightLabel=new Label("RIGHT");
-		rightLabel.setFont(font);
-		attackLabel=new Label("ATTACK");
-		attackLabel.setFont(font);
-		upTextField=new KeyText(KeyMap.UP);
-		upTextField.setFont(font);
-		upTextField.addKeyListener(new KeyTextListener(upTextField));
-		downTextField=new KeyText(KeyMap.DOWN);
-		downTextField.setFont(font);
-		downTextField.addKeyListener(new KeyTextListener(downTextField));
-		leftTextField=new KeyText(KeyMap.LEFT);
-		leftTextField.setFont(font);
-		leftTextField.addKeyListener(new KeyTextListener(leftTextField));
-		rightTextField=new KeyText(KeyMap.RIGHT);
-		rightTextField.setFont(font);
-		rightTextField.addKeyListener(new KeyTextListener(rightTextField));
-		attackTextField=new KeyText(KeyMap.ATTACK);
-		attackTextField.setFont(font);
-		attackTextField.addKeyListener(new KeyTextListener(attackTextField));
+		controls = new String[]{"UP", "DOWN", "LEFT", "RIGHT", "ATTACK"};
+
+		labels = new Label[5];
+		for(int i = 0; i<labels.length; i++) {
+			labels[i] = new Label(controls[i]);
+			labels[i].setFont(font);
+		}
+		
+		keyTexts = new KeyText[5];
+		for(int i = 0; i<keyTexts.length; i++) {
+			keyTexts[i] = new KeyText(KeyMap.values()[i]);
+			keyTexts[i].setFont(font);
+			keyTexts[i].setMargin(margin);
+			keyTexts[i].addKeyListener(new KeyTextListener(keyTexts[i]));
+		}
 		
 		applyButton=new Button("Apply");
 		applyButton.setFont(font);
+		applyButton.setMargin(margin);
 		applyButton.setActionCommand("apply");
 		applyButton.addActionListener(this);
 		
@@ -93,12 +78,12 @@ public class KeyBindingPanel extends Panel{
 		c.insets=new Insets(5, 5, 5, 5);
 		c.anchor=GridBagConstraints.CENTER;
 		c.fill=GridBagConstraints.NONE;
-		add(upLabel, c);
+		add(labels[0], c);
 		
 		c.gridx=4;
 		c.gridwidth=0;
 		c.fill=GridBagConstraints.BOTH;
-		add(upTextField,c);
+		add(keyTexts[0],c);
 		
 		c.gridx=0;
 		c.gridy=2;
@@ -109,12 +94,12 @@ public class KeyBindingPanel extends Panel{
 		c.gridy=4;
 		c.gridwidth=3;
 		c.fill=GridBagConstraints.NONE;
-		add(downLabel,c);
+		add(labels[1],c);
 		
 		c.gridx=4;
 		c.gridwidth=0;
 		c.fill=GridBagConstraints.BOTH;
-		add(downTextField,c);
+		add(keyTexts[1],c);
 		
 		c.gridx=0;
 		c.gridy=6;
@@ -125,12 +110,12 @@ public class KeyBindingPanel extends Panel{
 		c.gridy=8;
 		c.gridwidth=3;
 		c.fill=GridBagConstraints.NONE;
-		add(leftLabel,c);
+		add(labels[2],c);
 		
 		c.gridx=4;
 		c.gridwidth=0;
 		c.fill=GridBagConstraints.BOTH;
-		add(leftTextField,c);
+		add(keyTexts[2],c);
 		
 		c.gridx=0;
 		c.gridy=10;
@@ -141,12 +126,12 @@ public class KeyBindingPanel extends Panel{
 		c.gridy=12;
 		c.gridwidth=3;
 		c.fill=GridBagConstraints.NONE;
-		add(rightLabel,c);
+		add(labels[3],c);
 		
 		c.gridx=4;
 		c.gridwidth=0;
 		c.fill=GridBagConstraints.BOTH;
-		add(rightTextField,c);
+		add(keyTexts[3],c);
 		
 		c.gridx=0;
 		c.gridy=14;
@@ -157,12 +142,12 @@ public class KeyBindingPanel extends Panel{
 		c.gridy=16;
 		c.gridwidth=3;
 		c.fill=GridBagConstraints.NONE;
-		add(attackLabel,c);
+		add(labels[4],c);
 		
 		c.gridx=4;
 		c.gridwidth=0;
 		c.fill=GridBagConstraints.BOTH;
-		add(attackTextField,c);
+		add(keyTexts[4],c);
 		
 		c.gridx=0;
 		c.gridy=18;
@@ -180,12 +165,10 @@ public class KeyBindingPanel extends Panel{
 		setComponents();
 		newKeyBinding=new KeyBinding();
 		errorKeyBindingDialog=new ErrorKeyBindingDialog(this, "Error type for control key.");
-		
 	}
 	
 	public void setKeyBinding(KeyBinding keyBinding) {
 		this.keyBinding = keyBinding;
-		
 	}
 	
 	@Override 
@@ -193,11 +176,9 @@ public class KeyBindingPanel extends Panel{
 		switch(e.getActionCommand()){
 		case "keyBinding":
 			getDisplayPanel().toPanel(PanelEnum.KEYBINDING);
-			upTextField.setText(KeyEvent.getKeyText(newKeyBinding.get(KeyMap.UP).getKeyCode()).toString());
-			downTextField.setText(KeyEvent.getKeyText(newKeyBinding.get(KeyMap.DOWN).getKeyCode()).toString());
-			leftTextField.setText(KeyEvent.getKeyText(newKeyBinding.get(KeyMap.LEFT).getKeyCode()).toString());
-			rightTextField.setText(KeyEvent.getKeyText(newKeyBinding.get(KeyMap.RIGHT).getKeyCode()).toString());
-			attackTextField.setText(KeyEvent.getKeyText(newKeyBinding.get(KeyMap.ATTACK).getKeyCode()).toString());
+			for(int i = 0; i<keyTexts.length; i++) {
+				keyTexts[i].setText(KeyEvent.getKeyText(newKeyBinding.get(KeyMap.values()[i]).getKeyCode()).toString());
+			}
 			break;
 		case "apply":
 			getDisplayPanel().first();
@@ -244,12 +225,18 @@ public class KeyBindingPanel extends Panel{
 		}
 		@Override
 		public void keyPressed(KeyEvent e) {
-		}
-		@Override
-		public void keyReleased(KeyEvent e) {
 			if(newKeyBinding.get(KeyStroke.getKeyStrokeForEvent(e)) != null) {
 				errorKeyBindingDialog.setVisible(true);
 			}
+			else {
+				int keyCode=e.getKeyCode();
+				keyText.setText(KeyEvent.getKeyText(keyCode).toString());
+				newKeyBinding.put(KeyStroke.getKeyStrokeForEvent(e), keyText.getKeyMap());
+			}
+		}
+		@Override
+		public void keyReleased(KeyEvent e) {
+			if(newKeyBinding.get(KeyStroke.getKeyStrokeForEvent(e)) != null) {}
 			else {
 				int keyCode=e.getKeyCode();
 				keyText.setText(KeyEvent.getKeyText(keyCode).toString());

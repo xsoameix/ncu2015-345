@@ -1,5 +1,6 @@
 package view.setting;
 
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -23,8 +24,12 @@ public class ErrorKeyBindingDialog extends Dialog implements ActionListener {
 
 	private void setComponents() {
 		setLayout(new GridBagLayout());
+		Font font = new Font("Arial", Font.BOLD, 20);
+		Insets margin = new Insets(5, 8, 5, 8);
+		
 
 		message=new Label("The control key has already existed. Please change the key.");
+		message.setFont(font);
 		add(message);
 		
 		nullGrids = new Component[1];
@@ -33,6 +38,8 @@ public class ErrorKeyBindingDialog extends Dialog implements ActionListener {
 		}
 		
 		backButton=new Button("back");
+		backButton.setFont(font);
+		backButton.setMargin(margin);
 		backButton.setActionCommand(backButton.getName());
 		backButton.addActionListener(this);
 		add(backButton);

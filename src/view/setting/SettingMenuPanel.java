@@ -22,8 +22,8 @@ public class SettingMenuPanel extends Panel {
 	private void setComponents(){
 		setLayout(new GridBagLayout());
 		setBorder(BorderFactory.createEmptyBorder(50,100,200,100));
-		Font font = new Font("", Font.BOLD, 30);
-		
+		Font font = new Font("Arial", Font.BOLD, 30);
+		Insets margin = new Insets(8, 20, 8, 20);
 		
 		nullGrids = new Component[4];
 		for(int i = 0; i<nullGrids.length; i++) {
@@ -34,21 +34,24 @@ public class SettingMenuPanel extends Panel {
 		profileButton.setActionCommand("profile");
 		profileButton.addActionListener(this);
 		profileButton.setFont(font);
-		
+		profileButton.setMargin(margin);		
 		volumeButton=new Button("Volume Setting");
 		volumeButton.setActionCommand("volume");
 		volumeButton.addActionListener(this);
 		volumeButton.setFont(font);
+		volumeButton.setMargin(margin);
 		
 		keyBindingButton=new Button("KeyBinding Setting");
 		keyBindingButton.setActionCommand("keyBinding");
 		keyBindingButton.addActionListener(this);
 		keyBindingButton.setFont(font);
+		keyBindingButton.setMargin(margin);
 		
 		backButton=new Button("Back");
 		backButton.setActionCommand("back");
 		backButton.addActionListener(this);
 		backButton.setFont(font);
+		backButton.setMargin(margin);
 		
 		GridBagConstraints c = new GridBagConstraints();
 		
@@ -81,7 +84,7 @@ public class SettingMenuPanel extends Panel {
 		c.gridy=10;
 		c.fill=GridBagConstraints.BOTH;
 		add(nullGrids[2], c);
-		
+
 		c.gridx=4;
 		c.gridy=12;
 		c.gridwidth=0;

@@ -3,9 +3,11 @@ package view.setting;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
@@ -32,7 +34,8 @@ public class ProfilePanel extends Panel {
 	private void setComponents(){
 		setLayout(new GridBagLayout());
 		setBorder(BorderFactory.createEmptyBorder(10, 100, 200, 100));
-		Font font = new Font("Serif", Font.BOLD, 30);
+		Font font = new Font("Arial", Font.BOLD, 20);
+		Insets margin = new Insets(8, 10, 8, 10);
 		
 		nullGrids = new Component[2];
 		for(int i = 0; i<nullGrids.length; i++) {
@@ -43,10 +46,12 @@ public class ProfilePanel extends Panel {
 		nameLabel.setFont(font);
 		nameTextField=new TextField();
 		nameTextField.setFont(font);
+		nameTextField.setMargin(margin);
 		imageLabel=new Label("Your Image:");
 		imageLabel.setFont(font);
 		imageContentButton=new Button("Choose Image!!");
 		imageContentButton.setFont(font);
+		imageContentButton.setMargin(margin);
 		imageContentButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -58,6 +63,7 @@ public class ProfilePanel extends Panel {
 		
 		applyButton=new Button("Apply");
 		applyButton.setFont(font);
+		applyButton.setMargin(margin);
 		applyButton.setActionCommand("apply");
 		applyButton.addActionListener(this);
 		
@@ -131,8 +137,9 @@ public class ProfilePanel extends Panel {
 		default:
 			if(e.getActionCommand().startsWith("icon")) {
 				int i=Integer.valueOf(e.getActionCommand().substring("icon".length()));
-				imageContentButton.setText(e.getActionCommand().toString());
+				imageContentButton.setText("");
 				imageContentButton.setIcon(new ImageIcon("image/icon"+Integer.toString(i)+".jpg"));
+				imageContentButton.setLayout(new GridLayout(2, 1, 0, 0));
 				newProfile.setIconID(i);
 				iconDialog.dispose();
 			}

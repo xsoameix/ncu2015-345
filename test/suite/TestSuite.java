@@ -10,6 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
     net.TestTCPServer.class,
     net.TestTCPClient.class,
     net.TestWorker.class,
-    net.TestUDPServer.class
+    net.TestUDPServer.class,
+    net.TestUDPClient.class
 })
 public class TestSuite {}

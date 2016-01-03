@@ -138,7 +138,7 @@ public class ClientModel {
 
 	public synchronized boolean addPlayer(Room room) {
 		assert room != null : "[ClientModel] addPlayer room is null";
-		if (individual.getID() == -1) {
+		if (individual.getID() == 0) {
 			individual.setID(room.getPlayerList().size());
 		}
 		this.room.addPlayer(room);

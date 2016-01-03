@@ -13,6 +13,7 @@ import model.game.Rule;
 import model.game.Team;
 import model.game.coder.ServerDecoder;
 import model.game.coder.ServerEncoder;
+import model.game.field.dynamic.Bullet;
 import net.TCPServer;
 import net.UDPClient;
 
@@ -29,6 +30,7 @@ public class ServerModel {
 	private TurfThread turfThread;
 	private AtomicInteger sessionAtomicInteger;
 	private BulletThread bulletThread;
+
 	public ServerModel() {
 		// TODO Auto-generated constructor stub
 		atomicInteger = new AtomicInteger(0);
@@ -106,8 +108,8 @@ public class ServerModel {
 		timeThread.start();
 		turfThread = new TurfThread(game, game.getField(), game.getField().getMap(), rule);
 		turfThread.start();
-		bulletThread = new BulletThread(game.getField());
-		
+		bulletThread = new BulletThread(this);
+		bulletThread.start();
 		return true;
 	}
 
@@ -148,14 +150,22 @@ public class ServerModel {
 		return true;
 	}
 
+	public void removeBullet(Bullet bullet) throws IOException, InterruptedException {
+		udpClient.send(encoder.updateBullet(bullet).toString());
+	}
+
+	public void updateBullet(Bullet bullet) throws IOException, InterruptedException {
+		udpClient.send(encoder.removeBullet(bullet).toString());
+	}
+
 	public boolean fire(int id) throws IOException, InterruptedException {
 		// new bullet
 		// bullet direction = character direction
-		// udpClient.send(encoder.addBullet(new Bullet(1, 1)).toString());
+//		Bullet bullet = new Bullet(id, sessionAtomicInteger.getAndIncrement(), game.getPlayer(id).getCharacter().getDirection());
+//		udpClient.send(encoder.addBullet(bullet).toString());
 		// udpClient.send(encoder.updateBullet(new Bullet(1, 1)).toString());
 		// udpClient.send(encoder.removeBullet(new Bullet(1, 1)).toString());
-		//
-		// //
+
 		// udpClient.send(encoder.removePlayer(game.getPlayer(1)).toString());
 		// udpClient.send(encoder.gameOver(new
 		// Result(game.getTeams())).toString());
@@ -167,12 +177,15 @@ public class ServerModel {
 		// udpClient.send(encoder.removeObstacle(new Obstacle(1, new Point(32,
 		// 0))).toString());
 
-//		game.getPlayer(id).getCharacter().setLocation(new Point(42, 32));
-//		System.out.println("[ServerModel] fire " + game.getPlayer(1).getCharacter().getLocation());
-//		System.out.println("[ServerModel] fire " + rule.MovingCheck(game.getPlayer(1).getCharacter()));
-//		if (rule.MovingCheck(game.getPlayer(1).getCharacter()) == false) {
-//			game.getPlayer(id).getCharacter().setLocation(new Point(32, 32));
-//		}
+		// game.getPlayer(id).getCharacter().setLocation(new Point(42, 32));
+		// System.out.println("[ServerModel] fire " +
+		// game.getPlayer(1).getCharacter().getLocation());
+		// System.out.println("[ServerModel] fire " +
+		// rule.MovingCheck(game.getPlayer(1).getCharacter()));
+		// if (rule.MovingCheck(game.getPlayer(1).getCharacter()) == false) {
+		// game.getPlayer(id).getCharacter().setLocation(new Point(32, 32));
+		// }
+
 		return true;
 	}
 

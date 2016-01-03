@@ -9,9 +9,10 @@ public class Bullet extends FieldObject {
 	private int direction;
 	private int playerID;
 
-	public Bullet(int playerID, int ID) {
+	public Bullet(int playerID, int ID, int direction) {
 		// TODO Auto-generated constructor stub
 		this.playerID = playerID;
+		this.direction = direction;
 		setID(ID);
 	}
 

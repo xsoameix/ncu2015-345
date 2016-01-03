@@ -11,8 +11,8 @@ import model.game.field.dynamic.Bullet;
 public class BulletThread extends Thread {
 	private Field field;
 
-	public BulletThread(Field field) {
-		this.field = field;
+	public BulletThread(ServerModel serverModel) {
+		this.field = serverModel.getGame().getField();
 	}
 
 	@Override
@@ -21,7 +21,6 @@ public class BulletThread extends Thread {
 		while (true) {
 			Vector<Bullet> bulletList = field.getBulletList();
 			Iterator<Bullet> iter = bulletList.iterator();
-
 			synchronized (this) {
 				while (iter.hasNext()) {
 					bulletObject = iter.next();

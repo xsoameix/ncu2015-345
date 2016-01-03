@@ -7,6 +7,9 @@ import model.game.field.dynamic.Obstacle;
 import view.play.PlayPanel;
 
 public class FakePlayPanel extends PlayPanel {
+	public FakePlayPanel() {
+		// TODO Auto-generated constructor stub
+	}
 
 	// room
 	public void addPlayer(Player player) {

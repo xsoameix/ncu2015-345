@@ -68,7 +68,7 @@ public class Rule {
 			}
 
 			for (int row = currentPosY; row <= currentPosY + 1; row++) {
-				for (int col = currentPosX; col <= currentPosY + 1; col++) {
+				for (int col = currentPosX; col <= currentPosX + 1; col++) {
 
 					// get the Rectangle of the 4 blocks which was near the
 					// current object
@@ -176,6 +176,8 @@ public class Rule {
 
 		// Born Location
 		Point bornLocation = new Point(100, 100);
+		MapBlock mapBlock = map.getMapBlock(bornLocation.x, bornLocation.y);
+		
 
 		// Bullet hit tank, remove the bullet from the bulletList in field and
 		// mapBlock
@@ -204,6 +206,7 @@ public class Rule {
 		// beAttacked's character location set to bornLocation and add one death
 		assert beAttacked != null : "Failed to find the player who was hit by bullet in the [BulletHitTank]";
 		beAttacked.getCharacter().setLocation(bornLocation);
+		mapBlock.addDynamicObject(beAttacked.getCharacter());
 		int newDeath = beAttacked.getDeath() + 1;
 		beAttacked.setDeath(newDeath);
 

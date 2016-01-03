@@ -2,14 +2,18 @@ package model;
 
 import java.awt.Point;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONObject;
 
 import model.game.Player;
+import model.game.Result;
 import model.game.coder.ServerDecoder;
 import model.game.coder.ServerEncoder;
 import model.game.field.dynamic.Bullet;
+import model.game.field.dynamic.Obstacle;
+import model.game.field.dynamic.Turf;
 import net.TCPServer;
 import net.UDPClient;
 
@@ -42,16 +46,18 @@ public class ServerModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		udpClient.initialize(port);
+		udpClient.initialize(tcpServer, port);
 		return true;
 	}
 
 	public void setTotalTime(int second) throws IOException, InterruptedException {
+		assert second >= 0 : "[ServerModel] setTotalTime second error : " + second;
 		game.setTime(second);
 		udpClient.send(encoder.setTotalTime(second).toString());
 	}
 
 	public void setPlayerNumber(int playernumber) throws IOException, InterruptedException {
+		assert playernumber >= 2 && playernumber <= 6 : "[ServerModel] setPlayerNumber playernumber error : " + playernumber;
 		room.setPlayerNumber(playernumber);
 		udpClient.send(encoder.setPlayerNumber(playernumber).toString());
 	}
@@ -69,19 +75,22 @@ public class ServerModel {
 		}
 		udpClient.send(encoder.setTime(game.getTime()).toString());
 		udpClient.send(encoder.startGame().toString());
-
 		return true;
 	}
 
 	public boolean addPlayer(Player player) throws IOException, InterruptedException {
-		assert !room.getPlayerList().contains(player) : "[ServerModel] addPlayer : player alreadt exist";
+		assert player != null : "[ServerModel] addPlayer player is null : " + player;
+		assert room.getPlayer(player.getID()) == null : "[ServerModel] addPlayer : player alreadt exist";
 		room.addPlayer(player);
+		udpClient.send(encoder.addPlayer(room).toString());
+		udpClient.send(encoder.addPlayer(room).toString());
+		udpClient.send(encoder.addPlayer(room).toString());
 		udpClient.send(encoder.addPlayer(room).toString());
 		return true;
 	}
 
 	public boolean removePalyer(Player player) throws IOException, InterruptedException {
-		assert room.getPlayerList().contains(player) : "[ServerModel] removePalyer : player does not exist";
+		assert room.getPlayer(player.getID()) != null : "[ServerModel] removePalyer : player does not exist";
 		room.removePlayer(player);
 		udpClient.send(encoder.removePlayer(player).toString());
 		return true;
@@ -90,7 +99,7 @@ public class ServerModel {
 	public boolean setLocation(int id, Point point) throws IOException, InterruptedException {
 		assert point != null : "[ServerModel] setLocation : Point location is null";
 		int x = point.x, y = point.y;
-		assert x > 0 && y > 0 : "[ServerModel] setLocation : location error x " + x + " y " + y;
+		assert x >= 0 && y >= 0 : "[ServerModel] setLocation : location error x " + x + " y " + y;
 		// call rule to move
 		// if true then setLocation
 		if (game.getPlayer(id) != null) {
@@ -110,12 +119,12 @@ public class ServerModel {
 		udpClient.send(encoder.removeBullet(new Bullet(1, 1)).toString());
 
 		// udpClient.send(encoder.removePlayer(game.getPlayer(1)).toString());
-		// udpClient.send(encoder.gameOver(new
-		// Result(game.getTeams())).toString());
-		// udpClient.send(encoder.changeFlagColor(new Turf()).toString());
-		// udpClient.send(encoder.setKillNumber(game.getPlayer(1)).toString());
-		// udpClient.send(encoder.setMoney(game.getTeams()).toString());
-		// udpClient.send(encoder.removeObstacle(new Obstacle()).toString());
+		udpClient.send(encoder.gameOver(new Result(game.getTeams())).toString());
+		udpClient.send(encoder.changeFlagColor(new Turf(1, new Point(576, 32), 78)).toString());
+		Thread.sleep(5000);
+		udpClient.send(encoder.setKillNumber(game.getPlayer(1)).toString());
+		udpClient.send(encoder.setMoney(game.getTeams()).toString());
+		udpClient.send(encoder.removeObstacle(new Obstacle(1, new Point(32, 0))).toString());
 		return true;
 	}
 

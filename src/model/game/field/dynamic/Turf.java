@@ -8,9 +8,9 @@ import model.game.field.FieldObject;
 import model.game.field.map.MapBlock;
 
 public class Turf extends FieldObject {
-	private int teamID;
+	private int teamID=-1;
 	private Point locationInBlocks;// pixel
-	private int timeAtOccupy;
+	private int timeAtOccupy=-1;
 	private Dimension size;// pixel
 	
 	public Turf(int teamID, Point location){

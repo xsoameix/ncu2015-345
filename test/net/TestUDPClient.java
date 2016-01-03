@@ -13,12 +13,13 @@ public class TestUDPClient implements Runnable {
 	public static final long BIND_TIME      = 100;
 	int port = 5000;
     String packet = "hello world";
+    FakeTCPServerModel TCPserver = new FakeTCPServerModel();
 	
 	//test initialize() method
 	@Test
 	public void testInitialize() throws InterruptedException {
 		try {
-			UDPClient client=new UDPClient();
+			UDPClient client=new UDPClient(TCPserver);
 			client.initialize(port);
 			assertEquals(InetAddress.getByName("127.0.0.1"),client.getIP);
 		} catch (UnknownHostException e) {
@@ -36,7 +37,7 @@ public class TestUDPClient implements Runnable {
 		Thread.sleep(BIND_TIME);
 		
 		//create UDP client
-		UDPClient client=new UDPClient();
+		UDPClient client=new UDPClient(TCPserver);
 		client.initialize(port);
 		Thread.sleep(BIND_TIME);
 		client.send(packet);

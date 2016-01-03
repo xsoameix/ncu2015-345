@@ -151,18 +151,22 @@ public class ServerModel {
 	}
 
 	public void removeBullet(Bullet bullet) throws IOException, InterruptedException {
-		udpClient.send(encoder.updateBullet(bullet).toString());
+		udpClient.send(encoder.removeBullet(bullet).toString());
 	}
 
 	public void updateBullet(Bullet bullet) throws IOException, InterruptedException {
-		udpClient.send(encoder.removeBullet(bullet).toString());
+		udpClient.send(encoder.updateBullet(bullet).toString());
 	}
 
 	public boolean fire(int id) throws IOException, InterruptedException {
 		// new bullet
 		// bullet direction = character direction
-//		Bullet bullet = new Bullet(id, sessionAtomicInteger.getAndIncrement(), game.getPlayer(id).getCharacter().getDirection());
-//		udpClient.send(encoder.addBullet(bullet).toString());
+
+		game.getPlayer(id).getCharacter().getDirection();
+		Bullet bullet = new Bullet(id, sessionAtomicInteger.getAndIncrement(), game.getPlayer(id).getCharacter().getDirection(), game.getPlayer(id).getCharacter().getLocation());
+		game.getField().addBullet(bullet);
+		udpClient.send(encoder.addBullet(bullet).toString());
+
 		// udpClient.send(encoder.updateBullet(new Bullet(1, 1)).toString());
 		// udpClient.send(encoder.removeBullet(new Bullet(1, 1)).toString());
 

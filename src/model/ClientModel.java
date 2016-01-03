@@ -253,6 +253,8 @@ public class ClientModel {
 			}
 		}
 		initPlayerRespawn();
+		game.getPlayer(1).getCharacter().getLocation().x = 32;
+		game.getPlayer(1).getCharacter().getLocation().y = 32;
 		playPanel.startGame();
 	}
 

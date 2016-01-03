@@ -58,6 +58,7 @@ public class Player {
 
 	public synchronized void setID(int iD) {
 		ID = iD;
+		getCharacter().setPlayerID(ID);
 	}
 
 	public int getTeamID() {

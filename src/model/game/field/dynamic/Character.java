@@ -6,7 +6,7 @@ import model.game.Direction;
 import model.game.field.FieldObject;
 
 public class Character extends FieldObject {
-	private int direction;
+	private int direction = 1;
 	private int playerID = -1;
 
 	public Character() {

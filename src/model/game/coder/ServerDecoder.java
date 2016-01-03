@@ -45,7 +45,6 @@ public class ServerDecoder {
 						assert player != null : "[ServerDecoder] decode Player is null";
 						player.setID(id);
 						player.getCharacter().setID(atomicInteger.getAndIncrement());
-						player.getCharacter().setPlayerID(id);
 						serverModel.addPlayer(player);
 						break;
 					case "requestRemovePlayer":

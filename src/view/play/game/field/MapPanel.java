@@ -3,22 +3,22 @@ package view.play.game.field;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import model.ClientModel;
 import model.game.field.Map;
 import view.base.Panel;
+import view.base.extend.AbstractView;
 import view.play.game.field.map.MapBlockPanel;
 
-public class MapPanel extends Panel{
+public class MapPanel extends AbstractView{
 	private Map map;
 	private MapBlockPanel mapBlockPanels[][];
 	private Dimension blockSize=new Dimension(32, 32);
 	
 	
 	public MapPanel() {
-		this(new Map());
 	}
 	public MapPanel(Map map){
-		this.setMap(map);
-		
+		this.map=map;
 		Dimension size=map.getSize();
 		
 		setSize(new Dimension(blockSize.width*size.width, blockSize.height*size.height));
@@ -43,14 +43,10 @@ public class MapPanel extends Panel{
 	}
 	//read the map data and draw
 
-
-	public Map getMap() {
-		return map;
+	@Override
+	public void setModel(ClientModel clientModel) {
+		super.setModel(clientModel);
+		this.map=clientModel.getGame().getField().getMap();
 	}
-
-	public void setMap(Map map) {
-		this.map = map;
-	}
-
 
 }

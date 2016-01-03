@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JSplitPane;
 
+import model.ClientModel;
 import model.game.Player;
 import view.base.Button;
 import view.base.extend.AbstractView;
@@ -53,8 +54,20 @@ public class RoomPanel extends AbstractView{
 		setComponents();
 	}
 	@Override
+	public void setModel(ClientModel clientModel) {
+		super.setModel(clientModel);
+		gameSettingPanel.setModel(clientModel);
+		playersPanel.setModel(clientModel);
+	}
+	
+	@Override
 	public void actionPerformed(ActionEvent e){
 		switch(e.getActionCommand()){
+		case "establish":
+			gameSettingPanel.requestSetPlayerNumber();
+			gameSettingPanel.requestSetTotalTime();
+			getDisplayPanel().next();
+			break;
 		case "start":
 			clientModel.requestStartGame();
 			break;

@@ -6,8 +6,9 @@ import model.game.Player;
 import model.game.field.dynamic.Character;
 import model.setting.Profile;
 import view.base.Panel;
+import view.base.extend.AbstractView;
 
-public class PlayersPanel extends Panel {
+public class PlayersPanel extends AbstractView {
 	public PlayersPanel(){
 		setLayout(new GridLayout(0,2));
 		for(int i=0; i<6; i++)

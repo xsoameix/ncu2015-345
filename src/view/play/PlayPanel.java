@@ -23,6 +23,7 @@ public class PlayPanel extends DisplayPanel{
 		establishPanel=new EstablishPanel();
 		addActionListener(establishPanel);
 		roomPanel=new RoomPanel();
+		establishPanel.addActionListener(roomPanel);
 		gamePanel=new GamePanel();
 		resultPanel=new ResultPanel();
 		

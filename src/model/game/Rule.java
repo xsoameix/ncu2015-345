@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import model.Game;
-import model.Room;
 import model.game.field.FieldObject;
 import model.game.field.Map;
 import model.game.field.dynamic.Turf;
@@ -22,9 +21,9 @@ public class Rule {
 	private Field field;
 	//private Vector<DynamicObject> List;
 	
-	public Rule(Game game){
+	public Rule(Game game, Map map, Field field){
 		this.map = game.getField().getMap();
-		this.field = game.getField();
+		this.field = field;
 		this.game = game;
 	}
 	
@@ -40,12 +39,15 @@ public class Rule {
 	//Return false when this object can't move
 	public boolean MovingCheck(FieldObject current){
 		FieldObject collusionObject = IsCollusion(current);
-		FieldObject object = null;
+		//FieldObject object = null;
 		//
 		int currentPosX;
 		int currentPosY;
 		Rectangle rect = null;
-		MapBlock mapBlock = null;
+		Vector<Player> playerList = game.getPlayerList();
+		Iterator<Player> iterPlayer = null;
+		Player playerObject = null;
+		//MapBlock mapBlock = null;
 		//
 		if(collusionObject == null || (collusionObject instanceof Turf))
 		{
@@ -55,8 +57,17 @@ public class Rule {
 			
 			//Tank hit Turf,then setTeamID and setTimeAtOccupy
 			if(collusionObject instanceof Turf && current instanceof Character){
-				((Turf)collusionObject).setTeamID(((Character)current).getPlayerID());
-				((Turf)collusionObject).setTimeAtOccupy(game.getTime());
+				iterPlayer = playerList.iterator();
+				//Find the player of the current tank
+				while(iterPlayer.hasNext()){
+					playerObject = iterPlayer.next();
+					if(playerObject.getID() == ((Character)current).getPlayerID())
+					{
+						((Turf)collusionObject).setTeamID(playerObject.getTeamID());
+						((Turf)collusionObject).setTimeAtOccupy(game.getTime());
+						break;
+					}
+				}	
 			}
 			
 			for(int row = currentPosY; row <= currentPosY+1; row++){

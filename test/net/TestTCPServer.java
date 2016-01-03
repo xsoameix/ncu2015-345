@@ -14,6 +14,8 @@ import org.junit.Test;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
 
+import model.ServerModel;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestTCPServer {
 
@@ -36,7 +38,7 @@ public class TestTCPServer {
     @Test
     public void testInitialize() {
         try {
-            FakeServerModel model = new FakeServerModel();
+            ServerModel model = new ServerModel();
             TCPServer server = new TCPServer(model);
             server.initialize(port);
             Thread.sleep(BIND_TIME);
@@ -52,7 +54,7 @@ public class TestTCPServer {
     @Test
     public void testGetIPTable() {
         try {
-            FakeServerModel model = new FakeServerModel();
+            ServerModel model = new ServerModel();
             TCPServer server = new TCPServer(model);
             server.initialize(port);
             Thread.sleep(BIND_TIME);
@@ -87,8 +89,8 @@ public class TestTCPServer {
     public void testReceivingData() {
         try {
             final Vector<String> actual = new Vector<String>();
-            FakeServerModel model = new FakeServerModel() {
-                public void set(byte body[]) {
+            ServerModel model = new ServerModel() {
+                public void set(int id, byte body[]) {
                     actual.add(new String(body, StandardCharsets.UTF_8));
                 }
             };
@@ -119,7 +121,7 @@ public class TestTCPServer {
     @Test
     public void testCloseServerBeforeSocketClosed() {
         try {
-            FakeServerModel model = new FakeServerModel();
+            ServerModel model = new ServerModel();
             TCPServer server = new TCPServer(model);
             server.initialize(port);
             Thread.sleep(BIND_TIME);
@@ -136,7 +138,7 @@ public class TestTCPServer {
     @Test(expected = AssertionError.class)
     public void testCloseServerBeforeServerInitialized() {
         try {
-            FakeServerModel model = new FakeServerModel();
+            ServerModel model = new ServerModel();
             TCPServer server = new TCPServer(model);
             server.close();
         } catch (Exception e) {
@@ -149,7 +151,7 @@ public class TestTCPServer {
     @Test(expected = AssertionError.class)
     public void testCloseServerTwice() {
         try {
-            FakeServerModel model = new FakeServerModel();
+            ServerModel model = new ServerModel();
             TCPServer server = new TCPServer(model);
             server.initialize(port);
             Thread.sleep(BIND_TIME);

@@ -7,9 +7,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.json.JSONObject;
 
 import model.game.Player;
+import model.game.Result;
 import model.game.coder.ServerDecoder;
 import model.game.coder.ServerEncoder;
 import model.game.field.dynamic.Bullet;
+import model.game.field.dynamic.Obstacle;
+import model.game.field.dynamic.Turf;
 import net.TCPServer;
 import net.UDPClient;
 
@@ -42,7 +45,7 @@ public class ServerModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		udpClient.initialize(port);
+		udpClient.initialize(tcpServer, port);
 		return true;
 	}
 
@@ -67,9 +70,9 @@ public class ServerModel {
 				game.getTeam(1).addPlayer(room.getPlayerList().get(i));
 			}
 		}
+
 		udpClient.send(encoder.setTime(game.getTime()).toString());
 		udpClient.send(encoder.startGame().toString());
-
 		return true;
 	}
 
@@ -110,12 +113,12 @@ public class ServerModel {
 		udpClient.send(encoder.removeBullet(new Bullet(1, 1)).toString());
 
 		// udpClient.send(encoder.removePlayer(game.getPlayer(1)).toString());
-		// udpClient.send(encoder.gameOver(new
-		// Result(game.getTeams())).toString());
-		// udpClient.send(encoder.changeFlagColor(new Turf()).toString());
-		// udpClient.send(encoder.setKillNumber(game.getPlayer(1)).toString());
-		// udpClient.send(encoder.setMoney(game.getTeams()).toString());
-		// udpClient.send(encoder.removeObstacle(new Obstacle()).toString());
+		udpClient.send(encoder.gameOver(new Result(game.getTeams())).toString());
+		udpClient.send(encoder.changeFlagColor(new Turf(1, new Point(576, 32), 78)).toString());
+		Thread.sleep(5000);
+		udpClient.send(encoder.setKillNumber(game.getPlayer(1)).toString());
+		udpClient.send(encoder.setMoney(game.getTeams()).toString());
+		udpClient.send(encoder.removeObstacle(new Obstacle(1, new Point(32, 0))).toString());
 		return true;
 	}
 

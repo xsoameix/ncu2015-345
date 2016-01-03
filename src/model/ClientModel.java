@@ -84,16 +84,19 @@ public class ClientModel {
 	}
 
 	public void requestSetTotalTime(int time) {
+		assert time >= 0 : "[ClientModel] requestSetTotalTime time error : " + time;
 		JSONObject content = encoder.encodeObject("requestSetTotalTime", time);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
 	public void requestSetPlayerNumber(int number) {
+		assert number >= 2 && number <= 6 : "[ClientModel] requestSetPlayerNumber number error : " + number;
 		JSONObject content = encoder.encodeObject("requestSetPlayerNumber", number);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
 	public void requestSetLocation(int x, int y) {
+		assert x >= 0 && y >= 0 : "[ClientModel] requestSetLocation x&y error : [" + x + "] [" + y + "]";
 		Point location = new Point();
 		location.x = x;
 		location.y = y;
@@ -104,10 +107,12 @@ public class ClientModel {
 	/* for outside API end */
 
 	public void setTotalTime(int time) {
+		assert time >= 0 : "[ClientModel] setTotalTime time error : " + time;
 		game.setTime(time);
 	}
 
 	public synchronized void setMoney(Vector<Team> teams) {
+		assert teams != null : "[ClientModel] setMoney teams is null ";
 		for (int i = 0; i < teams.size(); i++) {
 			Team tmp = teams.get(i);
 			if (game.getTeam(tmp.getID()) != null) {
@@ -117,15 +122,19 @@ public class ClientModel {
 	}
 
 	public synchronized void setKillNumber(Player player) {
+		assert player != null : "[ClientModel] setKillNumber player is null : " + player;
 		int newPlayerID = player.getID();
+		assert game.getPlayer(newPlayerID) != null : "[ClientModel] setKillNumber getPlayer is null playerID : " + newPlayerID;
 		game.getPlayer(newPlayerID).setKill(player.getKill());
 	}
 
 	public synchronized void setPlayerNumber(int playnumber) {
+		assert playnumber >= 2 && playnumber <= 6 : "[ClientModel] setPlayerNumber playnumber error : " + playnumber;
 		room.setPlayerNumber(playnumber);
 	}
 
 	public synchronized boolean addPlayer(Room room) {
+		assert room != null : "[ClientModel] addPlayer room is null";
 		this.room.addPlayer(room);
 		for (int i = 0; i < room.getPlayerList().size(); i++) {
 			playPanel.addPlayer(room.getPlayerList().get(i));
@@ -134,20 +143,24 @@ public class ClientModel {
 	}
 
 	public synchronized boolean removePlayer(Player player) {
+		assert player != null : "[ClientModel] removePlayer player is null";
 		room.removePlayer(player);
 		playPanel.removePlayer(player);
 		return true;
 	}
 
 	public void gameOver(Result result) {
-		// playPanel.gameOver(result);
+		assert result != null : "[ClientModel] gameOver result is null";
+		playPanel.gameOver(result);
 	}
 
 	public void setTime(int time) {
+		assert time >= 0 : "[ClientModel] setTime time error : " + time;
 		game.setTime(time);
 	}
 
 	public synchronized boolean addBullet(Bullet bullet) {
+		assert bullet != null : "[ClientModel] addBullet bullet is null";
 		synchronized (game.getField().getBulletList()) {
 			game.getField().getBulletList().add(bullet);
 			this.playPanel.addBullet(bullet);
@@ -156,14 +169,17 @@ public class ClientModel {
 	}
 
 	public synchronized void updateBullet(Bullet bullet) {
+		assert bullet != null : "[ClientModel] updateBullet bullet is null";
 		synchronized (game.getField().getBulletList()) {
 			Bullet oldBullet = game.getField().getBullet(bullet.getID());
+			assert oldBullet != null : "[ClientModel] updateBullet getBullet is null bulletID : " + bullet.getID();
 			oldBullet.setDirection(bullet.getDirection());
 			oldBullet.setLocation(bullet.getLocation());
 		}
 	}
 
 	public synchronized boolean removeBullet(Bullet bullet) {
+		assert bullet != null : "[ClientModel] removeBullet bullet is null";
 		synchronized (game.getField().getBulletList()) {
 			for (int i = 0; i < game.getField().getBulletList().size(); i++) {
 				Bullet tmp = game.getField().getBulletList().get(i);
@@ -177,12 +193,15 @@ public class ClientModel {
 	}
 
 	public void changeTurfColor(Turf turf) {
+		assert turf != null : "[ClientModel] changeTurfColor turf is null";
+		assert game.getTurf(turf.getID()) != null : "[ClientModel] changeTurfColor getTurf is null turfID : " + turf.getID();
 		if (game.getTurf(turf.getID()) != null) {
-			game.getTurf(turf.getID()).setID(turf.getID());
+			game.getTurf(turf.getID()).setTeamID(turf.getTeamID());
 		}
 	}
 
 	public synchronized boolean removeObstacle(Obstacle obstacle) {
+		assert obstacle != null : "[ClientModel] removeObstacle obstacle is null";
 		synchronized (game.getField().getObstacles()) {
 			for (int i = 0; i < game.getField().getObstacles().size(); i++) {
 				Obstacle tmp = game.getField().getObstacles().get(i);
@@ -196,6 +215,7 @@ public class ClientModel {
 	}
 
 	public void set(byte[] packet) {
+		assert packet != null : "[ClientModel] set packet is null";
 		JSONObject jsonObj = null;
 		try {
 			System.out.println("[ClientModel] set " + new String(packet));
@@ -217,10 +237,12 @@ public class ClientModel {
 				game.getTeam(1).addPlayer(room.getPlayerList().get(i));
 			}
 		}
-		// playPanel.startGame();
+		playPanel.startGame();
 	}
 
 	public void setLocation(Player newPlayer) {
+		assert newPlayer != null : "[ClientModel] setLocation newPlayer is null";
+		assert game.getPlayer(newPlayer.getID()) != null : "[ClientModel] setLocation getPlayer is null playerID : " + newPlayer.getID();
 		if (game.getPlayer(newPlayer.getID()) != null) {
 			Character oldCharacter = game.getPlayer(newPlayer.getID()).getCharacter();
 			oldCharacter.setDirection(newPlayer.getCharacter().getDirection());
@@ -242,7 +264,7 @@ public class ClientModel {
 	}
 
 	public void setPlayPanel(PlayPanel playPanel) {
-//		this.playPanel = playPanel;
+		// this.playPanel = playPanel;
 	}
 
 	public Room getRoom() {

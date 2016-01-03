@@ -13,8 +13,9 @@ public class Turf extends FieldObject {
 	private int timeAtOccupy = -1;
 	private Dimension size;// pixel
 
-	public Turf(int teamID, Point location) {
+	public Turf(int teamID, Point location, int ID) {
 		this.teamID = teamID;
+		setID(ID);
 		setLocation(location);
 	}
 
@@ -52,14 +53,7 @@ public class Turf extends FieldObject {
 
 	@Override
 	public Rectangle getRectangle() {
-		Rectangle rect = new Rectangle(
-				(this.getLocation().x / MapBlock.getSize().width)
-						* MapBlock.getSize().width
-						+ MapBlock.getSize().width / 2,
-				(this.getLocation().x / MapBlock.getSize().height
-						* MapBlock.getSize().height
-						+ MapBlock.getSize().height / 2),
-				1, 1);
+		Rectangle rect = new Rectangle((this.getLocation().x / MapBlock.getSize().width) * MapBlock.getSize().width + MapBlock.getSize().width / 2, (this.getLocation().x / MapBlock.getSize().height * MapBlock.getSize().height + MapBlock.getSize().height / 2), 1, 1);
 		return rect;
 	}
 }

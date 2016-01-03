@@ -28,13 +28,7 @@ public class SettingPanel extends DisplayPanel {
 	public SettingPanel() {
 		setComponents();
 	}
-	public Setting getSetting() {
-		return clientModel.getSetting();
-	}
-	public void setSetting(Setting setting) {
-		clientModel.setSetting(setting);
-	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e){
 		switch(e.getActionCommand()){

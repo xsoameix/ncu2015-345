@@ -1,8 +1,6 @@
 package view.play.game;
 
 
-import java.awt.Component;
-
 import model.game.Field;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Character;
@@ -24,7 +22,7 @@ public class FieldPanel extends AbstractView{
 	public FieldPanel(){
 		setLayout(null);
 		mapPanel=new MapPanel();
-		add(mapPanel);
+		add(mapPanel, 0);
 	}
 	public void setField(Field field) {
 		this.field=field;
@@ -39,9 +37,9 @@ public class FieldPanel extends AbstractView{
 		add(new BulletView(bullet));
 	}
 	public void removeBullet(Bullet bullet){
-		for(Component component: getComponents())
-			if(((FieldObjectView)component).getObject().equals(bullet)){
-				remove(component);
+		for(int i=1; i<getComponentCount(); i++)
+			if(((FieldObjectView)getComponent(i)).getObject().equals(bullet)){
+				remove(getComponent(i));
 				break;
 			}
 	}
@@ -49,9 +47,9 @@ public class FieldPanel extends AbstractView{
 		add(new ObstacleView(obstacle));
 	}
 	public void removeObstacle(Obstacle obstacle){
-		for(Component component: getComponents())
-			if(((FieldObjectView)component).getObject().equals(obstacle)){
-				remove(component);
+		for(int i=1; i<getComponentCount(); i++)
+			if(((FieldObjectView)getComponent(i)).getObject().equals(obstacle)){
+				remove(getComponent(i));
 				break;
 			}
 	}
@@ -59,9 +57,9 @@ public class FieldPanel extends AbstractView{
 		add(new CharacterView(character));
 	}
 	public void removeCharacter(Character character){
-		for(Component component: getComponents())
-			if(((FieldObjectView)component).getObject().equals(character)){
-				remove(component);
+		for(int i=1; i<getComponentCount(); i++)
+			if(((FieldObjectView)getComponent(i)).getObject().equals(character)){
+				remove(getComponent(i));
 				break;
 			}
 	}

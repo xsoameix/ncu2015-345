@@ -97,11 +97,8 @@ public class EstablishPanel extends AbstractView{
 				else
 					new JOptionPane("Connect timeout! Game may be already started.");
 			}
-			
-			getDisplayPanel().next();
-			//clientModel.requestStartGame
 			break;
-		case "start":
+		case "enter":
 			getDisplayPanel().next();
 			break;
 		case "back":

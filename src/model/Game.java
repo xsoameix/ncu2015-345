@@ -20,7 +20,7 @@ public class Game {
 		teams = new Vector<Team>();
 		teams.add(new Team(1));
 		teams.add(new Team(2));
-		rule = new Rule();
+		rule = new Rule( this);
 	}
 
 	public void setMap(Map map) {
@@ -83,6 +83,14 @@ public class Game {
 
 	public int getTime() {
 		return time;
+	}
+
+	public Vector<Player> getPlayerList() {
+		Vector<Player> tmpList = new Vector<>();
+		for (int i = 0; i < getTeams().size(); i++) {
+			tmpList.addAll(getTeams().get(i).getPlayerList());
+		}
+		return tmpList;
 	}
 
 	public synchronized void setTime(int time) {

@@ -29,7 +29,7 @@ public class Map {
 		Gson gson = new Gson();
 
 		size = gson.fromJson(json.get("size"), Dimension.class);
-		
+
 		json.get("scene");
 		json.get("obstacle");
 		json.get("respond");

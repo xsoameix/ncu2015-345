@@ -74,7 +74,7 @@ public class PlayPanel extends DisplayPanel{
 	public void removeCharacter(Character character){
 		gamePanel.getFieldPanel().removeCharacter(character);
 	}
-	//game
+	
 	public void startGame(){
 		gamePanel.startGame();
 	}

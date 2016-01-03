@@ -54,6 +54,21 @@ public class EstablishPanel extends AbstractView{
 		setComponents();
 	}
 
+	private void establish(){
+		if(isHost){
+			if(clientModel.requestEstablishRoom(Integer.valueOf(portTextField.getText())))
+				enter();
+		}
+		else
+			enter();
+	}
+	private void enter(){
+		if(clientModel.requestEnterRoom(IPTextField.getText(), Integer.valueOf(portTextField.getText())))
+			getDisplayPanel().next();
+		else
+			new JOptionPane("Connect timeout! Game may be already started.");
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()){
@@ -77,15 +92,8 @@ public class EstablishPanel extends AbstractView{
 			
 		//button
 		case "establish":
-			if(isHost){
-				clientModel.requestEstablishRoom(Integer.valueOf(portTextField.getText()));
-			}
-			else {
-				if(clientModel.requestEnterRoom(IPTextField.getText(), Integer.valueOf(portTextField.getText())))
-					getDisplayPanel().next();
-				else
-					new JOptionPane("Connect timeout! Game may be already started.");
-			}
+			getDisplayPanel().next();
+//			establish();
 			break;
 		case "enter":
 			getDisplayPanel().next();

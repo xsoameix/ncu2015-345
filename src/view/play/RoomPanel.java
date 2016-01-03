@@ -28,7 +28,8 @@ public class RoomPanel extends AbstractView{
 		splitPane=new JSplitPane();
 		splitPane.setLeftComponent(playersPanel);
 		splitPane.setRightComponent(gameSettingPanel);
-		splitPane.setDividerLocation(500);
+		splitPane.setDividerLocation(1000);
+		splitPane.setDividerSize(0);
 //		add(playersPanel);
 //		add(gameSettingPanel);
 		add(splitPane);
@@ -56,7 +57,6 @@ public class RoomPanel extends AbstractView{
 		switch(e.getActionCommand()){
 		case "start":
 			clientModel.requestStartGame();
-			getDisplayPanel().next();
 			break;
 		case "back"://TODO: remove
 			//leave room
@@ -67,7 +67,7 @@ public class RoomPanel extends AbstractView{
 	
 	//API
 	public void addPlayer(Player player) {
-		playersPanel.add(new PlayerView(player));
+		playersPanel.addPlayer(player);
 		repaint();
 	}
 	public void removePlayer(Player player) {

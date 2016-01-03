@@ -238,17 +238,13 @@ public class ClientModel {
 				game.getTeam(1).addPlayer(room.getPlayerList().get(i));
 			}
 		}
+		game.getPlayer(1).getCharacter().getLocation().x = 32;
+		game.getPlayer(1).getCharacter().getLocation().y = 32;
 		playPanel.startGame();
 	}
 
 	public synchronized void setLocation(Player newPlayer) {
 		assert newPlayer != null : "[ClientModel] setLocation newPlayer is null";
-
-		Iterator<Player> iterator = game.getPlayerList().iterator();
-		while (iterator.hasNext()) {
-			System.out.println("[ClientModel] setLocation Player ID : " + iterator.next().getID());
-		}
-
 		assert game.getPlayer(newPlayer.getID()) != null : "[ClientModel] setLocation getPlayer is null playerID : " + newPlayer.getID();
 		if (game.getPlayer(newPlayer.getID()) != null) {
 			Character oldCharacter = game.getPlayer(newPlayer.getID()).getCharacter();

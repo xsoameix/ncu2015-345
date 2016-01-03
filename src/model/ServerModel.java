@@ -2,18 +2,15 @@ package model;
 
 import java.awt.Point;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONObject;
 
 import model.game.Player;
 import model.game.Result;
+import model.game.Rule;
 import model.game.coder.ServerDecoder;
 import model.game.coder.ServerEncoder;
-import model.game.field.dynamic.Bullet;
-import model.game.field.dynamic.Obstacle;
-import model.game.field.dynamic.Turf;
 import net.TCPServer;
 import net.UDPClient;
 
@@ -25,6 +22,8 @@ public class ServerModel {
 	private TCPServer tcpServer;
 	private AtomicInteger atomicInteger;
 	private UDPClient udpClient;
+	private Rule rule;
+	private TimeThread timeThread;
 
 	public ServerModel() {
 		// TODO Auto-generated constructor stub
@@ -35,7 +34,7 @@ public class ServerModel {
 		decoder = new ServerDecoder(this);
 		encoder = new ServerEncoder();
 		room = new Room();
-
+		rule = game.getRule();
 	}
 
 	public boolean initialize(int port) {
@@ -56,6 +55,10 @@ public class ServerModel {
 		udpClient.send(encoder.setTotalTime(second).toString());
 	}
 
+	public void setTime(int second) throws IOException, InterruptedException {
+		udpClient.send(encoder.setTime(second).toString());
+	}
+
 	public void setPlayerNumber(int playernumber) throws IOException, InterruptedException {
 		assert playernumber >= 2 && playernumber <= 6 : "[ServerModel] setPlayerNumber playernumber error : " + playernumber;
 		room.setPlayerNumber(playernumber);
@@ -73,9 +76,21 @@ public class ServerModel {
 				game.getTeam(1).addPlayer(room.getPlayerList().get(i));
 			}
 		}
+		game.getPlayer(1).getCharacter().getLocation().x = 32;
+		game.getPlayer(1).getCharacter().getLocation().y = 32;
+		// init BulletThread
+		// init TimeThread
+		// init TurfThread
+
 		udpClient.send(encoder.setTime(game.getTime()).toString());
 		udpClient.send(encoder.startGame().toString());
+		timeThread = new TimeThread(this);
+		timeThread.start();
 		return true;
+	}
+
+	public void gameOver(Result result) throws IOException, InterruptedException {
+		udpClient.send(encoder.gameOver(result).toString());
 	}
 
 	public boolean addPlayer(Player player) throws IOException, InterruptedException {
@@ -114,17 +129,26 @@ public class ServerModel {
 	public boolean fire(int id) throws IOException, InterruptedException {
 		// new bullet
 		// bullet direction = character direction
-		udpClient.send(encoder.addBullet(new Bullet(1, 1)).toString());
-		udpClient.send(encoder.updateBullet(new Bullet(1, 1)).toString());
-		udpClient.send(encoder.removeBullet(new Bullet(1, 1)).toString());
-
+		// udpClient.send(encoder.addBullet(new Bullet(1, 1)).toString());
+		// udpClient.send(encoder.updateBullet(new Bullet(1, 1)).toString());
+		// udpClient.send(encoder.removeBullet(new Bullet(1, 1)).toString());
+		//
+		// //
 		// udpClient.send(encoder.removePlayer(game.getPlayer(1)).toString());
-		udpClient.send(encoder.gameOver(new Result(game.getTeams())).toString());
-		udpClient.send(encoder.changeFlagColor(new Turf(1, new Point(576, 32), 78)).toString());
-		Thread.sleep(5000);
-		udpClient.send(encoder.setKillNumber(game.getPlayer(1)).toString());
-		udpClient.send(encoder.setMoney(game.getTeams()).toString());
-		udpClient.send(encoder.removeObstacle(new Obstacle(1, new Point(32, 0))).toString());
+		// udpClient.send(encoder.gameOver(new
+		// Result(game.getTeams())).toString());
+		// udpClient.send(encoder.changeFlagColor(new Turf(1, new Point(576,
+		// 32), 78)).toString());
+		// Thread.sleep(500);
+		// udpClient.send(encoder.setKillNumber(game.getPlayer(1)).toString());
+		// udpClient.send(encoder.setMoney(game.getTeams()).toString());
+		// udpClient.send(encoder.removeObstacle(new Obstacle(1, new Point(32,
+		// 0))).toString());
+
+		// System.out.println("[ServerModel] fire "+
+		// game.getPlayer(1).getCharacter().getLocation());
+		// System.out.println("[ServerModel] fire " +
+		// rule.MovingCheck(game.getPlayer(1).getCharacter()));
 		return true;
 	}
 
@@ -143,6 +167,10 @@ public class ServerModel {
 
 	public Room getRoom() {
 		return room;
+	}
+
+	public Game getGame() {
+		return game;
 	}
 
 	public void setRoom(Room room) {

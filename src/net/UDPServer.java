@@ -10,12 +10,13 @@ import java.nio.channels.Selector;
 import java.nio.channels.Pipe.SinkChannel;
 import java.nio.channels.Pipe.SourceChannel;
 import java.util.concurrent.atomic.AtomicInteger;
+import model.ClientModel;
 
 public class UDPServer extends Thread{
 	private int port;
 	final int SIZE = 8192;
     byte buffer[] = new byte[SIZE];
-    private FakeUDPClientModel clientModel;
+    private ClientModel clientModel;
     private DatagramChannel    server;
     private AtomicInteger      state;
     private static final int STATE_INITIAL = 0;
@@ -28,12 +29,12 @@ public class UDPServer extends Thread{
     private SourceChannel       syncOut;
     private Thread              thread;
     
-    public UDPServer(FakeUDPClientModel clientModel) {
+    public UDPServer(ClientModel clientModel) {
     	this.clientModel=clientModel;
     	this.state = new AtomicInteger(STATE_INITIAL);
     }
     
-    public void initialize(int port) throws Exception{ 
+    public void initialize(int port) throws Exception { 
     	assert port>1024 && port<65536:"port over range";
     	this.port = port;
         thread = new UDPServer(clientModel);
@@ -41,7 +42,7 @@ public class UDPServer extends Thread{
     }
     
     @Override
-    public void run(){
+    public void run() {
         try {
             assert state.get() == STATE_INITIAL : "server should be initial";
           	Selector selector = Selector.open();
@@ -62,16 +63,16 @@ public class UDPServer extends Thread{
             server.register(selector, SelectionKey.OP_READ);
             state.set(STATE_RUNNING);              
 	    	
-	    	while(true){
+	    	while(true) {
 	    		int channels = selector.select();
 	            if (channels == 0) continue;
-	            for (SelectionKey key : selector.selectedKeys()){
+	            for (SelectionKey key : selector.selectedKeys()) {
 	                if (key.isReadable()) {
 	                	if (key.channel().equals(server)){
 	                		ByteBuffer packet = ByteBuffer.allocate(SIZE);
 		                    server.receive(packet);
-		                    byte[] sendpacket = new byte[packet.remaining()];
-		                    packet.get(sendpacket);
+		                    byte[] sendpacket = new byte[SIZE];
+		                    sendpacket = packet.array();
 		                    clientModel.set(sendpacket);
 	                	}else if(key.channel().equals(ctrlOut)){
 	                		server.close();
@@ -93,7 +94,7 @@ public class UDPServer extends Thread{
 	    }	
     } 
     
-    public void close(){
+    public void close() {
     	try {
     		assert state.get() == STATE_RUNNING : "server should be running";
     		state.set(STATE_INITIAL);
@@ -128,7 +129,7 @@ public class UDPServer extends Thread{
             ctrlOut.read(buf);
             ctrlIn.close();
             ctrlOut.close();
-		} catch (IOException e) {
+		}catch (IOException e) {
 			e.printStackTrace();
 			state.set(STATE_RUNNING);
 		}

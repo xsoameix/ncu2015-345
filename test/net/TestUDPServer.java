@@ -6,16 +6,16 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Vector;
 import org.junit.Test;
-import net.FakeUDPClientModel;
+
+import model.ClientModel;
 import net.UDPServer;
 
 public class TestUDPServer {
-	public static final long BIND_TIME      = 100;
+	public static final long BIND_TIME      = 200;
 	public static final int port = 5000;	
 	byte[] bytePacket = new byte[]{
 			0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08
 	};
-	
 	// Test initialize() method
 	@Test
 	public void testInitialize() throws InterruptedException{		
@@ -98,5 +98,10 @@ public class TestUDPServer {
 		public void set(byte[] bytes){
 			assertEquals(bytePacket,bytes);
 		}
+	}
+	
+	class FakeUDPClientModel extends ClientModel{
+		 public void set(byte [] packet){
+		    }
 	}
 }

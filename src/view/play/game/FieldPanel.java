@@ -1,7 +1,9 @@
 package view.play.game;
 
 
-import java.awt.Component;
+import java.awt.GridLayout;
+
+import javax.swing.JLayeredPane;
 
 import model.game.Field;
 import model.game.field.dynamic.Bullet;
@@ -17,14 +19,19 @@ import view.play.game.field.object.ObstacleView;
 public class FieldPanel extends AbstractView{
 	private Field field;
 	
+	
+	private JLayeredPane pane;
 	private MapPanel mapPanel;//show background?
 	
 	//private FieldObjectView fieldObjects[];//tank, bullet, obstacle... maybe no this variable?
 
 	public FieldPanel(){
-		setLayout(null);
+		setLayout(new GridLayout());
+		pane=new JLayeredPane();
+		add(pane);
+		
 		mapPanel=new MapPanel();
-		add(mapPanel);
+		pane.add(mapPanel, new Integer(0));
 	}
 	public void setField(Field field) {
 		this.field=field;
@@ -39,9 +46,9 @@ public class FieldPanel extends AbstractView{
 		add(new BulletView(bullet));
 	}
 	public void removeBullet(Bullet bullet){
-		for(Component component: getComponents())
-			if(((FieldObjectView)component).getObject().equals(bullet)){
-				remove(component);
+		for(int i=1; i<getComponentCount(); i++)
+			if(((FieldObjectView)getComponent(i)).getObject().equals(bullet)){
+				remove(getComponent(i));
 				break;
 			}
 	}
@@ -49,19 +56,19 @@ public class FieldPanel extends AbstractView{
 		add(new ObstacleView(obstacle));
 	}
 	public void removeObstacle(Obstacle obstacle){
-		for(Component component: getComponents())
-			if(((FieldObjectView)component).getObject().equals(obstacle)){
-				remove(component);
+		for(int i=1; i<getComponentCount(); i++)
+			if(((FieldObjectView)getComponent(i)).getObject().equals(obstacle)){
+				remove(getComponent(i));
 				break;
 			}
 	}
 	public void addCharacter(Character character){
-		add(new CharacterView(character));
+		pane.add(new CharacterView(character), new Integer(100));
 	}
 	public void removeCharacter(Character character){
-		for(Component component: getComponents())
-			if(((FieldObjectView)component).getObject().equals(character)){
-				remove(component);
+		for(int i=1; i<getComponentCount(); i++)
+			if(((FieldObjectView)getComponent(i)).getObject().equals(character)){
+				remove(getComponent(i));
 				break;
 			}
 	}

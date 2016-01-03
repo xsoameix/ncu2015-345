@@ -6,8 +6,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 
-import model.ClientModel;
 import view.PanelEnum;
 import view.base.Button;
 import view.base.Label;
@@ -15,13 +15,13 @@ import view.base.TextField;
 import view.base.extend.AbstractView;
 
 public class EstablishPanel extends AbstractView{
-	private ClientModel clientModel;
-	
 	private Label IPLabel;
 	private Label portLabel;
 	private TextField IPTextField;
 	private TextField portTextField;
 	private Button buttons[];
+	
+	private boolean isHost;
 	
 	private void setComponents(){
 		//this is temporary setting!
@@ -53,20 +53,29 @@ public class EstablishPanel extends AbstractView{
 	public EstablishPanel(){
 		setComponents();
 	}
-	
-	public ClientModel getMainModel() {
-		return clientModel;
-	}
-	public void setMainModel(ClientModel mainModel) {
-		this.clientModel = mainModel;
-	}
-	
 
+	private void establish(){
+		portTextField.setText("1234");
+		if(isHost){
+			if(clientModel.requestEstablishRoom(Integer.valueOf(portTextField.getText())))
+				enter();
+		}
+		else
+			enter();
+	}
+	private void enter(){
+		if(clientModel.requestEnterRoom(IPTextField.getText(), Integer.valueOf(portTextField.getText())))
+			getDisplayPanel().next();
+		else
+			new JOptionPane("Connect timeout! Game may be already started.");
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()){
 		//from parent
 		case "host":
+			isHost=true;
 			getDisplayPanel().toPanel(PanelEnum.ESTABLISH);
 			try {
 				IPTextField.setText(InetAddress.getLocalHost().getHostAddress());
@@ -74,24 +83,19 @@ public class EstablishPanel extends AbstractView{
 				e1.printStackTrace();
 			}
 			IPTextField.setEditable(false);
-			//clientModel.establishRoom(Integer.valueOf(portTextField.getText()))
 			break;
 		case "client":
+			isHost=false;
 			getDisplayPanel().toPanel(PanelEnum.ESTABLISH);
 			IPTextField.setText("");
 			IPTextField.setEditable(true);
-			//if()
-			//clientModel.enterRoom(IPTextField.getText(), Integer.valueOf(portTextField.get	Text()))
-			//thread check
-			//timeout->exit
 			break;
 			
 		//button
 		case "establish":
-			getDisplayPanel().next();
-			//clientModel.requestStartGame
+			establish();
 			break;
-		case "start":
+		case "enter":
 			getDisplayPanel().next();
 			break;
 		case "back":

@@ -3,18 +3,26 @@ package view.play;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.KeyStroke;
 
-import model.Game;
+import model.game.Player;
 import model.game.Result;
+import model.game.field.dynamic.Character;
+import model.setting.KeyBinding;
 import view.base.*;
+import view.base.extend.AbstractView;
 import view.play.game.*;
+import view.play.game.field.object.CharacterView;
 
-public class GamePanel extends Panel{
+public class GamePanel extends AbstractView{
 	private RenderThread renderThread;
+	private KeyInputTimer keyInputTimer;
 	
 	//panels
 	private ClockPanel clockPanel;
@@ -25,13 +33,60 @@ public class GamePanel extends Panel{
 	
 	private Button menuButton;
 	private MenuDialog menuDialog;
-
-	private Game game;
+	
+	private Character character;
+	
 	
 	public GamePanel(){
 		setComponents();
 		renderThread=new RenderThread(this);
+		keyInputTimer=new KeyInputTimer(this);
+		oldPoint=new Point();
 	}
+
+	private Point oldPoint;
+	public void requestInputArrowKey(){
+		if(moveUnit!=null){
+			Point newPoint=newLocation(character.getLocation());
+			if(!oldPoint.equals(newPoint)){
+				clientModel.requestSetLocation(newPoint.x, newPoint.y);
+				oldPoint=new Point(newPoint);
+			}
+		}
+	}
+	private int unitSize=8;
+	private Point moveUnit;
+	private Point moveUnits[]={
+			new Point(0, -unitSize),
+			new Point(0, unitSize),
+			new Point(-unitSize, 0),
+			new Point(unitSize, 0),
+	};
+	public void pressArrowKey(int direction) {
+		moveUnit=moveUnits[direction-1];
+	}
+	public void releaseArrowKey(){
+		moveUnit=null;
+	}
+	
+	private Point newLocation(Point p){
+		Point newPoint=new Point(p);
+		newPoint.translate(moveUnit.x, moveUnit.y);
+		return newPoint;
+	}
+	
+	private boolean firing=false;
+	public void requestInputFireKey(){
+		if(firing)
+			clientModel.requestFire();
+	}
+	public void pressFireKey(){
+		firing=true;
+	}
+	public void releaseFireKey(){
+		firing=false;
+	}
+	
 	private void setComponents(){
 		GridBagLayout gridBagLayout=new GridBagLayout();
 
@@ -79,10 +134,10 @@ public class GamePanel extends Panel{
 		teamPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		personalPanel=new PersonalPanel();
 		personalPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		miniMapPanel=new MiniMapPanel();
-		miniMapPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		fieldPanel=new FieldPanel();
 		fieldPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		miniMapPanel=new MiniMapPanel(fieldPanel);
+		miniMapPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		menuButton=new Button("Menu");
 		menuButton.addActionListener(new ActionListener() {
 			@Override
@@ -100,20 +155,10 @@ public class GamePanel extends Panel{
 
 		menuDialog=new MenuDialog(this, "Menu");
 	}
-	public void setField(){
-		fieldPanel.setField(getGame().getField());
-	}
+
 	public FieldPanel getFieldPanel() {
 		return fieldPanel;
 	}
-	public Game getGame() {
-		return game;
-	}
-	public void setGame(Game game) {
-		this.game = game;
-	}
-
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		menuDialog.dispose();
@@ -129,10 +174,43 @@ public class GamePanel extends Panel{
 	
 
 	public void startGame(){
+		//switch panel
 		getDisplayPanel().next();
+		fieldPanel.setFocusable(true);
+		
+		//key
+		KeyBinding keyBinding=clientModel.getSetting().getKeyBinding();
+		for(KeyStroke keyStroke: keyBinding.keys())
+			getInputMap().put(keyStroke, keyBinding.get(keyStroke));
+		setInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, getInputMap());
+		
+		//team and players
+//		teamPanel.setTeam(clientModel.getGame().getTeam(clientModel.getIndividual().getTeamID()));
+		teamPanel.setTeam(clientModel.getGame().getTeam(1));
+		addPlayers(clientModel.getRoom().getPlayerList());
+		
+		//set field
+		
+		
+		//render and key
 		renderThread.start();
+		keyInputTimer.start();
+		
+		
 	}
+	private void addPlayers(Vector<Player> playerList) {
+		int size=playerList.size();
+		for(int i=0; i<size; i++){
+//			CharacterView characterView=new CharacterView(playerList.get(i).getCharacter());
+			fieldPanel.addCharacter(playerList.get(i).getCharacter());
+			if(playerList.get(i).getCharacter().getID()==clientModel.getIndividual().getCharacter().getID())
+				character=playerList.get(i).getCharacter();
+		}
+	}
+
 	public void gameOver(Result result) {
 		getDisplayPanel().next();
+		renderThread.end();
+		keyInputTimer.cancel();
 	}
 }

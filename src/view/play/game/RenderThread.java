@@ -7,7 +7,7 @@ import java.util.TimerTask;
 public class RenderThread {
 	private Component component;
 	private Timer timer;
-	private static final int DELAY=100;
+	private static final int DELAY=10;
 	
 	public RenderThread(Component component){
 		this.component=component;
@@ -19,7 +19,7 @@ public class RenderThread {
 			public void run() {
 				component.repaint();
 			}
-		}, DELAY);
+		}, 0, DELAY);
 	}
 	public void end(){
 		timer.cancel();

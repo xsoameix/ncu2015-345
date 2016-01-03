@@ -3,17 +3,18 @@ package view.setting;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import model.ClientModel;
 import model.Setting;
 import view.PanelEnum;
 import view.base.extend.DisplayPanel;
 
 public class SettingPanel extends DisplayPanel {
-	private Setting setting;
+	private ClientModel clientModel;
 
 	private void setComponents(){
 		add(new SettingMenuPanel(), PanelEnum.SETTING);
 		add(new ProfilePanel(), PanelEnum.PROFILE);
-		add(new VolumnPanel(), PanelEnum.VOLUMN);
+		add(new VolumePanel(), PanelEnum.VOLUMN);
 		add(new KeyBindingPanel(), PanelEnum.KEYBINDING);
 		
 		for(int i=1; i<getComponentCount(); i++)
@@ -21,17 +22,13 @@ public class SettingPanel extends DisplayPanel {
 		
 		toPanel(PanelEnum.SETTING);
 	}
-
+	public void setModel(ClientModel model){
+		this.clientModel=model;
+	}
 	public SettingPanel() {
 		setComponents();
 	}
-	public Setting getSetting() {
-		return setting;
-	}
-	public void setSetting(Setting setting) {
-		this.setting = setting;
-	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e){
 		switch(e.getActionCommand()){

@@ -11,8 +11,6 @@ import view.PanelEnum;
 import view.base.extend.DisplayPanel;
 
 public class PlayPanel extends DisplayPanel{
-	private ClientModel clientModel;
-	
 	private EstablishPanel establishPanel;
 	private RoomPanel roomPanel;
 	private GamePanel gamePanel;
@@ -33,11 +31,9 @@ public class PlayPanel extends DisplayPanel{
 		add(gamePanel, PanelEnum.GAME);
 		add(resultPanel, PanelEnum.RESULT);
 	}
-	public ClientModel getModel() {
-		return clientModel;
-	}
+	@Override
 	public void setModel(ClientModel clientModel) {
-		this.clientModel = clientModel;
+		super.setModel(clientModel);
 		clientModel.setPlayPanel(this);
 	}
 	
@@ -78,7 +74,7 @@ public class PlayPanel extends DisplayPanel{
 	public void removeCharacter(Character character){
 		gamePanel.getFieldPanel().removeCharacter(character);
 	}
-	//game
+	
 	public void startGame(){
 		gamePanel.startGame();
 	}

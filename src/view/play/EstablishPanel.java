@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 
 import model.ClientModel;
 import view.PanelEnum;
@@ -22,6 +23,8 @@ public class EstablishPanel extends AbstractView{
 	private TextField IPTextField;
 	private TextField portTextField;
 	private Button buttons[];
+	
+	private boolean isHost;
 	
 	private void setComponents(){
 		//this is temporary setting!
@@ -67,6 +70,7 @@ public class EstablishPanel extends AbstractView{
 		switch(e.getActionCommand()){
 		//from parent
 		case "host":
+			isHost=true;
 			getDisplayPanel().toPanel(PanelEnum.ESTABLISH);
 			try {
 				IPTextField.setText(InetAddress.getLocalHost().getHostAddress());
@@ -74,20 +78,26 @@ public class EstablishPanel extends AbstractView{
 				e1.printStackTrace();
 			}
 			IPTextField.setEditable(false);
-			//clientModel.establishRoom(Integer.valueOf(portTextField.getText()))
 			break;
 		case "client":
+			isHost=false;
 			getDisplayPanel().toPanel(PanelEnum.ESTABLISH);
 			IPTextField.setText("");
 			IPTextField.setEditable(true);
-			//if()
-			//clientModel.enterRoom(IPTextField.getText(), Integer.valueOf(portTextField.get	Text()))
-			//thread check
-			//timeout->exit
 			break;
 			
 		//button
 		case "establish":
+			if(isHost){
+				clientModel.requestEstablishRoom(Integer.valueOf(portTextField.getText()));
+			}
+			else {
+				if(clientModel.requestEnterRoom(IPTextField.getText(), Integer.valueOf(portTextField.getText())))
+					getDisplayPanel().next();
+				else
+					new JOptionPane("Connect timeout! Game may be already started.");
+			}
+			
 			getDisplayPanel().next();
 			//clientModel.requestStartGame
 			break;

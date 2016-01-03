@@ -5,8 +5,9 @@ import java.awt.event.ActionEvent;
 import view.PanelEnum;
 import view.base.Button;
 import view.base.Panel;
+import view.base.extend.AbstractView;
 
-public class ResultPanel extends Panel{	
+public class ResultPanel extends AbstractView{	
 //	private Result result;
 	
 	//to be removed

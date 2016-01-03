@@ -3,17 +3,21 @@ package view.play;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 
+import model.ClientModel;
 import model.Game;
 import model.game.Result;
 import view.base.*;
+import view.base.extend.AbstractView;
 import view.play.game.*;
 
-public class GamePanel extends Panel{
+public class GamePanel extends AbstractView{
 	private RenderThread renderThread;
 	
 	//panels
@@ -25,13 +29,22 @@ public class GamePanel extends Panel{
 	
 	private Button menuButton;
 	private MenuDialog menuDialog;
-
-	private Game game;
 	
 	public GamePanel(){
 		setComponents();
 		renderThread=new RenderThread(this);
+		ActionMap actionMap=getActionMap();
+		actionMap.put(KeyMap.FIRE, clientModel.requestFire());
+		actionMap.put(KeyMap.UP, clientModel.requestSetLocation());
+		actionMap.put(KeyMap.DOWN, clientModel.requestSetLocation());
+		actionMap.put(KeyMap.LEFT, clientModel.requestSetLocation());
+		actionMap.put(KeyMap.RIGHT, clientModel.requestSetLocation());
 	}
+	private Point newLocation(Point p, int direction){
+		return null;
+	}
+	
+	
 	private void setComponents(){
 		GridBagLayout gridBagLayout=new GridBagLayout();
 
@@ -100,17 +113,9 @@ public class GamePanel extends Panel{
 
 		menuDialog=new MenuDialog(this, "Menu");
 	}
-	public void setField(){
-		fieldPanel.setField(getGame().getField());
-	}
+
 	public FieldPanel getFieldPanel() {
 		return fieldPanel;
-	}
-	public Game getGame() {
-		return game;
-	}
-	public void setGame(Game game) {
-		this.game = game;
 	}
 
 	
@@ -130,6 +135,7 @@ public class GamePanel extends Panel{
 
 	public void startGame(){
 		getDisplayPanel().next();
+		setInputMap(WHEN_IN_FOCUSED_WINDOW, clientModel.getSetting().getKeyBinding());
 		renderThread.start();
 	}
 	public void gameOver(Result result) {

@@ -1,19 +1,17 @@
 package view.base.extend;
 
-import java.awt.event.ActionEvent;
+import java.awt.Component;
 
-//import model.AbstractModel;
+import model.ClientModel;
 import view.base.Panel;
 
 public class AbstractView extends Panel{
 
-//	private AbstractModel model;
-//	public AbstractModel getModel() {
-//		return model;
-//	}
-//
-//	public void setModel(AbstractModel model) {
-//		this.model = model;
-//	}
-//	
+	protected ClientModel clientModel;
+	public void setModel(ClientModel clientModel) {
+		this.clientModel = clientModel;
+		for(Component component: getComponents())
+			if(component instanceof AbstractView)
+				((AbstractView)component).setModel(clientModel);
+	}
 }

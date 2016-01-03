@@ -6,17 +6,14 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JSplitPane;
 
-import model.ClientModel;
 import model.game.Player;
 import view.base.Button;
-import view.base.Panel;
+import view.base.extend.AbstractView;
 import view.play.room.GameSettingPanel;
 import view.play.room.PlayerView;
 import view.play.room.PlayersPanel;
 
-public class RoomPanel extends Panel{
-	private ClientModel clientModel;
-	
+public class RoomPanel extends AbstractView{
 	private JSplitPane splitPane;
 	private PlayersPanel playersPanel;
 	private GameSettingPanel gameSettingPanel;
@@ -58,10 +55,10 @@ public class RoomPanel extends Panel{
 	public void actionPerformed(ActionEvent e){
 		switch(e.getActionCommand()){
 		case "start":
-//			clientModel.requestStartGame();
+			clientModel.requestStartGame();
 			getDisplayPanel().next();
 			break;
-		case "back":
+		case "back"://TODO: remove
 			//leave room
 			getDisplayPanel().previous();
 			break;
@@ -71,10 +68,13 @@ public class RoomPanel extends Panel{
 	//API
 	public void addPlayer(Player player) {
 		playersPanel.add(new PlayerView(player));
+		repaint();
 	}
 	public void removePlayer(Player player) {
 		for(Component component: playersPanel.getComponents())
-			if(((PlayerView)component).getPlayer().equals(player))
+			if(((PlayerView)component).getPlayer().equals(player)){
 				playersPanel.remove(component);
+				repaint();
+			}
 	}
 }

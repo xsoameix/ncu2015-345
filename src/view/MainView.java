@@ -24,9 +24,7 @@ public class MainView extends DisplayPanel{
 		add(new MainMenuPanel(), PanelEnum.MAINMENU);
 		//display
 		add(playPanel=new PlayPanel(), PanelEnum.PLAY);
-//		playPanel.setModel(getModel());
 		add(settingPanel=new SettingPanel(), PanelEnum.SETTING);
-//		settingPanel.setModel(getModel());
 	}
 
 	public void setFrame(MainFrame mainFrame) {

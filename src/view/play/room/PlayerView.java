@@ -36,6 +36,5 @@ public class PlayerView extends Panel {
 		imageLabel.setIcon(new ImageIcon("src/assets/img/icon"+player.getProfile().getIconID()+".jpg"));
 		nameLabel.setText(player.getProfile().getName());
 		setBorder(BorderFactory.createLineBorder(player.getID()%2==0?Color.RED:Color.BLUE, 5));
-		repaint();
 	}
 }

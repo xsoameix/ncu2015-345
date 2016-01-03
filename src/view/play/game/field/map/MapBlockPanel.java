@@ -1,13 +1,15 @@
 package view.play.game.field.map;
 
+import java.awt.Component;
 import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 
 import model.game.field.map.MapBlock;
 import view.base.Panel;
 
-public class MapBlockPanel extends Panel{
+public class MapBlockPanel extends JComponent{
 	private MapBlock mapBlock;
 	private ImageIcon imageIcon;
 	public MapBlockPanel(MapBlock mapBlock) {

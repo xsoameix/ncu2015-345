@@ -16,7 +16,7 @@ public class KeyInputTimer extends TimerTask{
 	private GamePanel gamePanel;
 	private Timer timer;
 	
-	private int DELAY=10;//input delay
+	private int DELAY=100;//input delay
 	public KeyInputTimer(GamePanel gamePanel) {
 		this.gamePanel=gamePanel;
 		timer=new Timer();
@@ -64,7 +64,7 @@ public class KeyInputTimer extends TimerTask{
 	}
 
 	public void start(){
-		timer.schedule(this, DELAY);
+		timer.schedule(this, 0, DELAY);
 	}
 	public void end(){
 		cancel();

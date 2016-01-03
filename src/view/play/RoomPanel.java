@@ -68,7 +68,6 @@ public class RoomPanel extends AbstractView{
 	//API
 	public void addPlayer(Player player) {
 		playersPanel.addPlayer(player);
-		repaint();
 	}
 	public void removePlayer(Player player) {
 		for(Component component: playersPanel.getComponents())

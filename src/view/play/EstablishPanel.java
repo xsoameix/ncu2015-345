@@ -55,6 +55,7 @@ public class EstablishPanel extends AbstractView{
 	}
 
 	private void establish(){
+		portTextField.setText("1234");
 		if(isHost){
 			if(clientModel.requestEstablishRoom(Integer.valueOf(portTextField.getText())))
 				enter();
@@ -92,8 +93,7 @@ public class EstablishPanel extends AbstractView{
 			
 		//button
 		case "establish":
-			getDisplayPanel().next();
-//			establish();
+			establish();
 			break;
 		case "enter":
 			getDisplayPanel().next();

@@ -1,10 +1,7 @@
 package view.play.game.field;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-
-import javax.swing.BorderFactory;
 
 import model.game.field.Map;
 import view.base.Panel;
@@ -22,13 +19,13 @@ public class MapPanel extends Panel{
 	public MapPanel(Map map){
 		this.setMap(map);
 		
-//		Dimension size=map.getSize();
-//		
-//		setSize(new Dimension(blockSize.width*size.width, blockSize.height*size.height));
-//		setLayout(new GridLayout(size.height, size.width));
-//		mapBlockPanels=new MapBlockPanel[size.height][size.width];
-//		
-//		loadData();
+		Dimension size=map.getSize();
+		
+		setSize(new Dimension(blockSize.width*size.width, blockSize.height*size.height));
+		setLayout(new GridLayout(size.height, size.width));
+		mapBlockPanels=new MapBlockPanel[size.height][size.width];
+		
+		loadData();
 //		setComponents();
 	}
 	private void loadData(){

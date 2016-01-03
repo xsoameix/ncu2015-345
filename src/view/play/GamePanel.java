@@ -6,13 +6,19 @@ import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
+import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.KeyStroke;
+
+import model.game.Player;
 import model.game.Result;
 import model.game.field.dynamic.Character;
+import model.setting.KeyBinding;
 import view.base.*;
 import view.base.extend.AbstractView;
 import view.play.game.*;
+import view.play.game.field.object.CharacterView;
 
 public class GamePanel extends AbstractView{
 	private RenderThread renderThread;
@@ -123,10 +129,10 @@ public class GamePanel extends AbstractView{
 		teamPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		personalPanel=new PersonalPanel();
 		personalPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		miniMapPanel=new MiniMapPanel();
-		miniMapPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		fieldPanel=new FieldPanel();
 		fieldPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		miniMapPanel=new MiniMapPanel(fieldPanel);
+		miniMapPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		menuButton=new Button("Menu");
 		menuButton.addActionListener(new ActionListener() {
 			@Override
@@ -163,11 +169,41 @@ public class GamePanel extends AbstractView{
 	
 
 	public void startGame(){
+		//switch panel
 		getDisplayPanel().next();
-		setInputMap(WHEN_IN_FOCUSED_WINDOW, clientModel.getSetting().getKeyBinding());
+		fieldPanel.setFocusable(true);
+		
+		//key
+		KeyBinding keyBinding=clientModel.getSetting().getKeyBinding();
+		for(KeyStroke keyStroke: keyBinding.keys())
+			getInputMap().put(keyStroke, keyBinding.get(keyStroke));
+		setInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, getInputMap());
+		
+		//team and players
+//		teamPanel.setTeam(clientModel.getGame().getTeam(clientModel.getIndividual().getTeamID()));
+		teamPanel.setTeam(clientModel.getGame().getTeam(1));
+		addPlayers(clientModel.getRoom().getPlayerList());
+		
+		//set field
+		
+		
+		//render and key
 		renderThread.start();
 		keyInputTimer.start();
+		
+		
 	}
+	private void addPlayers(Vector<Player> playerList) {
+		int size=playerList.size();
+		for(int i=0; i<size; i++){
+			CharacterView characterView=new CharacterView(playerList.get(i).getCharacter());
+			fieldPanel.addCharacter(playerList.get(i).getCharacter());
+			fieldPanel.setComponentZOrder(characterView, 1);
+			if(playerList.get(i).getCharacter().getID()==clientModel.getIndividual().getCharacter().getID())
+				character=playerList.get(i).getCharacter();
+		}
+	}
+
 	public void gameOver(Result result) {
 		getDisplayPanel().next();
 		renderThread.end();

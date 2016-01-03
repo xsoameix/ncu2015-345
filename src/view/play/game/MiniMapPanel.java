@@ -12,10 +12,14 @@ public class MiniMapPanel extends Panel {
 	private FieldPanel fieldPanel;
 	private double SCALE;
 	
+	public MiniMapPanel(FieldPanel fieldPanel) {
+		setFieldPanel(fieldPanel);
+	}
+
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		g.drawImage(createImage(), 0, 0, null);
+//		g.drawImage(createImage(), 0, 0, null);
 	}
 	
 	private BufferedImage createImage(){

@@ -1,6 +1,11 @@
 package view.play.game;
 
 
+import java.awt.Component;
+import java.awt.GridLayout;
+
+import javax.swing.JLayeredPane;
+
 import model.game.Field;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Character;
@@ -15,14 +20,23 @@ import view.play.game.field.object.ObstacleView;
 public class FieldPanel extends AbstractView{
 	private Field field;
 	
+	
+	private JLayeredPane pane;
 	private MapPanel mapPanel;//show background?
 	
 	//private FieldObjectView fieldObjects[];//tank, bullet, obstacle... maybe no this variable?
 
 	public FieldPanel(){
-		setLayout(null);
+		setLayout(new GridLayout());
+		pane=new JLayeredPane();
+		super.add(pane);
+		
 		mapPanel=new MapPanel();
-		add(mapPanel, 0);
+		add(mapPanel);
+	}
+	@Override
+	public Component add(Component comp) {
+		return pane.add(comp);
 	}
 	public void setField(Field field) {
 		this.field=field;
@@ -55,6 +69,7 @@ public class FieldPanel extends AbstractView{
 	}
 	public void addCharacter(Character character){
 		add(new CharacterView(character));
+		setComponentZOrder(mapPanel, getComponentCount()-1);
 	}
 	public void removeCharacter(Character character){
 		for(int i=1; i<getComponentCount(); i++)

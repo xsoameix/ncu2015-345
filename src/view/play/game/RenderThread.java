@@ -19,7 +19,7 @@ public class RenderThread {
 			public void run() {
 				component.repaint();
 			}
-		}, DELAY);
+		}, 0, DELAY);
 	}
 	public void end(){
 		timer.cancel();

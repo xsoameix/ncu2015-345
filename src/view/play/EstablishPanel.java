@@ -8,7 +8,6 @@ import java.net.UnknownHostException;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
-import model.ClientModel;
 import view.PanelEnum;
 import view.base.Button;
 import view.base.Label;
@@ -16,8 +15,6 @@ import view.base.TextField;
 import view.base.extend.AbstractView;
 
 public class EstablishPanel extends AbstractView{
-	private ClientModel clientModel;
-	
 	private Label IPLabel;
 	private Label portLabel;
 	private TextField IPTextField;
@@ -56,14 +53,6 @@ public class EstablishPanel extends AbstractView{
 	public EstablishPanel(){
 		setComponents();
 	}
-	
-	public ClientModel getMainModel() {
-		return clientModel;
-	}
-	public void setMainModel(ClientModel mainModel) {
-		this.clientModel = mainModel;
-	}
-	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

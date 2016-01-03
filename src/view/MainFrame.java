@@ -21,6 +21,6 @@ public class MainFrame extends Frame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand()=="exit")
-			dispose();
+			System.exit(0);
 	}
 }

@@ -1,27 +1,15 @@
 package view.play;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 
-import model.ClientModel;
-import model.Game;
-import model.game.Direction;
 import model.game.Result;
 import model.game.field.dynamic.Character;
-import model.setting.KeyBinding.KeyMap;
 import view.base.*;
 import view.base.extend.AbstractView;
 import view.play.game.*;
@@ -46,52 +34,14 @@ public class GamePanel extends AbstractView{
 	public GamePanel(){
 		setComponents();
 		renderThread=new RenderThread(this);
-		
-		
-		
-		//actionMap
-		ActionMap actionMap=getActionMap();
-		actionMap.put(KeyMap.PRESS_ATTACK, new AbstractAction() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	pressFireKey();
-	        }
-	    });
-		actionMap.put(KeyMap.RELEASE_ATTACK, new AbstractAction() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	releaseFireKey();
-	        }
-	    });
-		HashMap<KeyMap, Integer> keyMap=new HashMap<KeyMap, Integer>(){
-			{
-				put(KeyMap.PRESS_UP, Direction.UP);
-				put(KeyMap.PRESS_DOWN, Direction.DOWN);
-				put(KeyMap.PRESS_LEFT, Direction.LEFT);
-				put(KeyMap.PRESS_RIGHT, Direction.RIGHT);
-			}
-		};
-		for(final Entry<KeyMap, Integer> entry:keyMap.entrySet())
-			actionMap.put(entry.getKey(), new AbstractAction() {
-		        @Override
-		        public void actionPerformed(ActionEvent e) {
-		        	pressArrowKey(entry.getValue());
-		        }
-		    });
-		KeyMap keyMap2[]={KeyMap.RELEASE_UP, KeyMap.RELEASE_DOWN, KeyMap.RELEASE_LEFT, KeyMap.RELEASE_RIGHT};
-		for(KeyMap k: keyMap2)
-			actionMap.put(k, new AbstractAction(){
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					releaseArrowKey();
-				}
-			});
+		keyInputTimer=new KeyInputTimer(this);
 	}
 
-
 	public void requestInputArrowKey(){
-		if(moveUnit!=null)
-			clientModel.requestSetLocation(newLocation(character.getLocation()));
+		if(moveUnit!=null){
+			Point newPoint=newLocation(character.getLocation());
+			clientModel.requestSetLocation(newPoint.x, newPoint.y);
+		}
 	}
 	private int unitSize=8;
 	private Point moveUnit;
@@ -216,8 +166,11 @@ public class GamePanel extends AbstractView{
 		getDisplayPanel().next();
 		setInputMap(WHEN_IN_FOCUSED_WINDOW, clientModel.getSetting().getKeyBinding());
 		renderThread.start();
+		keyInputTimer.start();
 	}
 	public void gameOver(Result result) {
 		getDisplayPanel().next();
+		renderThread.end();
+		keyInputTimer.cancel();
 	}
 }

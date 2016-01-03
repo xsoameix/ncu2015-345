@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.*;
 import java.util.Vector;
 
+
 public class UDPClient {
 	private static final int STATE_INITIAL = 0;
     private static final int STATE_CONNECTED = 1;
@@ -13,14 +14,14 @@ public class UDPClient {
 	Vector<InetAddress> IPData = new Vector<InetAddress>();
 	DatagramSocket socket;
 	int setPort;
-	
-    public UDPClient(){
+	TCPServer tcpServer;
+    public UDPClient(TCPServer tcpServer){
+    	this.tcpServer=tcpServer;
     }
     
     public void initialize(int port){
     	assert port>1024 && port<65536:"port over range";
-    	FakeTCPServerModel TCPserver=new FakeTCPServerModel();
-    	IPData = TCPserver.getIPTable();
+    	IPData = tcpServer.getIPTable();
     	getIP = IPData.get(0);
     	setPort = port;
     	state = STATE_CONNECTED;

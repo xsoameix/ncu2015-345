@@ -10,7 +10,6 @@ import java.nio.channels.Selector;
 import java.nio.channels.Pipe.SinkChannel;
 import java.nio.channels.Pipe.SourceChannel;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import model.ClientModel;
 
 public class UDPServer extends Thread{
@@ -35,7 +34,7 @@ public class UDPServer extends Thread{
     	this.state = new AtomicInteger(STATE_INITIAL);
     }
     
-    public void initialize(int port) throws Exception{ 
+    public void initialize(int port) throws Exception { 
     	assert port>1024 && port<65536:"port over range";
     	this.port = port;
         thread = new UDPServer(clientModel);
@@ -43,7 +42,7 @@ public class UDPServer extends Thread{
     }
     
     @Override
-    public void run(){
+    public void run() {
         try {
             assert state.get() == STATE_INITIAL : "server should be initial";
           	Selector selector = Selector.open();
@@ -64,10 +63,10 @@ public class UDPServer extends Thread{
             server.register(selector, SelectionKey.OP_READ);
             state.set(STATE_RUNNING);              
 	    	
-	    	while(true){
+	    	while(true) {
 	    		int channels = selector.select();
 	            if (channels == 0) continue;
-	            for (SelectionKey key : selector.selectedKeys()){
+	            for (SelectionKey key : selector.selectedKeys()) {
 	                if (key.isReadable()) {
 	                	if (key.channel().equals(server)){
 	                		ByteBuffer packet = ByteBuffer.allocate(SIZE);
@@ -95,7 +94,7 @@ public class UDPServer extends Thread{
 	    }	
     } 
     
-    public void close(){
+    public void close() {
     	try {
     		assert state.get() == STATE_RUNNING : "server should be running";
     		state.set(STATE_INITIAL);
@@ -130,7 +129,7 @@ public class UDPServer extends Thread{
             ctrlOut.read(buf);
             ctrlIn.close();
             ctrlOut.close();
-		} catch (IOException e) {
+		}catch (IOException e) {
 			e.printStackTrace();
 			state.set(STATE_RUNNING);
 		}

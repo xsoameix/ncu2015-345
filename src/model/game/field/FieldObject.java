@@ -9,6 +9,11 @@ public class FieldObject {
 	private Point location;
 	private int ID;
 
+	public FieldObject() {
+		// TODO Auto-generated constructor stub
+		location = new Point(0, 0);
+	}
+
 	public Point getLocation() {
 		return location;
 	}
@@ -24,12 +29,11 @@ public class FieldObject {
 	public void setID(int iD) {
 		ID = iD;
 	}
-	
-	public Rectangle getRectangle(){
-		Rectangle rect = new Rectangle(location.x/MapBlock.getDimension().width,
-				                       location.x/MapBlock.getDimension().height,
-				                       MapBlock.getDimension().width,
-				                       MapBlock.getDimension().height);
+
+	public Rectangle getRectangle() {
+		Rectangle rect = new Rectangle(location.x / MapBlock.getSize().width,
+				location.x / MapBlock.getSize().height,
+				MapBlock.getSize().width, MapBlock.getSize().height);
 		return rect;
 	}
 

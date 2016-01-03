@@ -79,11 +79,10 @@ public class GamePanel extends Panel{
 		teamPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		personalPanel=new PersonalPanel();
 		personalPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		miniMapPanel=new MiniMapPanel();
+		miniMapPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		fieldPanel=new FieldPanel();
 		fieldPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		miniMapPanel=new MiniMapPanel(fieldPanel);
-		miniMapPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
 		menuButton=new Button("Menu");
 		menuButton.addActionListener(new ActionListener() {
 			@Override

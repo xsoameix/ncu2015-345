@@ -7,6 +7,11 @@ import model.game.field.FieldObject;
 
 public class Character extends FieldObject {
 	private int direction;
+	private int playerID = -1;
+
+	public Character() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public void setLocation(Point location) {
 		int oldX = getLocation().x, oldY = getLocation().y;
@@ -24,6 +29,14 @@ public class Character extends FieldObject {
 		}
 		super.setLocation(location);
 
+	}
+
+	public int getPlayerID() {
+		return playerID;
+	}
+
+	public void setPlayerID(int playerId) {
+		this.playerID = playerId;
 	}
 
 	public int getDirection() {

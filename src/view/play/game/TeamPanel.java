@@ -30,7 +30,7 @@ public class TeamPanel extends Panel{
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-//		moneyLabel.setText(String.valueOf(team.getMoney()));
+		moneyLabel.setText(String.valueOf(team.getMoney()));
 //		turfLabel.setText(String.valueOf(team.getTurfNumber()));
 	}
 

@@ -1,24 +1,40 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 import model.game.Player;
 
 public class Room {
-	private ArrayList<Player> players;
+	private Vector<Player> players;
 	private int playerNumber;
 
 	public Room() {
-		this.players = new ArrayList<Player>();
+		this.players = new Vector<Player>();
 	}
 
-	public ArrayList<Player> getPlayerList() {
+	public Vector<Player> getPlayerList() {
 		return players;
 	}
 
 	public synchronized void addPlayer(Player player) {
 		synchronized (players) {
-			this.players.add(player);
+			players.add(player);
+		}
+	}
+
+	public synchronized void addPlayer(Room room) {
+		synchronized (players) {
+			for (int i = 0; i < room.getPlayerList().size(); i++) {
+				boolean exist = false;
+				for (int j = 0; j < players.size(); j++) {
+					if (players.get(j).getID() == room.getPlayerList().get(i).getID()) {
+						exist = true;
+					}
+				}
+				if (exist == false) {
+					this.players.add(room.getPlayerList().get(i));
+				}
+			}
 		}
 	}
 

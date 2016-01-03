@@ -15,7 +15,7 @@ public class UDPServer extends Thread{
 	private int port;
 	final int SIZE = 8192;
     byte buffer[] = new byte[SIZE];
-    private ClientModel clientModel;
+    private FakeUDPClientModel clientModel;
     private DatagramChannel    server;
     private AtomicInteger      state;
     private static final int STATE_INITIAL = 0;
@@ -28,7 +28,7 @@ public class UDPServer extends Thread{
     private SourceChannel       syncOut;
     private Thread              thread;
     
-    public UDPServer(ClientModel clientModel) {
+    public UDPServer(FakeUDPClientModel clientModel) {
     	this.clientModel=clientModel;
     	this.state = new AtomicInteger(STATE_INITIAL);
     }

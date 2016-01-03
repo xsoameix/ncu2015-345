@@ -1,4 +1,4 @@
-package view.play.room;
+package view.play;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -7,6 +7,9 @@ import model.Room;
 import model.game.Player;
 import view.base.Button;
 import view.base.Panel;
+import view.play.room.GameSettingPanel;
+import view.play.room.PlayerView;
+import view.play.room.PlayersPanel;
 
 public class RoomPanel extends Panel{
 	private Room room;

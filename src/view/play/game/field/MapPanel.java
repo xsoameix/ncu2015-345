@@ -1,7 +1,10 @@
 package view.play.game.field;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+
+import javax.swing.BorderFactory;
 
 import model.game.field.Map;
 import view.base.Panel;

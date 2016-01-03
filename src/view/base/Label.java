@@ -11,7 +11,4 @@ public class Label extends JLabel {
 	public Label(Icon icon){
 		super(icon);
 	}
-	public Label() {
-		// TODO Auto-generated constructor stub
-	}
 }

@@ -32,13 +32,14 @@ public class ClientModel {
 	private Game game;
 	private ClientEncoder encoder;
 	private ClientDecoder decoder;
-	private Player player;
+	private Player individual;
 	private Character character;
-	private PlayPanel playPanel;
+	private FakePlayPanel playPanel;
 
 	public ClientModel() {
-		room = new Room();
+		playPanel = new FakePlayPanel();
 		game = new Game();
+		room = new Room();
 		setting = new Setting();
 		encoder = new ClientEncoder();
 		decoder = new ClientDecoder(this);
@@ -46,50 +47,53 @@ public class ClientModel {
 
 	/* for outside API start */
 	// host
-	protected boolean requestEstablishRoom(int port) {
+	public boolean requestEstablishRoom(int port) {
 		serverModel = new ServerModel();
 		return serverModel.initialize(port);
 	}
 
 	// client
-	protected boolean requestEnterRoom(String ip, int port) {
+	public boolean requestEnterRoom(String ip, int port) {
 		tcpClient = new TCPClient();
 		udpServer = new UDPServer(this);
 		try {
 			tcpClient.initialize(InetAddress.getByName(ip), port);
+			udpServer.initialize(port);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		udpServer.initialize(port);
 		character = new Character();
-		player = new Player(character, setting.getProfile());
-		player.setProfile(setting.getProfile());
-		tcpClient.send(encoder.requestAddPlayer(player).toString().getBytes(StandardCharsets.UTF_8));
+		individual = new Player(character, setting.getProfile());
+		individual.setProfile(setting.getProfile());
+		tcpClient.send(encoder.requestAddPlayer(individual).toString().getBytes(StandardCharsets.UTF_8));
 		return true;
 	}
 
-	protected void requestFire() {
+	public void requestFire() {
 		JSONObject content = encoder.encodeObject("requestFire", null);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
-	protected void requestStartGame() {
+	public void requestStartGame() {
 		JSONObject content = encoder.encodeObject("requestStartGame", null);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
-	protected void requestSetTotalTime(int time) {
+	public void requestSetTotalTime(int time) {
 		JSONObject content = encoder.encodeObject("requestSetTotalTime", time);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
-	protected void requestSetPlayerNumber(int number) {
+	public void requestSetPlayerNumber(int number) {
 		JSONObject content = encoder.encodeObject("requestSetPlayerNumber", number);
 		tcpClient.send(content.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
-	protected void requestSetLocation(int x, int y) {
+	public void requestSetLocation(int x, int y) {
 		Point location = new Point();
 		location.x = x;
 		location.y = y;
@@ -113,26 +117,30 @@ public class ClientModel {
 	}
 
 	public synchronized void setKillNumber(Player player) {
-		int newPlayerID = player.getTeamID();
-		game.getTeam(newPlayerID).getPlayer(newPlayerID).setKill(player.getKill());
+		int newPlayerID = player.getID();
+		game.getPlayer(newPlayerID).setKill(player.getKill());
 	}
 
 	public synchronized void setPlayerNumber(int playnumber) {
 		room.setPlayerNumber(playnumber);
 	}
 
-	public boolean addPlayer(Player player) {
-		room.addPlayer(player);
+	public synchronized boolean addPlayer(Room room) {
+		this.room.addPlayer(room);
+		for (int i = 0; i < room.getPlayerList().size(); i++) {
+			playPanel.addPlayer(room.getPlayerList().get(i));
+		}
 		return true;
 	}
 
-	public boolean removePlayer(Player player) {
+	public synchronized boolean removePlayer(Player player) {
 		room.removePlayer(player);
+		playPanel.removePlayer(player);
 		return true;
 	}
 
 	public void gameOver(Result result) {
-		playPanel.gameOver(result);
+		// playPanel.gameOver(result);
 	}
 
 	public void setTime(int time) {
@@ -142,6 +150,7 @@ public class ClientModel {
 	public synchronized boolean addBullet(Bullet bullet) {
 		synchronized (game.getField().getBulletList()) {
 			game.getField().getBulletList().add(bullet);
+			this.playPanel.addBullet(bullet);
 			return true;
 		}
 	}
@@ -160,6 +169,7 @@ public class ClientModel {
 				Bullet tmp = game.getField().getBulletList().get(i);
 				if (tmp != null && tmp.getID() == bullet.getID()) {
 					game.getField().getBulletList().remove(tmp);
+					this.playPanel.removeBullet(bullet);
 				}
 			}
 			return true;
@@ -170,7 +180,6 @@ public class ClientModel {
 		if (game.getTurf(turf.getID()) != null) {
 			game.getTurf(turf.getID()).setID(turf.getID());
 		}
-
 	}
 
 	public synchronized boolean removeObstacle(Obstacle obstacle) {
@@ -179,22 +188,18 @@ public class ClientModel {
 				Obstacle tmp = game.getField().getObstacles().get(i);
 				if (tmp != null && tmp.getID() == obstacle.getID()) {
 					game.getField().getObstacles().remove(tmp);
+					this.playPanel.removeObstacle(obstacle);
 				}
 			}
 			return true;
 		}
 	}
 
-	public void setMap(Map map) {
-		game.getField().setMap(map);
-	}
-
-	public void set(Byte[] packet) {
+	public void set(byte[] packet) {
 		JSONObject jsonObj = null;
-		byte[] str = packet.toString().getBytes(StandardCharsets.UTF_8);
 		try {
-			String content = new String(str, StandardCharsets.UTF_8);
-			jsonObj = new JSONObject(content);
+			System.out.println("[ClientModel] set " + new String(packet));
+			jsonObj = new JSONObject(new String(packet));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -203,19 +208,41 @@ public class ClientModel {
 	}
 
 	public void startGame() {
-		playPanel.startGame();
+		for (int i = 0; i < room.getPlayerList().size(); i++) {
+			if (room.getPlayerList().get(i).getID() % 2 == 0) {
+				room.getPlayerList().get(i).setTeamID(2);
+				game.getTeam(2).addPlayer(room.getPlayerList().get(i));
+			} else if (room.getPlayerList().get(i).getID() % 2 == 1) {
+				room.getPlayerList().get(i).setTeamID(1);
+				game.getTeam(1).addPlayer(room.getPlayerList().get(i));
+			}
+		}
+		// playPanel.startGame();
 	}
 
-	public void setLocation(Player Player) {
-		Character oldCharacter = game.getTeam(player.getTeamID()).getPlayer(player.getTeamID()).getCharacter();
-		oldCharacter.setDirection(player.getCharacter().getDirection());
-		oldCharacter.setLocation(player.getCharacter().getLocation());
+	public void setLocation(Player newPlayer) {
+		if (game.getPlayer(newPlayer.getID()) != null) {
+			Character oldCharacter = game.getPlayer(newPlayer.getID()).getCharacter();
+			oldCharacter.setDirection(newPlayer.getCharacter().getDirection());
+			oldCharacter.setLocation(newPlayer.getCharacter().getLocation());
+		} else {
+			System.out.println("[ClientModel] setLocation player is null player ID : " + newPlayer.getID());
+		}
+
 	}
 
 	/* for UDP end */
 
+	public void setMap(Map map) {
+		game.getField().setMap(map);
+	}
+
+	public Player getIndividual() {
+		return individual;
+	}
+
 	public void setPlayPanel(PlayPanel playPanel) {
-		this.playPanel = playPanel;
+//		this.playPanel = playPanel;
 	}
 
 	public Room getRoom() {

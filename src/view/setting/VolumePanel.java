@@ -22,7 +22,7 @@ public class VolumePanel extends Panel{
 	private Label volume;
 	private int statusID;
 	private Label status;
-	private SoundPlayer sound;
+//	private SoundPlayer sound;
 	private Button volumeUpButton;
 	private Button volumeDownButton;
 	private Button backButton;
@@ -51,8 +51,8 @@ public class VolumePanel extends Panel{
 		status=new Label("");
 		status.setIcon(statusIcons[statusID]);
 		
-		sound=new SoundPlayer();
-		sound.initialize("music/bg2.wav");
+//		sound=new SoundPlayer();
+//		sound.initialize("music/bg2.wav");
 		
 		volumeDownButton=new Button("DOWN");
 		volumeDownButton.setFont(font);
@@ -125,18 +125,18 @@ public class VolumePanel extends Panel{
 			getDisplayPanel().toPanel(PanelEnum.VOLUMN);
 			break;
 		case "volumeDown":
-			if(sound.limit(sound.getVolume()-2.0f)) {
-				sound.setVolume(sound.getVolume()-2.0f);
-				statusID=statusID-1;
-				status.setIcon(statusIcons[statusID]);
-			}
+//			if(sound.limit(sound.getVolume()-2.0f)) {
+//				sound.setVolume(sound.getVolume()-2.0f);
+//				statusID=statusID-1;
+//				status.setIcon(statusIcons[statusID]);
+//			}
 			break;
 		case "volumeUp":
-			if(sound.limit(sound.getVolume()+2.0f)) {
-				sound.setVolume(sound.getVolume()+2.0f);
-				statusID=statusID+1;
-				status.setIcon(statusIcons[statusID]);
-			}
+//			if(sound.limit(sound.getVolume()+2.0f)) {
+//				sound.setVolume(sound.getVolume()+2.0f);
+//				statusID=statusID+1;
+//				status.setIcon(statusIcons[statusID]);
+//			}
 			break;
 		case "back":
 			getDisplayPanel().first();

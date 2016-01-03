@@ -6,7 +6,7 @@ public class Team {
 	private int ID;// Team ID Time1 = 1 Time2 = 2
 	private Vector<Player> players;
 	private int money;
-	private int turfNumber;
+	private int turfNumber = 1;
 
 	public Team(int ID) {
 		// TODO Auto-generated constructor stub

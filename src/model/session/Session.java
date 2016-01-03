@@ -9,7 +9,6 @@ public class Session {
 	public Session(ServerModel model) {
 		this.serverModel = model;
 		id = serverModel.getSessionID();
-		System.out.println("Session id " + id);
 	}
 
 	public void onData(byte body[]) {

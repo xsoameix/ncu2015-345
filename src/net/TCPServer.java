@@ -16,6 +16,9 @@ import java.util.Iterator;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import model.ServerModel;
+import model.session.Session;
+
 public class TCPServer implements Runnable {
 
     public static final int PIPE_EXIT = 0;
@@ -24,7 +27,7 @@ public class TCPServer implements Runnable {
     private static final int STATE_INITIAL = 0;
     private static final int STATE_RUNNING = 1;
 
-    private FakeServerModel         model;
+    private ServerModel         model;
     private int                 port;
     private Vector<InetAddress> IPTable;
     private Vector<Thread>      threads;
@@ -35,7 +38,7 @@ public class TCPServer implements Runnable {
     private ServerSocketChannel server;
     private AtomicInteger       state;
 
-    public TCPServer(FakeServerModel model) {
+    public TCPServer(ServerModel model) {
         this.model = model;
         this.state = new AtomicInteger(STATE_INITIAL);
     }
@@ -76,7 +79,7 @@ public class TCPServer implements Runnable {
                 for (SelectionKey key : selector.selectedKeys()) {
                     if (key.isAcceptable()) {
                         SocketChannel client = server.accept();
-                        FakeSession session = new FakeSession(model);
+                        Session session = new Session(model);
                         Worker worker = new Worker(client,
                                 IPTable, ctrlOut, counter, session);
                         Thread thread = new Thread(worker);

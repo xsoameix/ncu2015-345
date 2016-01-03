@@ -10,6 +10,8 @@ import java.nio.channels.SocketChannel;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import model.session.Session;
+
 public class Worker implements Runnable {
 
     private static final int READ_SIZE = 0;
@@ -19,14 +21,14 @@ public class Worker implements Runnable {
     private Vector<InetAddress> IPTable;
     private SourceChannel       ctrlOut;
     private AtomicInteger       counter;
-    private FakeSession             session;
+    private Session             session;
 
     public Worker(
             SocketChannel       socket,
             Vector<InetAddress> IPTable,
             SourceChannel       ctrlOut,
             AtomicInteger       counter,
-            FakeSession             session) {
+            Session             session) {
         this.socket  = socket;
         this.IPTable = IPTable;
         this.ctrlOut = ctrlOut;

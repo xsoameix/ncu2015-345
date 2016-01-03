@@ -19,6 +19,9 @@ import static net.TestTCPServer.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+import model.ServerModel;
+import model.session.Session;
+
 public class TestWorker {
 
     // Test whether Worker can receive data.
@@ -53,12 +56,12 @@ public class TestWorker {
             SourceChannel ctrlOut = ctrlPipe.source();
             ctrlOut.configureBlocking(false);
             final Vector<String> actual = new Vector<String>();
-            FakeServerModel model = new FakeServerModel() {
-                public void set(byte body[]) {
+            ServerModel model = new ServerModel() {
+                public void set(int id, byte body[]) {
                     actual.add(new String(body, StandardCharsets.UTF_8));
                 }
             };
-            FakeSession session = new FakeSession(model);
+            Session session = new Session(model);
             Worker worker = new Worker(socket,
                     IPTable, ctrlOut, counter, session);
             Thread workerThread = new Thread(worker);

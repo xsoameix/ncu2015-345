@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import model.game.field.map.MapBlock;
 
 public class FieldObject {
-	private Point location;
+	private Point location; //pix
 	private int ID;
 
 	public Point getLocation() {
@@ -26,8 +26,8 @@ public class FieldObject {
 	}
 	
 	public Rectangle getRectangle(){
-		Rectangle rect = new Rectangle(location.x/MapBlock.getDimension().width,
-				                       location.x/MapBlock.getDimension().height,
+		Rectangle rect = new Rectangle((location.x/MapBlock.getDimension().width)*MapBlock.getDimension().width,
+				                       (location.x/MapBlock.getDimension().height)*MapBlock.getDimension().height,
 				                       MapBlock.getDimension().width,
 				                       MapBlock.getDimension().height);
 		return rect;

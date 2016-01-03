@@ -42,16 +42,24 @@ public class Rule {
 	//Return false when this object can't move
 	public boolean MovingCheck(FieldObject current){
 		FieldObject collusionObject = IsCollusion(current);
+		FieldObject object = null;
 		//
 		int currentPosX;
 		int currentPosY;
 		Rectangle rect = null;
+		MapBlock mapBlock = null;
 		//
 		if(collusionObject == null || (collusionObject instanceof Turf))
 		{
 			//get current object location in blocks
 			currentPosX = current.getLocation().x/MapBlock.getDimension().width;
 			currentPosY = current.getLocation().y/MapBlock.getDimension().height;
+			
+			//Tank hit Turf,then setTeamID and setTimeAtOccupy
+			if(collusionObject instanceof Turf && current instanceof Character){
+				((Turf)collusionObject).setTeamID(((Character)current).getPlayerID());
+				((Turf)collusionObject).setTimeAtOccupy(game.getTime());
+			}
 			
 			for(int row = currentPosY; row <= currentPosY+1; row++){
 				for(int col = currentPosX; col <= currentPosY+1; col++){
@@ -70,17 +78,19 @@ public class Rule {
 						else
 							map.getMapBlock(col, row).removeDynamicObject(current);
 					}
-					else{ //tank
+					else if(current instanceof Character){ //tank
 						if(current.getRectangle().intersects(rect))
 							map.getMapBlock(col, row).addDynamicObject(current);
 						else
-							map.getMapBlock(col, row).removeDynamicObject(current);
+							//removeDynamicObject reset the Turf if this MapBlock has a Turf
+							map.getMapBlock(col, row).removeDynamicObject(current);	
 					}
 				}
 			}
 			return true;
 		}
-		else{    //deal with bullet collusion
+		else{    
+			//deal with bullet collusion
 			if(current instanceof Bullet){
 				 //Bullet hits Bullet
 				if(collusionObject instanceof Bullet)
@@ -93,9 +103,10 @@ public class Rule {
 					BulletHit((Bullet)current, (Obstacle)collusionObject);
 				return false;
 			}
-			else //tank collusion do nothing
-				return false;
+			else if(current instanceof Character)//tank collusion do nothing
+					return false;
 		}
+		return false;
 	}
 	
 	
@@ -110,7 +121,7 @@ public class Rule {
 		if(current instanceof Bullet){
 			CurrentRectangle = ((Bullet)current).getRectangle();
 		}
-		else
+		else if(current instanceof Character)
 			CurrentRectangle = current.getRectangle();
 		
 		//MapBlocks which is nearby the current 
@@ -120,7 +131,7 @@ public class Rule {
 		for(int row = posy-1; row <= posy+1; row++){
 			for(int col = posX-1; col <= posX+1; col++)
 			{
-				if(row!=posy && col!=posX)
+				if(row!=posy && col!=posX){
 					//MapBlock has nothing(just a background)
 					if(! map.getMapBlock(row, col).getDynamicObjectList().isEmpty());
 					{
@@ -135,12 +146,22 @@ public class Rule {
 									return (FieldObject)iter;
 								}
 							}
-							else if(fieldObject.getRectangle().intersects(CurrentRectangle)){
-								return (FieldObject)iter;
+							//Turf's rectangle just is a point
+							//Bullet dont's hit Turf
+							else if(fieldObject instanceof Turf && current instanceof Character){
+								if(((Turf)fieldObject).getRectangle().intersects(CurrentRectangle)){
+									return (FieldObject)iter;
+								}
 							}
-								
+							//Tank/Obstacle' rectangle are the same as the mapBlock
+							else if(fieldObject instanceof Character || (fieldObject instanceof Obstacle)){
+								if(fieldObject.getRectangle().intersects(CurrentRectangle)){
+									return (FieldObject)iter;
+								}
+							}	
 						}
 					}
+				}
 			}
 		}
 		return null;

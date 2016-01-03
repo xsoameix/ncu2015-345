@@ -28,7 +28,7 @@ public class ServerModel {
 	private TimeThread timeThread;
 	private TurfThread turfThread;
 	private AtomicInteger sessionAtomicInteger;
-
+	private BulletThread bulletThread;
 	public ServerModel() {
 		// TODO Auto-generated constructor stub
 		atomicInteger = new AtomicInteger(0);
@@ -106,6 +106,8 @@ public class ServerModel {
 		timeThread.start();
 		turfThread = new TurfThread(game, game.getField(), game.getField().getMap(), rule);
 		turfThread.start();
+		bulletThread = new BulletThread(game.getField());
+		
 		return true;
 	}
 
@@ -165,8 +167,12 @@ public class ServerModel {
 		// udpClient.send(encoder.removeObstacle(new Obstacle(1, new Point(32,
 		// 0))).toString());
 
+//		game.getPlayer(id).getCharacter().setLocation(new Point(42, 32));
 //		System.out.println("[ServerModel] fire " + game.getPlayer(1).getCharacter().getLocation());
 //		System.out.println("[ServerModel] fire " + rule.MovingCheck(game.getPlayer(1).getCharacter()));
+//		if (rule.MovingCheck(game.getPlayer(1).getCharacter()) == false) {
+//			game.getPlayer(id).getCharacter().setLocation(new Point(32, 32));
+//		}
 		return true;
 	}
 

@@ -38,7 +38,12 @@ public class Rule {
 	// Return false when this object can't move
 	public boolean MovingCheck(FieldObject current) {
 		FieldObject collusionObject = IsCollusion(current);
-		System.out.println("[Rule] MovingCheck : "+collusionObject.getLocation());
+		if (collusionObject != null) {
+			System.out.println("[Rule] MovingCheck : " + collusionObject.getLocation());
+		} else {
+			System.out.println("[Rule] MovingCheck : NULL");
+		}
+
 		// FieldObject object = null;
 		//
 		int currentPosX;
@@ -132,25 +137,32 @@ public class Rule {
 		System.out.println("[Rule] IsCollusion posX posY : " + posX + " " + posy);
 		for (int row = posy - 1; row <= posy + 1; row++) {
 			for (int col = posX - 1; col <= posX + 1; col++) {
-//				if (row != posy && col != posX) {
-					if (true) {
+				// if (row != posy && col != posX) {
+				if (true) {
 					// MapBlock has nothing(just a background)
 					System.out.println("[Rule] IsCollusion map get block " + map.getMapBlock(row, col).getDynamicObjectList().isEmpty() + " row col " + row + " " + col);
-					if (!map.getMapBlock(row, col).getDynamicObjectList().isEmpty())
-					{
+					if (!map.getMapBlock(row, col).getDynamicObjectList().isEmpty()) {
 						iter = map.getMapBlock(row, col).getDynamicObjectList().iterator();
 
 						while (iter.hasNext()) {
-							
+
 							// current crash with MapBlock's dynamicObjects
 							FieldObject fieldObject = iter.next();
-							System.out.println("[Rule] iscolle : "+(fieldObject instanceof Obstacle));
-							System.out.println("[Rule] iscolle : "+(fieldObject instanceof Bullet));
-							System.out.println("[Rule] iscolle : "+(fieldObject instanceof Character));
-							System.out.println("[Rule] iscolle : "+(fieldObject instanceof Turf));
+							// System.out.println("[Rule] iscolle : " +
+							// (fieldObject instanceof Obstacle));
+							// System.out.println("[Rule] iscolle : " +
+							// (fieldObject instanceof Bullet));
+							// System.out.println("[Rule] iscolle : " +
+							// (fieldObject instanceof Character));
+							// System.out.println("[Rule] iscolle : " +
+							// (fieldObject instanceof Turf));
 							// Bullet's rectangle smaller than other field
 							// object
 							if (fieldObject instanceof Bullet) {
+
+								System.out.println("[Rule] IsCollusion R Bullet : " + ((Bullet) fieldObject).getRectangle());
+								System.out.println("[Rule] IsCollusion R  : " + CurrentRectangle);
+								System.out.println("[Rule] IsCollusion R1  : " + ((Bullet) fieldObject).getRectangle().intersects(CurrentRectangle));
 								if (((Bullet) fieldObject).getRectangle().intersects(CurrentRectangle)) {
 									return fieldObject;
 								}
@@ -158,6 +170,10 @@ public class Rule {
 							// Turf's rectangle just is a point
 							// Bullet dont's hit Turf
 							else if (fieldObject instanceof Turf && current instanceof Character) {
+
+								System.out.println("[Rule] IsCollusion R Turf : " + ((Turf) fieldObject).getRectangle());
+								System.out.println("[Rule] IsCollusion R  : " + CurrentRectangle);
+
 								if (((Turf) fieldObject).getRectangle().intersects(CurrentRectangle)) {
 									return fieldObject;
 								}
@@ -165,6 +181,16 @@ public class Rule {
 							// Tank/Obstacle' rectangle are the same as the
 							// mapBlock
 							else if (fieldObject instanceof Character || (fieldObject instanceof Obstacle)) {
+
+								if ((fieldObject instanceof Character)) {
+									System.out.println("[Rule] IsCollusion R Character : " + ((Character) fieldObject).getRectangle());
+									System.out.println("[Rule] IsCollusion R Bullet : " + CurrentRectangle);
+								}
+								if ((fieldObject instanceof Obstacle)) {
+									System.out.println("[Rule] IsCollusion R Obstacle : " + ((Obstacle) fieldObject).getRectangle());
+									System.out.println("[Rule] IsCollusion R  : " + CurrentRectangle);
+								}
+
 								if (fieldObject.getRectangle().intersects(CurrentRectangle)) {
 									return fieldObject;
 								}

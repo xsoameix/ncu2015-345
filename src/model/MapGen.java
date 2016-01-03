@@ -52,6 +52,7 @@ public class MapGen {
 		for (int i = 1; i < mapX - 1; i++) {
 			setObstacle(19, i);
 		}
+		setObstacle(2,1);
 	}
 
 	private void setObstacle(int x, int y) {

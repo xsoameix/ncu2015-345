@@ -31,9 +31,10 @@ public class FieldObject {
 	}
 
 	public Rectangle getRectangle() {
-		Rectangle rect = new Rectangle(location.x / MapBlock.getSize().width,
-				location.x / MapBlock.getSize().height,
-				MapBlock.getSize().width, MapBlock.getSize().height);
+		// Rectangle rect = new Rectangle(location.x / MapBlock.getSize().width,
+		// location.x / MapBlock.getSize().height, MapBlock.getSize().width,
+		// MapBlock.getSize().height);
+		Rectangle rect = new Rectangle(location.x, location.y, MapBlock.getSize().width, MapBlock.getSize().height);
 		return rect;
 	}
 

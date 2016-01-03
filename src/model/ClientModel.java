@@ -35,12 +35,12 @@ public class ClientModel {
 	private ClientDecoder decoder;
 	private Player individual;
 	private Character character;
-	private FakePlayPanel playPanel;
+	private PlayPanel playPanel;
 	private AtomicInteger atomicInteger;
 
 	public ClientModel() {
 		atomicInteger = new AtomicInteger(0);
-		playPanel = new FakePlayPanel();
+		playPanel = new PlayPanel();
 		game = new Game(atomicInteger);
 		room = new Room();
 		setting = new Setting();
@@ -138,6 +138,9 @@ public class ClientModel {
 
 	public synchronized boolean addPlayer(Room room) {
 		assert room != null : "[ClientModel] addPlayer room is null";
+		if (individual.getID() == -1) {
+			individual.setID(room.getPlayerList().size());
+		}
 		this.room.addPlayer(room);
 		for (int i = 0; i < room.getPlayerList().size(); i++) {
 			playPanel.addPlayer(room.getPlayerList().get(i));
@@ -232,11 +235,11 @@ public class ClientModel {
 
 	private void initPlayerRespawn() {
 		game.getPlayer(1).setRespawn(1, 1);
-//		game.getPlayer(2).setRespawn(2, 1);
-//		game.getPlayer(3).setRespawn(1, 2);
-//		game.getPlayer(4).setRespawn(18, 18);
-//		game.getPlayer(5).setRespawn(17, 18);
-//		game.getPlayer(6).setRespawn(18, 17);
+		// game.getPlayer(2).setRespawn(2, 1);
+		// game.getPlayer(3).setRespawn(1, 2);
+		// game.getPlayer(4).setRespawn(18, 18);
+		// game.getPlayer(5).setRespawn(17, 18);
+		// game.getPlayer(6).setRespawn(18, 17);
 	}
 
 	public void startGame() {
@@ -277,7 +280,7 @@ public class ClientModel {
 	}
 
 	public void setPlayPanel(PlayPanel playPanel) {
-		// this.playPanel = playPanel;
+		this.playPanel = playPanel;
 	}
 
 	public Room getRoom() {

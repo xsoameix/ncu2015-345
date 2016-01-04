@@ -17,7 +17,7 @@ public class Character extends FieldObject {
 		int oldX = getLocation().x, oldY = getLocation().y;
 		int newX = location.x, newY = location.y;
 		int resultX = newX - oldX, resultY = newY - oldY;
-		assert (resultX != 0 && resultY == 0) || (resultX == 0 && resultY != 0) : "[Character] setLocation result location error : resultX " + resultX + " resultY " + resultY;
+//		assert (resultX != 0 && resultY == 0) || (resultX == 0 && resultY != 0) : "[Character] setLocation result location error : resultX " + resultX + " resultY " + resultY;
 		if (resultX > 0) {
 			setDirection(Direction.RIGHT);
 		} else if (resultY > 0) {

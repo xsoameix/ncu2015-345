@@ -19,8 +19,16 @@ public class BulletThread extends Thread {
 		this.serverModel = serverModel;
 		this.field = serverModel.getGame().getField();
 		rule = serverModel.getGame().getRule();
+		
+		moving=new Point[]{
+			new Point(0, moveUnit),
+			new Point(0, -moveUnit),
+			new Point(-moveUnit, 0),
+			new Point(moveUnit, 0),
+		};
 	}
-
+	private int moveUnit=8;
+	private Point moving[];
 	@Override
 	public void run() {
 		Bullet bulletObject = null;
@@ -29,27 +37,15 @@ public class BulletThread extends Thread {
 			Iterator<Bullet> iter = bulletList.iterator();
 			synchronized (this) {
 
+			
 				for (int i = 0; i < bulletList.size(); i++) {
 					bulletObject = bulletList.get(i);
-					System.out.println("[BulletThreaD] run bulletObject Direction : " + bulletObject.getDirection());
-					switch (bulletObject.getDirection()) {
-					case Direction.UP:
-						bulletObject.setLocation(new Point(bulletObject.getLocation().x, bulletObject.getLocation().y - 25));
-						break;
-					case Direction.DOWN:
-						bulletObject.setLocation(new Point(bulletObject.getLocation().x, bulletObject.getLocation().y + 25));
-						break;
-					case Direction.LEFT:
-						bulletObject.setLocation(new Point(bulletObject.getLocation().x - 25, bulletObject.getLocation().y));
-						break;
-					case Direction.RIGHT:
-						bulletObject.setLocation(new Point(bulletObject.getLocation().x + 25, bulletObject.getLocation().y));
-						break;
-					}
-					System.out.println("[BulletThreaD] run bulletObject LOCATION : " + bulletObject.getLocation());
+//					System.out.println("[BulletThreaD] run bulletObject Direction : " + bulletObject.getDirection());
+					bulletObject.getLocation().translate(moving[bulletObject.getDirection()-1].x, moving[bulletObject.getDirection()-1].y);
+//					System.out.println("[BulletThreaD] run bulletObject LOCATION : " + bulletObject.getLocation());
 
 					boolean move = rule.MovingCheck(bulletObject);
-					System.out.println("[BulletThreaD] run bulletObject movecheck : " + move);
+//					System.out.println("[BulletThreaD] run bulletObject movecheck : " + move);
 					try {
 						if (move) {
 							serverModel.updateBullet(bulletObject);
@@ -103,7 +99,7 @@ public class BulletThread extends Thread {
 				// }
 			}
 			try {
-				BulletThread.sleep(500);
+				BulletThread.sleep(25);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

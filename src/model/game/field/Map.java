@@ -53,6 +53,11 @@ public class Map {
 	}
 
 	public MapBlock getMapBlock(int x, int y) {
-		return mapBlocks[y][x];
+		if(x>=getSize().width||y>=getSize().height)
+			return mapBlocks[(x>=getSize().width?getSize().width-1:x)][(y>=getSize().height?getSize().height-1:y)];
+		else if(x<0||y<0)
+			return mapBlocks[x<0?0:x][y<0?0:y];
+		else
+			return mapBlocks[y][x];
 	}
 }

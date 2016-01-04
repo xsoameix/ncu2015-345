@@ -32,20 +32,27 @@ public class UDPClient {
     	final int SIZE = 8192;
     	byte[] bytePacket = new byte[SIZE];    	
     	bytePacket = packet.getBytes();
-    	while(true){
-    		IPTableTemp[count++] = IPData.get(0);
-    		getIP = IPData.get(0);
+//    	while(true){
+//    		IPTableTemp[count++] = IPData.get(0);
+//    		getIP = IPData.get(0);
+//    		DatagramPacket sendPacket = new DatagramPacket(bytePacket, bytePacket.length, IPData.get(0), setPort);
+//    		socket = new DatagramSocket();
+//    		socket.send(sendPacket);  		
+//    		IPData.remove(0);
+//    		Thread.sleep(100);    		
+//    		if(IPData.size()==0){
+//    			for(int i=0;i<count;i++){
+//    				IPData.add(IPTableTemp[i]);
+//    			} 				
+//    			break;
+//    		}
+//    	}
+    	int size=IPData.size();
+    	socket=new DatagramSocket();
+    	for(int i=0; i<size; i++){
     		DatagramPacket sendPacket = new DatagramPacket(bytePacket, bytePacket.length, IPData.get(0), setPort);
-    		socket = new DatagramSocket();
-    		socket.send(sendPacket);  		
-    		IPData.remove(0);
-    		Thread.sleep(100);    		
-    		if(IPData.size()==0){
-    			for(int i=0;i<count;i++){
-    				IPData.add(IPTableTemp[i]);
-    			} 				
-    			break;
-    		}
+    		socket.send(sendPacket);
+//    		Thread.sleep(100);
     	}
     }
     

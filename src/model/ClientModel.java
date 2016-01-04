@@ -224,7 +224,7 @@ public class ClientModel {
 		assert packet != null : "[ClientModel] set packet is null";
 		JSONObject jsonObj = null;
 		try {
-			System.out.println("[ClientModel] set " + new String(packet));
+//			System.out.println("[ClientModel] set " + new String(packet));
 			jsonObj = new JSONObject(new String(packet));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

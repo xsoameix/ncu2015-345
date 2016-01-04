@@ -203,6 +203,7 @@ public class Rule {
 			}
 		} else {
 			System.out.println("[Rule] : " + posx + " " + posy);
+			if(!map.getMapBlock(posx, posy).getDynamicObjectList().isEmpty())
 			return map.getMapBlock(posx, posy).getDynamicObjectList().get(0);
 		}
 		return null;

@@ -37,7 +37,7 @@ public class Game {
 				mapBlocks[j][i] = new MapBlock(1);
 			}
 		}
-		field.setMap(new Map(new Dimension(32, 32), mapBlocks));
+		field.setMap(new Map(new Dimension(20, 20), mapBlocks));
 		field = mp.createField(field, field.getMap());
 		// } catch (IOException e) {
 		// // TODO Auto-generated catch block

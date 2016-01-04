@@ -194,7 +194,7 @@ public class GamePanel extends AbstractView{
 		addPlayers(clientModel.getRoom().getPlayerList());
 		
 		//set field
-		
+		fieldPanel.setObstacles(clientModel.getGame().getField().getObstacles());
 		
 		//render and key
 		renderThread.start();

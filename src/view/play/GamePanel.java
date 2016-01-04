@@ -83,14 +83,16 @@ public class GamePanel extends AbstractView{
 	
 	private boolean firing=false;
 	public void requestInputFireKey(){
-		if(firing)
-			clientModel.requestFire();
+//		if(firing){
+//			clientModel.requestFire();
+//			firing=false;
+//		}
 	}
 	public void pressFireKey(){
-		firing=true;
+//		requestInputFireKy¡C¡C();
 	}
 	public void releaseFireKey(){
-		firing=false;
+		requestInputFireKey();
 	}
 	
 	private void setComponents(){

@@ -1,11 +1,12 @@
 package view.play.room;
 
+import java.awt.Component;
+
 import javax.swing.BoxLayout;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import model.ClientModel;
 import view.base.Label;
 import view.base.extend.AbstractView;
 
@@ -37,9 +38,6 @@ public class GameSettingPanel extends AbstractView{
 		
 		add(playerNumberLabel);
 		playerNumberSlider=new JSlider(1, 3, 1);
-//		playerNumberSlider.setPaintTicks(true);
-//		playerNumberSlider.setPaintLabels(true);
-//		playerNumberSlider.setPaintTrack(true);
 		playerNumberSlider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -49,7 +47,11 @@ public class GameSettingPanel extends AbstractView{
 		});
 		add(playerNumberSlider);
 	}
-	
+	@Override
+	public void setEnabled(boolean enabled) {
+		for(Component component: getComponents())
+			component.setEnabled(enabled);
+	}
 	public void requestSetPlayerNumber(int playerNumber){
 		clientModel.requestSetPlayerNumber(playerNumber);
 	}

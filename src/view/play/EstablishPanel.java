@@ -90,12 +90,14 @@ public class EstablishPanel extends AbstractView{
 				e1.printStackTrace();
 			}
 			IPTextField.setEditable(false);
+			fireActionEvent(e);
 			break;
 		case "client":
 			isHost=false;
 			getDisplayPanel().toPanel(PanelEnum.ESTABLISH);
 			IPTextField.setText("");
 			IPTextField.setEditable(true);
+			fireActionEvent(e);
 			break;
 			
 		//button

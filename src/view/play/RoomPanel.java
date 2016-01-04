@@ -19,6 +19,8 @@ public class RoomPanel extends AbstractView{
 	private PlayersPanel playersPanel;
 	private GameSettingPanel gameSettingPanel;
 	
+	
+	private boolean isHost;
 	private Button buttons[];
 	
 	private void setPanels(){
@@ -63,9 +65,20 @@ public class RoomPanel extends AbstractView{
 	@Override
 	public void actionPerformed(ActionEvent e){
 		switch(e.getActionCommand()){
+		case "host":
+			isHost=true;
+			break;
+		case "client":
+			isHost=false;
+			break;
+		
 		case "establish":
-			gameSettingPanel.requestSetPlayerNumber();
-			gameSettingPanel.requestSetTotalTime();
+			if(isHost){
+				gameSettingPanel.requestSetPlayerNumber();
+				gameSettingPanel.requestSetTotalTime();
+			}
+			else
+				gameSettingPanel.setEnabled(false);
 			getDisplayPanel().next();
 			break;
 		case "start":

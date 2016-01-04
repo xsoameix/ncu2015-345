@@ -72,6 +72,6 @@ public class KeyInputTimer extends TimerTask{
 	@Override
 	public void run() {
 		gamePanel.requestInputArrowKey();
-		gamePanel.requestInputFireKey();
+//		gamePanel.requestInputFireKey();
 	}
 }

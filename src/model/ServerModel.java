@@ -15,8 +15,11 @@ import model.game.Team;
 import model.game.coder.ServerDecoder;
 import model.game.coder.ServerEncoder;
 import model.game.field.FieldObject;
+import model.game.field.Map;
 import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Character;
+import model.game.field.dynamic.Obstacle;
+import model.game.field.dynamic.Turf;
 import model.game.field.map.MapBlock;
 import net.TCPServer;
 import net.UDPClient;
@@ -147,17 +150,19 @@ public class ServerModel {
 
 	public boolean setLocation(int id, Point point) throws IOException, InterruptedException {
 		assert point != null : "[ServerModel] setLocation : Point location is null";
-		int x = point.x, y = point.y;
+//		int x = point.x, y = point.y;
 //		assert x >= 0 && y >= 0 : "[ServerModel] setLocation : location error x " + x + " y " + y;
 		// call rule to move
 		// if true then setLocation
 		if (game.getPlayer(id) != null) {
-			if(point.x>=0&&point.y>=0&&
-					point.x<getGame().getField().getMap().getSize().width*MapBlock.getSize().width&&
-					point.y<getGame().getField().getMap().getSize().height*MapBlock.getSize().height){
+//			if(point.x>=0&&point.y>=0&&
+//					point.x<getGame().getField().getMap().getSize().width*MapBlock.getSize().width&&
+//					point.y<getGame().getField().getMap().getSize().height*MapBlock.getSize().height){
 //				setLocation(game.getPlayer(id).getCharacter(), point);
 				game.getPlayer(id).getCharacter().setLocation(point);
-			}
+//				if(!rule.MovingCheck(game.getPlayer(id).getCharacter()))
+//					game.getPlayer(id).getCharacter().setLocation(original);
+//			}
 		} else {
 			System.out.println("[ServerModel] setLocation player not exist playerID : " + id + " player : " + game.getPlayer(id));
 		}
@@ -165,33 +170,117 @@ public class ServerModel {
 		return true;
 	}
 
-	private void setLocation(FieldObject object, Point point){
-		Rectangle rectangle=object.getRectangle();
-		rectangle.translate(point.x, point.y);//new rectangle
-		
-		for(MapBlock mapBlock: object.getReside()){
-			if(!mapBlock.getRectangle().intersects(rectangle))
-				mapBlock.removeFieldObject(object);
+	private Point checkBlock[]={
+			new Point(0, 0),
+			new Point(1, 0),
+			new Point(0, 1),
+			new Point(1, 1),
+	};
+	public void setLocation(FieldObject object, Point point){
+		Map map=game.getField().getMap();
+		Point original=new Point(object.getLocation());
+		//remove old
+		for(int i=0; i<checkBlock.length; i++){
+			Point now=new Point(original.x/MapBlock.getSize().width, original.y/MapBlock.getSize().height);
+			now.translate(checkBlock[i].x, checkBlock[i].y);
+			map.getMapBlock(now.x, now.y).removeFieldObject(object);
 		}
-		
-		for(MapBlock mapBlock: object.getReside()){
-			for(FieldObject otherObject: mapBlock.getFieldObjects())
-				if(rectangle.intersects(otherObject.getRectangle())){
-					object.collusion(otherObject);
+		if(point.x<=0||point.y<=0||point.x>map.getSize().width*MapBlock.getSize().width||
+				point.y>map.getSize().height*MapBlock.getSize().height){
+			if(object instanceof Bullet)
+				try {
+					removeBullet((Bullet)object);
+				} catch (IOException | InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+			}
+			else{
+		//update reside mapBlocks
+		object.setLocation(point);
+			}
+//		Vector<FieldObject> collusionList=isCollusion(object);
+//		if(!collusionList.isEmpty()){
+//			int size=collusionList.size();
+//			for(int i=0; i<size; i++)
+//				collusion(object, collusionList.get(i), original);
+//		}
+	}
+	public Vector<FieldObject> isCollusion(FieldObject object){
+		Vector<FieldObject> collusionList=new Vector<FieldObject>();
+		Point point=object.getLocation();
+		for(int i=0; i<checkBlock.length; i++){
+			Point now=new Point(point.x/MapBlock.getSize().width, point.y/MapBlock.getSize().height);
+			now.translate(checkBlock[i].x, checkBlock[i].y);
+			MapBlock mapBlock=getGame().getField().getMap().getMapBlock(now.x, now.y);
+//			mapBlock.addFieldObject(object);
+			for(FieldObject otherObject: mapBlock.getFieldObjects()){
+				if(object.getRectangle().intersects(otherObject.getRectangle())){
+					collusionList.add(otherObject);
+				}
+			}
+		}
+		return collusionList;
+	}
+	public void collusion(FieldObject object, FieldObject otherObject, Object original) {
+		if(object instanceof Bullet){
+			if(otherObject instanceof Bullet){
+				try {
+					removeBullet((Bullet)otherObject);
+				} catch (IOException | InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			else if(otherObject instanceof Character){
+				Player a=game.getPlayer(((Bullet)object).getPlayerID());
+				Player b=game.getPlayer(((Character)otherObject).getPlayerID());
+				if(a.getTeamID()!=b.getTeamID()){
+					kill(a, b);
+				}
+			}
+			else if(otherObject instanceof Obstacle){
+				Obstacle obstacle=((Obstacle)otherObject);
+				if(obstacle.isBreakable())
+					removeObstacle(obstacle);
+			}
+			try {
+				removeBullet((Bullet)object);
+			} catch (IOException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		else if(object instanceof Character){
+			if(otherObject instanceof Character){
+				object.setLocation((Point) original);
+			}
+			else if(otherObject instanceof Obstacle){
+				object.setLocation((Point) original);
+			}
+			else if(otherObject instanceof Turf){
+				
+			}
 		}
 	}
-	private void setLocation(Character character, Point point) {
+	private void removeObstacle(Obstacle obstacle) {		
+		game.getField().removeObstacle(obstacle);
+		udpClient.send(encoder.removeObstacle(obstacle).toString());
 	}
-	private void setLocation(Bullet bullet, Point point){
-		
+
+	public void kill(Player player, Player killed){
+		player.setKill(player.getKill()+1);
+		killed.setDeath(killed.getDeath()+1);
+		udpClient.send(encoder.setKillNumber(player).toString());
+		udpClient.send(encoder.setDeathNumber(killed).toString());
 	}
 
 	public void removeBullet(Bullet bullet) throws IOException, InterruptedException {
+		assert bullet!=null:"null bullet";
+		game.getField().removeBullet(bullet);
 		udpClient.send(encoder.removeBullet(bullet).toString());
 	}
 
 	public void updateBullet(Bullet bullet) throws IOException, InterruptedException {
+		assert bullet!=null:"null bullet";
 		udpClient.send(encoder.updateBullet(bullet).toString());
 	}
 
@@ -234,10 +323,10 @@ public class ServerModel {
 		assert packet != null : "[ServerModel] set : byte[] packet is null";
 		JSONObject jsonObj = null;
 		try {
-			System.out.println("[ServerModel] set " + new String(packet));
+//			System.out.println("[ServerModel] set " + new String(packet));
 			jsonObj = new JSONObject(new String(packet));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.out.println("[ServerModel] set " + new String(packet));
 			e.printStackTrace();
 		}
 		decoder.decode(id, jsonObj);

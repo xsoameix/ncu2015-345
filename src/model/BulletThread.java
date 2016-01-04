@@ -41,10 +41,14 @@ public class BulletThread extends Thread {
 				for (int i = 0; i < bulletList.size(); i++) {
 					bulletObject = bulletList.get(i);
 //					System.out.println("[BulletThreaD] run bulletObject Direction : " + bulletObject.getDirection());
-					bulletObject.getLocation().translate(moving[bulletObject.getDirection()-1].x, moving[bulletObject.getDirection()-1].y);
 //					System.out.println("[BulletThreaD] run bulletObject LOCATION : " + bulletObject.getLocation());
+					
+//					Point point=new Point(bulletObject.getLocation());
+//					point.translate(moving[bulletObject.getDirection()-1].x, moving[bulletObject.getDirection()-1].y);
+					bulletObject.getLocation().translate(moving[bulletObject.getDirection()-1].x, moving[bulletObject.getDirection()-1].y);
 
 //					boolean move = rule.MovingCheck(bulletObject);
+//					serverModel.setLocation(bulletObject, point);
 					boolean move=true;
 //					System.out.println("[BulletThreaD] run bulletObject movecheck : " + move);
 					try {

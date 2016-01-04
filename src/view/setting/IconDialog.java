@@ -28,7 +28,7 @@ public class IconDialog extends Dialog implements ActionListener {
 		icons=new Button[6];
 		for(int i=0; i<icons.length; i++){
 			icons[i]=new Button();
-			icons[i].setIcon(new ImageIcon("image/icon"+i+".jpg"));
+			icons[i].setIcon(new ImageIcon("src/assets/img/icon"+i+".jpg"));
 			icons[i].setActionCommand("icon"+i);
 			icons[i].addActionListener(parent);
 			add(icons[i]);

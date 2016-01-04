@@ -44,17 +44,17 @@ public class MapBlock {
 	public void removeFieldObject(FieldObject object) {
 		// when Tank leave MapBlock, it also remove itself from the MapBlock
 		// If MapBlock has a Turf, then reset the Turf after the tank leave
-		if (object instanceof Character) {
-			Iterator<FieldObject> iter = this.objects.iterator();
-			FieldObject obj = null;
-			while (iter.hasNext()) {
-				obj = iter.next();
-				if (obj instanceof Turf) {
-					((Turf) obj).setTimeAtOccupy(-1);
-					((Turf) obj).setTeamID(-1);
-				}
-			}
-		}
+//		if (object instanceof Character) {
+//			Iterator<FieldObject> iter = this.objects.iterator();
+//			FieldObject obj = null;
+//			while (iter.hasNext()) {
+//				obj = iter.next();
+//				if (obj instanceof Turf) {
+//					((Turf) obj).setTimeAtOccupy(-1);
+//					((Turf) obj).setTeamID(-1);
+//				}
+//			}
+//		}
 		objects.remove(object);
 	}
 
@@ -72,6 +72,13 @@ public class MapBlock {
 
 	public Rectangle getRectangle() {
 		return new Rectangle(location.x, location.y, size.width, size.height);
+	}
+
+	public boolean contains(FieldObject object) {
+		for(FieldObject fieldObject: objects)
+			if(fieldObject.getID()==object.getID())
+				return true;
+		return false;
 	}
 
 

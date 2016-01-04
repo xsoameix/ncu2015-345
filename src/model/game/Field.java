@@ -8,6 +8,7 @@ import model.game.field.dynamic.Bullet;
 import model.game.field.dynamic.Character;
 import model.game.field.dynamic.Obstacle;
 import model.game.field.dynamic.Turf;
+import model.game.field.map.MapBlock;
 
 public class Field {
 	// private int backgroundID
@@ -66,8 +67,11 @@ public class Field {
 
 	public void addTurf(Turf turf) {
 		// TODO Auto-generated method stub
-		synchronized (turfs) {
+			synchronized (turfs) {
+				map.getMapBlock(turf.getLocation().x / MapBlock.getSize().width, turf.getLocation().y/MapBlock.getSize().width).addFieldObject(turf);
+				
 			this.turfs.add(turf);
+			
 		}
 	}
 
@@ -106,7 +110,7 @@ public class Field {
 			// System.out.println("[Field] addObstacle " +
 			// obstacle.getLocation().x / 32 + " " + obstacle.getLocation().y /
 			// 32);
-			map.getMapBlock(obstacle.getLocation().x / 32, obstacle.getLocation().y / 32).addFieldObject(obstacle);
+			map.getMapBlock(obstacle.getLocation().x / MapBlock.getSize().width, obstacle.getLocation().y/MapBlock.getSize().width).addFieldObject(obstacle);
 			// System.out.println("[Field] addObstacle " +(
 			// map.getMapBlock(obstacle.getLocation().x / 32,
 			// obstacle.getLocation().y / 32).getDynamicObjectList().get(0)

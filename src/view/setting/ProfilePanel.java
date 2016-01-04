@@ -21,7 +21,6 @@ import view.base.TextField;
 import view.base.extend.AbstractView;
 
 public class ProfilePanel extends AbstractView {
-	private Profile profile;
 	private Profile newProfile;
 	
 	private Component[] nullGrids;
@@ -135,7 +134,7 @@ public class ProfilePanel extends AbstractView {
 			if(e.getActionCommand().startsWith("icon")) {
 				int i=Integer.valueOf(e.getActionCommand().substring("icon".length()));
 				imageContentButton.setText("");
-				imageContentButton.setIcon(new ImageIcon("image/icon"+Integer.toString(i)+".jpg"));
+				imageContentButton.setIcon(new ImageIcon("src/assets/img/icon"+Integer.toString(i)+".jpg"));
 				imageContentButton.setLayout(new GridLayout(2, 1, 0, 0));
 				newProfile.setIconID(i);
 				iconDialog.dispose();

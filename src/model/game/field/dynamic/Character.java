@@ -22,7 +22,7 @@ public class Character extends FieldObject {
 //		assert (resultX != 0 && resultY == 0) || (resultX == 0 && resultY != 0) : "[Character] setLocation result location error : resultX " + resultX + " resultY " + resultY;
 		if (resultX > 0) {
 			setDirection(Direction.RIGHT);
-		} else if (resultY > 0) {
+ 		} else if (resultY > 0) {
 			setDirection(Direction.UP);
 		} else if (resultX < 0) {
 			setDirection(Direction.LEFT);
@@ -59,12 +59,6 @@ public class Character extends FieldObject {
 	}
 	public void respawn() {
 		setLocation(respawn);
-	}
-
-	@Override
-	public void collusion(FieldObject otherObject) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

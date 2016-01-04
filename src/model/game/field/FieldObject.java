@@ -10,12 +10,10 @@ public abstract class FieldObject {
 	private Point location;
 	private Dimension size;
 	private int ID;
-	private MapBlock reside[];
 	
 
 	public FieldObject() {
 		location = new Point(0, 0);
-		setReside(new MapBlock[4]);
 	}
 
 	public Point getLocation() {
@@ -44,14 +42,6 @@ public abstract class FieldObject {
 
 	abstract public void say();
 
-	public MapBlock[] getReside() {
-		return reside;
-	}
-
-	public void setReside(MapBlock reside[]) {
-		this.reside = reside;
-	}
-
 	public Dimension getSize() {
 		return size;
 	}
@@ -59,6 +49,4 @@ public abstract class FieldObject {
 	public void setSize(Dimension size) {
 		this.size = size;
 	}
-
-	abstract public void collusion(FieldObject otherObject);
 }

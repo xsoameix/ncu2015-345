@@ -176,6 +176,7 @@ public class ClientModel {
 
 	public synchronized void updateBullet(Bullet bullet) {
 		assert bullet != null : "[ClientModel] updateBullet bullet is null";
+		if(bullet!=null)
 		synchronized (game.getField().getBulletList()) {
 			Bullet oldBullet = game.getField().getBullet(bullet.getID());
 			assert oldBullet != null : "[ClientModel] updateBullet getBullet is null bulletID : " + bullet.getID();

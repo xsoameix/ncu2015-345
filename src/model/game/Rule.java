@@ -191,6 +191,18 @@ public class Rule {
 									if ((fieldObject instanceof Character)) {
 										System.out.println("[Rule] IsCollusion R Character : " + ((Character) fieldObject).getRectangle());
 										System.out.println("[Rule] IsCollusion R Bullet : " + CurrentRectangle);
+										if(current instanceof Character){
+											if(((Character)fieldObject).getPlayerID()==((Character)current).getPlayerID())
+												return null;
+											else
+												return fieldObject;
+										}
+										else if(current instanceof Bullet){
+											if(((Character)fieldObject).getPlayerID()==((Bullet)current).getPlayerID())
+												return null;
+											else
+												return fieldObject;
+										}
 									}
 									if ((fieldObject instanceof Obstacle)) {
 										System.out.println("[Rule] IsCollusion R Obstacle : " + ((Obstacle) fieldObject).getRectangle());
@@ -272,7 +284,7 @@ public class Rule {
 
 		// remove the obstacle from the obstacleList in field and mapBlock if it
 		// is breakable
-		if (obstacle.getIsBreakable() == true) {
+		if (obstacle.isBreakable() == true) {
 			field.removeObstacle(obstacle);
 			MapBlock obstacleMapBlock = getCurrentMapBlock(obstacle);
 			obstacleMapBlock.removeFieldObject(obstacle);

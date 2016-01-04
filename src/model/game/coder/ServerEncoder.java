@@ -35,7 +35,9 @@ public class ServerEncoder {
 	public JSONObject setKillNumber(Player player) {
 		return encodeObject("setKillNumber", player);
 	}
-
+	public Object setDeathNumber(Player killed) {
+		return encodeObject("setDeathNumber", killed);
+	}
 	public JSONObject changeFlagColor(Turf turf) {
 		return encodeObject("changeTurfColor", turf);
 	}
@@ -96,4 +98,6 @@ public class ServerEncoder {
 		}
 		return object;
 	}
+
+
 }

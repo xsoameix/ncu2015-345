@@ -54,7 +54,7 @@ public class GamePanel extends AbstractView{
 		if(moveUnit!=null){
 			Point newPoint=newLocation(character.getLocation());
 			if(!oldPoint.equals(newPoint)){
-				System.out.println(newPoint.toString()+", "+oldPoint.toString());
+//				System.out.println(newPoint.toString()+", "+oldPoint.toString());
 				clientModel.requestSetLocation(newPoint.x, newPoint.y);
 				oldPoint=new Point(newPoint);
 			}
@@ -140,7 +140,7 @@ public class GamePanel extends AbstractView{
 		personalPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		fieldPanel=new FieldPanel();
 		fieldPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		miniMapPanel=new MiniMapPanel(fieldPanel.getMapPanel());
+		miniMapPanel=new MiniMapPanel(fieldPanel);
 		miniMapPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		menuButton=new Button("Menu");
 		menuButton.addActionListener(new ActionListener() {

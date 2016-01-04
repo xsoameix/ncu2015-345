@@ -93,4 +93,14 @@ public class Player {
 		this.money = money;
 	}
 
+	public void kill() {
+		money+=300;
+		kill+=1;
+	}
+
+	public void death() {
+		death+=1;
+		character.respawn();
+	}
+
 }

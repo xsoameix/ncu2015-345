@@ -64,10 +64,4 @@ public class Turf extends FieldObject {
 		System.out.println("Turf");
 	}
 
-	@Override
-	public void collusion(FieldObject otherObject) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

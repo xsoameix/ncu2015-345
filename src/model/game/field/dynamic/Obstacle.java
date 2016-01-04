@@ -11,11 +11,10 @@ public class Obstacle extends FieldObject {
 		setID(ID);
 		setLocation(location);
 	}
-
-	public boolean getIsBreakable() {
+	
+	public boolean isBreakable() {
 		return breakable;
 	}
-
 	public void setBreakable(boolean breakable) {
 		this.breakable = breakable;
 	}
@@ -25,10 +24,6 @@ public class Obstacle extends FieldObject {
 		System.out.println("obstacle");
 	}
 
-	@Override
-	public void collusion(FieldObject otherObject) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 }

@@ -45,10 +45,4 @@ public class Bullet extends FieldObject {
 		System.out.println("Bullet");
 	}
 
-	@Override
-	public void collusion(FieldObject otherObject) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

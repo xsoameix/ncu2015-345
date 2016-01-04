@@ -11,7 +11,7 @@ import model.game.field.dynamic.Turf;
 import model.game.field.FieldObject;
 
 public class MapBlock {
-	private Point location;
+	private Point location;//in block
 	private Vector<FieldObject> objects;
 	private static Dimension size = new Dimension(32, 32);
 	public int type;// remove!

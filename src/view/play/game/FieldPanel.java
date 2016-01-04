@@ -74,7 +74,7 @@ public class FieldPanel extends AbstractView{
 		super.paint(g);
 		Character character=clientModel.getIndividual().getCharacter();
 		mapPanel.setLocation(-character.getLocation().x+500, -character.getLocation().y+250);
-	}
+	 }
 	public void setup(){
 		Dimension size=clientModel.getGame().getField().getMap().getSize();
 		mapPanel.setSize((size.width+1)*MapBlock.getSize().width, (size.height+1)*MapBlock.getSize().height);

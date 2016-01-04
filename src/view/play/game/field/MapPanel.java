@@ -3,6 +3,7 @@ package view.play.game.field;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 
@@ -17,6 +18,7 @@ import model.game.field.dynamic.Character;
 import model.game.field.dynamic.Obstacle;
 import model.game.field.dynamic.Turf;
 import model.game.field.map.MapBlock;
+import view.Config;
 import view.base.extend.AbstractView;
 
 public class MapPanel extends AbstractView{
@@ -50,7 +52,10 @@ public class MapPanel extends AbstractView{
 		super.paint(g);
 		for(int y=0; y<map.getSize().height; y++){
 			for(int x=0; x<map.getSize().width; x++){
-				g.drawImage(mapBlockImages, x*MapBlock.getSize().width, y*MapBlock.getSize().height, null);
+				if(new Rectangle(x*MapBlock.getSize().width, y*MapBlock.getSize().height,
+						MapBlock.getSize().width, MapBlock.getSize().height).intersects(
+					new Rectangle(-getX(), -getY(), Config.fieldDimension.width, Config.fieldDimension.height)))
+					g.drawImage(mapBlockImages, x*MapBlock.getSize().width, y*MapBlock.getSize().height, null);
 			}
 		}
 		for(Turf turf: clientModel.getGame().getField().getTurfs()){
@@ -68,6 +73,8 @@ public class MapPanel extends AbstractView{
 //			g.drawRect(character.getLocation().x, character.getLocation().y, MapBlock.getSize().width, MapBlock.getSize().height);
 		}
 		for(Obstacle obstacle: clientModel.getGame().getField().getObstacles()){
+			if(obstacle.getRectangle().intersects(
+				new Rectangle(-getX(), -getY(), Config.fieldDimension.width, Config.fieldDimension.height)))
 			g.drawImage(obstacleImage, obstacle.getLocation().x, obstacle.getLocation().y, null);
 //			g.drawRect(obstacle.getLocation().x, obstacle.getLocation().y, MapBlock.getSize().width, MapBlock.getSize().height);
 		}

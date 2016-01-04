@@ -44,7 +44,8 @@ public class BulletThread extends Thread {
 					bulletObject.getLocation().translate(moving[bulletObject.getDirection()-1].x, moving[bulletObject.getDirection()-1].y);
 //					System.out.println("[BulletThreaD] run bulletObject LOCATION : " + bulletObject.getLocation());
 
-					boolean move = rule.MovingCheck(bulletObject);
+//					boolean move = rule.MovingCheck(bulletObject);
+					boolean move=true;
 //					System.out.println("[BulletThreaD] run bulletObject movecheck : " + move);
 					try {
 						if (move) {

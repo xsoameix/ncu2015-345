@@ -176,7 +176,6 @@ public class ClientModel {
 
 	public synchronized void updateBullet(Bullet bullet) {
 		assert bullet != null : "[ClientModel] updateBullet bullet is null";
-		if(bullet!=null)
 		synchronized (game.getField().getBulletList()) {
 			Bullet oldBullet = game.getField().getBullet(bullet.getID());
 			assert oldBullet != null : "[ClientModel] updateBullet getBullet is null bulletID : " + bullet.getID();
@@ -257,12 +256,16 @@ public class ClientModel {
 				game.getTeam(1).addPlayer(room.getPlayerList().get(i));
 			}
 		}
-		initPlayerRespawn();
-		for(int i=0; i<room.getPlayerList().size(); i++){
-			game.getPlayer(i+1).getCharacter().respawn();
+//		initPlayerRespawn();
+//		for(int i=0; i<room.getPlayerList().size(); i++){
+//			game.getPlayer(i+1).getCharacter().respawn();
+//		}
+//		game.getPlayer(1).getCharacter().getLocation().x = 32;
+//		game.getPlayer(1).getCharacter().getLocation().y = 32;
+		for(int i=0; i<game.getPlayerList().size(); i++){
+			game.getPlayer(i+1).getCharacter().getLocation().x = 32*i;
+			game.getPlayer(i+1).getCharacter().getLocation().y = 32*i;
 		}
-		game.getPlayer(1).getCharacter().getLocation().x = 32;
-		game.getPlayer(1).getCharacter().getLocation().y = 32;
 		playPanel.startGame();
 	}
 

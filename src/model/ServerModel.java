@@ -85,11 +85,11 @@ public class ServerModel {
 
 	private void initPlayerRespawn() {
 		if(game.getPlayerList().size()==1)
-			game.getPlayer(1).setRespawn(1, 1);
+			game.getPlayer(1).setRespawn(32, 32);
 		if(game.getPlayerList().size()==2)
-			game.getPlayer(2).setRespawn(2, 1);
+			game.getPlayer(2).setRespawn(64, 64);
 		if(game.getPlayerList().size()==3)
-			game.getPlayer(3).setRespawn(1, 2);	
+			game.getPlayer(3).setRespawn(96, 96);	
 		if(game.getPlayerList().size()==4)
 			game.getPlayer(4).setRespawn(18, 18);
 		if(game.getPlayerList().size()==5)
@@ -111,9 +111,11 @@ public class ServerModel {
 		}
 		// init BulletThread
 		// init TurfThread
-		initPlayerRespawn();
-		game.getPlayer(1).getCharacter().getLocation().x = 32;
-		game.getPlayer(1).getCharacter().getLocation().y = 32;
+//		initPlayerRespawn();
+		for(int i=0; i<game.getPlayerList().size(); i++){
+			game.getPlayer(i+1).getCharacter().getLocation().x = 32*i;
+			game.getPlayer(i+1).getCharacter().getLocation().y = 32*i;
+		}
 		udpClient.send(encoder.setTime(game.getTime()).toString());
 		udpClient.send(encoder.startGame().toString());
 		// init TimeThread

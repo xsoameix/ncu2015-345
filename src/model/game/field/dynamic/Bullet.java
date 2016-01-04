@@ -36,7 +36,7 @@ public class Bullet extends FieldObject {
 
 	@Override
 	public Rectangle getRectangle() {
-		Rectangle rect = new Rectangle((this.getLocation().x / MapBlock.getSize().width) * MapBlock.getSize().width, (this.getLocation().x / MapBlock.getSize().height) * MapBlock.getSize().height, 30, 10);
+		Rectangle rect = new Rectangle(this.getLocation().x+10, this.getLocation().y+10,16,16);
 		return rect;
 	}
 

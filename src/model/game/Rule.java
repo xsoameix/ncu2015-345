@@ -105,7 +105,8 @@ public class Rule {
 			if (current instanceof Bullet) {
 				// Bullet hits Bullet
 				if (collusionObject instanceof Bullet)
-					BulletHit((Bullet) current, (Bullet) collusionObject);
+					if(collusionObject.getID() != current.getID())
+						BulletHit((Bullet) current, (Bullet) collusionObject);
 				// Bullet hits Tank
 				else if (collusionObject instanceof Character)
 					BulletHit((Bullet) current, (Character) collusionObject);
@@ -127,9 +128,9 @@ public class Rule {
 
 		// get current object's rectangle
 		// Bullet's rectangle smaller than other field object
-		if (current instanceof Bullet) {
-			CurrentRectangle = ((Bullet) current).getRectangle();
-		} else if (current instanceof Character)
+//		if (current instanceof Bullet) {
+//			CurrentRectangle = ((Bullet) current).getRectangle();
+//		} else if (current instanceof Character)
 			CurrentRectangle = current.getRectangle();
 
 		// MapBlocks which is nearby the current
@@ -191,15 +192,28 @@ public class Rule {
 									if ((fieldObject instanceof Character)) {
 										System.out.println("[Rule] IsCollusion R Character : " + ((Character) fieldObject).getRectangle());
 										System.out.println("[Rule] IsCollusion R Bullet : " + CurrentRectangle);
+										if(current instanceof Character){
+											if(((Character) fieldObject).getPlayerID() == ((Character)current).getPlayerID())
+												return null;
+											else
+												return fieldObject;
+										}
+										else if(current instanceof Bullet){
+											if(((Character) fieldObject).getPlayerID() == ((Bullet)current).getPlayerID())
+												return null;
+											else
+												return fieldObject;
+										}
 									}
 									if ((fieldObject instanceof Obstacle)) {
 										System.out.println("[Rule] IsCollusion R Obstacle : " + ((Obstacle) fieldObject).getRectangle());
 										System.out.println("[Rule] IsCollusion R  : " + CurrentRectangle);
+										if (fieldObject.getRectangle().intersects(CurrentRectangle)) {
+											return fieldObject;
+										}
 									}
 
-									if (fieldObject.getRectangle().intersects(CurrentRectangle)) {
-										return fieldObject;
-									}
+									
 								}
 							}
 						}

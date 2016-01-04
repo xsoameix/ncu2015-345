@@ -147,6 +147,7 @@ public class ServerModel {
 
 	public boolean setLocation(int id, Point point) throws IOException, InterruptedException {
 		assert point != null : "[ServerModel] setLocation : Point location is null";
+		Point old = game.getPlayer(id).getCharacter().getLocation();
 		int x = point.x, y = point.y;
 //		assert x >= 0 && y >= 0 : "[ServerModel] setLocation : location error x " + x + " y " + y;
 		// call rule to move
@@ -157,10 +158,13 @@ public class ServerModel {
 					point.y<getGame().getField().getMap().getSize().height*MapBlock.getSize().height){
 //				setLocation(game.getPlayer(id).getCharacter(), point);
 				game.getPlayer(id).getCharacter().setLocation(point);
+				if(!rule.MovingCheck(game.getPlayer(id).getCharacter()))
+					game.getPlayer(id).getCharacter().setLocation(old);
 			}
 		} else {
 			System.out.println("[ServerModel] setLocation player not exist playerID : " + id + " player : " + game.getPlayer(id));
 		}
+		
 		udpClient.send(encoder.setLocation(game.getPlayer(id)).toString());
 		return true;
 	}

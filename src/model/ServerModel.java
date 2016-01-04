@@ -77,12 +77,18 @@ public class ServerModel {
 	}
 
 	private void initPlayerRespawn() {
-		game.getPlayer(1).setRespawn(1, 1);
-		// game.getPlayer(2).setRespawn(2, 1);
-		// game.getPlayer(3).setRespawn(1, 2);
-		// game.getPlayer(4).setRespawn(18, 18);
-		// game.getPlayer(5).setRespawn(17, 18);
-		// game.getPlayer(6).setRespawn(18, 17);
+		if(game.getPlayerList().size()==1)
+			game.getPlayer(1).setRespawn(1, 1);
+		if(game.getPlayerList().size()==2)
+			game.getPlayer(2).setRespawn(2, 1);
+		if(game.getPlayerList().size()==3)
+			game.getPlayer(3).setRespawn(1, 2);	
+		if(game.getPlayerList().size()==4)
+			game.getPlayer(4).setRespawn(18, 18);
+		if(game.getPlayerList().size()==5)
+			game.getPlayer(5).setRespawn(17, 18);
+		if(game.getPlayerList().size()==6)
+			game.getPlayer(6).setRespawn(18, 17);
 	}
 
 	public boolean startGame() throws IOException, InterruptedException {

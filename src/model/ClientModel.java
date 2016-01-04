@@ -232,14 +232,18 @@ public class ClientModel {
 		}
 		decoder.decode(jsonObj);
 	}
+	private Point respwans[]={
+			new Point(1, 1),
+			new Point(2, 1),
+			new Point(1, 2),
+			new Point(18, 18),
+			new Point(17, 18),
+			new Point(18, 17)
+	};
 	private void initPlayerRespawn() {
 //		game.getPlayer(1).setRespawn(1, 1);
-		game.getPlayer(1).getCharacter().setRespawn(new Point(1, 1));
-		// game.getPlayer(2).setRespawn(2, 1);
-		// game.getPlayer(3).setRespawn(1, 2);
-		// game.getPlayer(4).setRespawn(18, 18);
-		// game.getPlayer(5).setRespawn(17, 18);
-		// game.getPlayer(6).setRespawn(18, 17);
+		for(int i=0; i<game.getPlayerList().size(); i++)
+			game.getPlayer(i+1).getCharacter().setRespawn(respwans[i]);
 	}
 
 	public void startGame() {

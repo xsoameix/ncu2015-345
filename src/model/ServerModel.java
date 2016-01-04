@@ -35,7 +35,7 @@ public class ServerModel {
 		// TODO Auto-generated constructor stub
 		atomicInteger = new AtomicInteger(0);
 		tcpServer = new TCPServer(this);
-		udpClient = new UDPClient();
+		udpClient = new UDPClient(tcpServer);
 		sessionAtomicInteger = new AtomicInteger(1);
 		game = new Game(atomicInteger);
 		decoder = new ServerDecoder(this, atomicInteger);
@@ -52,7 +52,7 @@ public class ServerModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		udpClient.initialize(tcpServer, port);
+		udpClient.initialize(port);
 		return true;
 	}
 

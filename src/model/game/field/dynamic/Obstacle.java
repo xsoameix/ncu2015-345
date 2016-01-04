@@ -5,7 +5,7 @@ import java.awt.Point;
 import model.game.field.FieldObject;
 
 public class Obstacle extends FieldObject {
-	private boolean breakable = true;
+	private boolean breakable = false;
 
 	public Obstacle(int ID, Point location) {
 		// TODO Auto-generated constructor stub

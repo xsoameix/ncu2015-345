@@ -160,12 +160,16 @@ public class Rule {
 								// Bullet's rectangle smaller than other field
 								// object
 								if (fieldObject instanceof Bullet) {
+									if (fieldObject.getID() != current.getID()) {
 
-									System.out.println("[Rule] IsCollusion R Bullet : " + ((Bullet) fieldObject).getRectangle());
-									System.out.println("[Rule] IsCollusion R  : " + CurrentRectangle);
-									System.out.println("[Rule] IsCollusion R1  : " + ((Bullet) fieldObject).getRectangle().intersects(CurrentRectangle));
-									if (((Bullet) fieldObject).getRectangle().intersects(CurrentRectangle)) {
-										return fieldObject;
+										System.out.println("[Rule] IsCollusion R Bullet : " + ((Bullet) fieldObject).getRectangle());
+										System.out.println("[Rule] IsCollusion R  : " + CurrentRectangle);
+										System.out.println("[Rule] IsCollusion R1  : " + ((Bullet) fieldObject).getRectangle().intersects(CurrentRectangle));
+										if (((Bullet) fieldObject).getRectangle().intersects(CurrentRectangle)) {
+											return fieldObject;
+										}
+									}else{
+										return null;
 									}
 								}
 								// Turf's rectangle just is a point
@@ -203,8 +207,8 @@ public class Rule {
 			}
 		} else {
 			System.out.println("[Rule] : " + posx + " " + posy);
-			if(!map.getMapBlock(posx, posy).getDynamicObjectList().isEmpty())
-			return map.getMapBlock(posx, posy).getDynamicObjectList().get(0);
+			if (!map.getMapBlock(posx, posy).getDynamicObjectList().isEmpty())
+				return map.getMapBlock(posx, posy).getDynamicObjectList().get(0);
 		}
 		return null;
 	}

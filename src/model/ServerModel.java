@@ -35,7 +35,7 @@ public class ServerModel {
 		// TODO Auto-generated constructor stub
 		atomicInteger = new AtomicInteger(0);
 		tcpServer = new TCPServer(this);
-		udpClient = new UDPClient();
+		udpClient = new UDPClient(tcpServer);
 		sessionAtomicInteger = new AtomicInteger(1);
 		game = new Game(atomicInteger);
 		decoder = new ServerDecoder(this, atomicInteger);
@@ -52,7 +52,7 @@ public class ServerModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		udpClient.initialize(tcpServer, port);
+		udpClient.initialize(port);
 		return true;
 	}
 
@@ -85,6 +85,21 @@ public class ServerModel {
 		// game.getPlayer(6).setRespawn(18, 17);
 	}
 
+	private void initPlayerLocation() {
+		game.getPlayer(1).getCharacter().getLocation().x = 32;
+		game.getPlayer(1).getCharacter().getLocation().y = 32;
+//		game.getPlayer(2).getCharacter().getLocation().x = 64;
+//		game.getPlayer(2).getCharacter().getLocation().y = 32;
+//		game.getPlayer(3).getCharacter().getLocation().x = 32;
+//		game.getPlayer(3).getCharacter().getLocation().y = 64;
+//		game.getPlayer(4).getCharacter().getLocation().x = 576;
+//		game.getPlayer(4).getCharacter().getLocation().y = 576;
+//		game.getPlayer(5).getCharacter().getLocation().x = 544;
+//		game.getPlayer(5).getCharacter().getLocation().y = 576;
+//		game.getPlayer(6).getCharacter().getLocation().x = 576;
+//		game.getPlayer(6).getCharacter().getLocation().y = 544;
+	}
+
 	public boolean startGame() throws IOException, InterruptedException {
 		// call udp brocast
 		for (int i = 0; i < room.getPlayerList().size(); i++) {
@@ -99,8 +114,7 @@ public class ServerModel {
 		// init BulletThread
 		// init TurfThread
 		initPlayerRespawn();
-		game.getPlayer(1).getCharacter().getLocation().x = 32;
-		game.getPlayer(1).getCharacter().getLocation().y = 32;
+		initPlayerLocation();
 		udpClient.send(encoder.setTime(game.getTime()).toString());
 		udpClient.send(encoder.startGame().toString());
 		// init TimeThread

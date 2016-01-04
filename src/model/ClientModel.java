@@ -242,6 +242,21 @@ public class ClientModel {
 		// game.getPlayer(6).setRespawn(18, 17);
 	}
 
+	private void initPlayerLocation() {
+		game.getPlayer(1).getCharacter().getLocation().x = 32;
+		game.getPlayer(1).getCharacter().getLocation().y = 32;
+//		game.getPlayer(2).getCharacter().getLocation().x = 64;
+//		game.getPlayer(2).getCharacter().getLocation().y = 32;
+//		game.getPlayer(3).getCharacter().getLocation().x = 32;
+//		game.getPlayer(3).getCharacter().getLocation().y = 64;
+//		game.getPlayer(4).getCharacter().getLocation().x = 576;
+//		game.getPlayer(4).getCharacter().getLocation().y = 576;
+//		game.getPlayer(5).getCharacter().getLocation().x = 544;
+//		game.getPlayer(5).getCharacter().getLocation().y = 576;
+//		game.getPlayer(6).getCharacter().getLocation().x = 576;
+//		game.getPlayer(6).getCharacter().getLocation().y = 544;
+	}
+
 	public void startGame() {
 		for (int i = 0; i < room.getPlayerList().size(); i++) {
 			if (room.getPlayerList().get(i).getID() % 2 == 0) {
@@ -253,6 +268,7 @@ public class ClientModel {
 			}
 		}
 		initPlayerRespawn();
+		initPlayerLocation();
 		game.getPlayer(1).getCharacter().getLocation().x = 32;
 		game.getPlayer(1).getCharacter().getLocation().y = 32;
 		playPanel.startGame();

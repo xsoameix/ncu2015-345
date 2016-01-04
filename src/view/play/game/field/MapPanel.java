@@ -71,6 +71,8 @@ public class MapPanel extends AbstractView{
 			Character character=player.getCharacter();
 			g.drawImage(tankImages[character.getDirection()].getImage(), character.getLocation().x, character.getLocation().y, null);
 //			g.drawRect(character.getLocation().x, character.getLocation().y, MapBlock.getSize().width, MapBlock.getSize().height);
+			g.setColor(player.getTeamID()==1?Color.BLUE: Color.RED);
+			g.drawString(player.getProfile().getName(), 0, 0);
 		}
 		for(Obstacle obstacle: clientModel.getGame().getField().getObstacles()){
 			if(obstacle.getRectangle().intersects(
@@ -78,7 +80,6 @@ public class MapPanel extends AbstractView{
 			g.drawImage(obstacleImage, obstacle.getLocation().x, obstacle.getLocation().y, null);
 //			g.drawRect(obstacle.getLocation().x, obstacle.getLocation().y, MapBlock.getSize().width, MapBlock.getSize().height);
 		}
-
 	}
 	@Override
 	public void setModel(ClientModel clientModel) {

@@ -2,6 +2,8 @@ package view.play.room;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -16,13 +18,12 @@ public class PlayerView extends Panel {
 	private Label nameLabel;
 	
 	public PlayerView(Player player) {
-		setLayout(new FlowLayout());
+		setLayout(new GridLayout());
 		setBorder(BorderFactory.createLineBorder(Color.GRAY, 5));
 		this.player=player;
 		imageLabel=new Label();
 		nameLabel=new Label();
-		imageLabel.setAlignmentY(CENTER_ALIGNMENT);
-		nameLabel.setAlignmentY(CENTER_ALIGNMENT);
+		nameLabel.setFont(new Font("Arial", Font.BOLD, 30));
 		add(imageLabel);
 		add(nameLabel);
 	}

@@ -13,6 +13,7 @@ public class MainFrame extends Frame implements ActionListener{
 		//frame initialization
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(Config.frameDimension);
+		setResizable(false);
 		
 		//show frame
 		setVisible(true);

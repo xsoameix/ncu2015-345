@@ -1,17 +1,21 @@
 package model.game.field;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
 import model.game.field.map.MapBlock;
 
-public class FieldObject {
+public abstract class FieldObject {
 	private Point location;
+	private Dimension size;
 	private int ID;
+	private MapBlock reside[];
+	
 
 	public FieldObject() {
-		// TODO Auto-generated constructor stub
 		location = new Point(0, 0);
+		setReside(new MapBlock[4]);
 	}
 
 	public Point getLocation() {
@@ -38,4 +42,23 @@ public class FieldObject {
 		return rect;
 	}
 
+	abstract public void say();
+
+	public MapBlock[] getReside() {
+		return reside;
+	}
+
+	public void setReside(MapBlock reside[]) {
+		this.reside = reside;
+	}
+
+	public Dimension getSize() {
+		return size;
+	}
+
+	public void setSize(Dimension size) {
+		this.size = size;
+	}
+
+	abstract public void collusion(FieldObject otherObject);
 }

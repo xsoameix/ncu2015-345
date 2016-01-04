@@ -5,10 +5,9 @@ import java.awt.Point;
 import model.game.field.FieldObject;
 
 public class Obstacle extends FieldObject {
-	private boolean breakable = false;
+	private boolean breakable;
 
 	public Obstacle(int ID, Point location) {
-		// TODO Auto-generated constructor stub
 		setID(ID);
 		setLocation(location);
 	}
@@ -19,6 +18,17 @@ public class Obstacle extends FieldObject {
 
 	public void setBreakable(boolean breakable) {
 		this.breakable = breakable;
+	}
+
+	@Override
+	public void say() {
+		System.out.println("obstacle");
+	}
+
+	@Override
+	public void collusion(FieldObject otherObject) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

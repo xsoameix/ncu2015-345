@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -13,7 +14,10 @@ import model.game.Rule;
 import model.game.Team;
 import model.game.coder.ServerDecoder;
 import model.game.coder.ServerEncoder;
+import model.game.field.FieldObject;
 import model.game.field.dynamic.Bullet;
+import model.game.field.dynamic.Character;
+import model.game.field.map.MapBlock;
 import net.TCPServer;
 import net.UDPClient;
 
@@ -144,16 +148,43 @@ public class ServerModel {
 	public boolean setLocation(int id, Point point) throws IOException, InterruptedException {
 		assert point != null : "[ServerModel] setLocation : Point location is null";
 		int x = point.x, y = point.y;
-		assert x >= 0 && y >= 0 : "[ServerModel] setLocation : location error x " + x + " y " + y;
+//		assert x >= 0 && y >= 0 : "[ServerModel] setLocation : location error x " + x + " y " + y;
 		// call rule to move
 		// if true then setLocation
 		if (game.getPlayer(id) != null) {
-			game.getPlayer(id).getCharacter().setLocation(point);
+			if(point.x>=0&&point.y>=0&&
+					point.x<getGame().getField().getMap().getSize().width*MapBlock.getSize().width&&
+					point.y<getGame().getField().getMap().getSize().height*MapBlock.getSize().height){
+//				setLocation(game.getPlayer(id).getCharacter(), point);
+				game.getPlayer(id).getCharacter().setLocation(point);
+			}
 		} else {
 			System.out.println("[ServerModel] setLocation player not exist playerID : " + id + " player : " + game.getPlayer(id));
 		}
 		udpClient.send(encoder.setLocation(game.getPlayer(id)).toString());
 		return true;
+	}
+
+	private void setLocation(FieldObject object, Point point){
+		Rectangle rectangle=object.getRectangle();
+		rectangle.translate(point.x, point.y);//new rectangle
+		
+		for(MapBlock mapBlock: object.getReside()){
+			if(!mapBlock.getRectangle().intersects(rectangle))
+				mapBlock.removeFieldObject(object);
+		}
+		
+		for(MapBlock mapBlock: object.getReside()){
+			for(FieldObject otherObject: mapBlock.getFieldObjects())
+				if(rectangle.intersects(otherObject.getRectangle())){
+					object.collusion(otherObject);
+				}
+		}
+	}
+	private void setLocation(Character character, Point point) {
+	}
+	private void setLocation(Bullet bullet, Point point){
+		
 	}
 
 	public void removeBullet(Bullet bullet) throws IOException, InterruptedException {

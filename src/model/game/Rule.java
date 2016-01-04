@@ -40,6 +40,7 @@ public class Rule {
 		FieldObject collusionObject = IsCollusion(current);
 		if (collusionObject != null) {
 			System.out.println("[Rule] MovingCheck : " + collusionObject.getLocation());
+			collusionObject.say();
 		} else {
 			System.out.println("[Rule] MovingCheck : NULL");
 		}
@@ -85,16 +86,16 @@ public class Rule {
 					// otherwise, remove current object from these mapBlocks
 					if (current instanceof Bullet) {
 						if (((Bullet) current).getRectangle().intersects(rect))
-							map.getMapBlock(col, row).addDynamicObject(current);
+							map.getMapBlock(col, row).addFieldObject(current);
 						else
-							map.getMapBlock(col, row).removeDynamicObject(current);
+							map.getMapBlock(col, row).removeFieldObject(current);
 					} else if (current instanceof Character) { // tank
 						if (current.getRectangle().intersects(rect))
-							map.getMapBlock(col, row).addDynamicObject(current);
+							map.getMapBlock(col, row).addFieldObject(current);
 						else
 							// removeDynamicObject reset the Turf if this
 							// MapBlock has a Turf
-							map.getMapBlock(col, row).removeDynamicObject(current);
+							map.getMapBlock(col, row).removeFieldObject(current);
 					}
 				}
 			}
@@ -141,9 +142,9 @@ public class Rule {
 					// if (row != posy && col != posX) {
 					if (true) {
 						// MapBlock has nothing(just a background)
-						System.out.println("[Rule] IsCollusion map get block " + map.getMapBlock(row, col).getDynamicObjectList().isEmpty() + " row col " + row + " " + col);
-						if (!map.getMapBlock(row, col).getDynamicObjectList().isEmpty()) {
-							iter = map.getMapBlock(row, col).getDynamicObjectList().iterator();
+						System.out.println("[Rule] IsCollusion map get block " + map.getMapBlock(row, col).getFieldObjects().isEmpty() + " row col " + row + " " + col);
+						if (!map.getMapBlock(row, col).getFieldObjects().isEmpty()) {
+							iter = map.getMapBlock(row, col).getFieldObjects().iterator();
 
 							while (iter.hasNext()) {
 
@@ -207,8 +208,8 @@ public class Rule {
 			}
 		} else {
 			System.out.println("[Rule] : " + posx + " " + posy);
-			if (!map.getMapBlock(posx, posy).getDynamicObjectList().isEmpty())
-				return map.getMapBlock(posx, posy).getDynamicObjectList().get(0);
+			if (!map.getMapBlock(posx, posy).getFieldObjects().isEmpty())
+				return map.getMapBlock(posx, posy).getFieldObjects().get(0);
 		}
 		return null;
 	}
@@ -225,11 +226,11 @@ public class Rule {
 		// mapBlock
 		field.removeBullet(bullet);
 		MapBlock bulletMapBlock = getCurrentMapBlock(bullet);
-		bulletMapBlock.removeDynamicObject(bullet);
+		bulletMapBlock.removeFieldObject(bullet);
 
 		// Bullet hit tank, remove tank from the mapBlock
 		MapBlock tankMapBlock = getCurrentMapBlock(tank);
-		tankMapBlock.removeDynamicObject(tank);
+		tankMapBlock.removeFieldObject(tank);
 
 		Vector<Player> playersList = game.getPlayerList();
 		Iterator<Player> iter = playersList.iterator();
@@ -248,7 +249,7 @@ public class Rule {
 		// beAttacked's character location set to bornLocation and add one death
 		assert beAttacked != null : "Failed to find the player who was hit by bullet in the [BulletHitTank]";
 		beAttacked.getCharacter().setLocation(bornLocation);
-		mapBlock.addDynamicObject(beAttacked.getCharacter());
+		mapBlock.addFieldObject(beAttacked.getCharacter());
 		int newDeath = beAttacked.getDeath() + 1;
 		beAttacked.setDeath(newDeath);
 
@@ -267,14 +268,14 @@ public class Rule {
 		field.removeBullet(bullet);
 		System.out.println("[Rule] BulletHit 000000000000000000000000000000000000000: " + field.getBulletList().size());
 		MapBlock bulletMapBlock = getCurrentMapBlock(bullet);
-		bulletMapBlock.removeDynamicObject(bullet);
+		bulletMapBlock.removeFieldObject(bullet);
 
 		// remove the obstacle from the obstacleList in field and mapBlock if it
 		// is breakable
 		if (obstacle.getIsBreakable() == true) {
 			field.removeObstacle(obstacle);
 			MapBlock obstacleMapBlock = getCurrentMapBlock(obstacle);
-			obstacleMapBlock.removeDynamicObject(obstacle);
+			obstacleMapBlock.removeFieldObject(obstacle);
 		}
 	}
 
@@ -282,10 +283,10 @@ public class Rule {
 		// remove the bullet
 		field.removeBullet(bullet1);
 		MapBlock bullet1MapBlock = getCurrentMapBlock(bullet1);
-		bullet1MapBlock.removeDynamicObject(bullet1);
+		bullet1MapBlock.removeFieldObject(bullet1);
 		field.removeBullet(bullet2);
 		MapBlock bullet2MapBlock = getCurrentMapBlock(bullet2);
-		bullet2MapBlock.removeDynamicObject(bullet2);
+		bullet2MapBlock.removeFieldObject(bullet2);
 	}
 
 	public void TankHit(Character tank) {

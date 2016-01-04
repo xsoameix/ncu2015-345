@@ -56,4 +56,18 @@ public class Turf extends FieldObject {
 		Rectangle rect = new Rectangle((this.getLocation().x / MapBlock.getSize().width) * MapBlock.getSize().width + MapBlock.getSize().width / 2, (this.getLocation().x / MapBlock.getSize().height * MapBlock.getSize().height + MapBlock.getSize().height / 2), 1, 1);
 		return rect;
 	}
+	
+	
+
+	@Override
+	public void say() {
+		System.out.println("Turf");
+	}
+
+	@Override
+	public void collusion(FieldObject otherObject) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

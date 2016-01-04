@@ -9,33 +9,33 @@ import java.awt.image.BufferedImage;
 import view.base.Panel;
 
 public class MiniMapPanel extends Panel {
-	private FieldPanel fieldPanel;
+	private Panel panel;
 	private double SCALE;
 	
-	public MiniMapPanel(FieldPanel fieldPanel) {
-		setFieldPanel(fieldPanel);
+	public MiniMapPanel(Panel panel) {
+		setPanel(panel);
 	}
 
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-//		g.drawImage(createImage(), 0, 0, null);
+		g.drawImage(createImage(), 20, 20, null);
 	}
 	
 	private BufferedImage createImage(){
-        BufferedImage image = new BufferedImage(fieldPanel.getPreferredSize().width, fieldPanel.getPreferredSize().height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage(panel.getPreferredSize().width, panel.getPreferredSize().height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = image.createGraphics();
-        fieldPanel.paint(g2d);
+        panel.paint(g2d);
         g2d.dispose();
         AffineTransform affineTransform = new AffineTransform();
         affineTransform.scale(SCALE, SCALE);
         AffineTransformOp scaleOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);
         return scaleOp.filter(image, null);
 	}
-	public void setFieldPanel(FieldPanel fieldPanel) {
-		this.fieldPanel = fieldPanel;
+	public void setPanel(Panel panel) {
+		this.panel = panel;
 	//	Dimension mapSize=fieldPanel.getField().getMap().getSize();
 	//	SCALE=Math.min(getWidth()/mapSize.getWidth()*, getHeight()/mapHeight);
-		SCALE=0.5;
+		SCALE=1;
 	}
 }

@@ -1,6 +1,8 @@
 package model.game.field.map;
 
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -9,6 +11,7 @@ import model.game.field.dynamic.Turf;
 import model.game.field.FieldObject;
 
 public class MapBlock {
+	private Point location;
 	private Vector<FieldObject> objects;
 	private static Dimension size = new Dimension(32, 32);
 	public int type;// remove!
@@ -30,15 +33,15 @@ public class MapBlock {
 		this.type = type;
 	}
 
-	public Vector<FieldObject> getDynamicObjectList() {
+	public Vector<FieldObject> getFieldObjects() {
 		return objects;
 	}
 
-	public void addDynamicObject(FieldObject object) {
+	public void addFieldObject(FieldObject object) {
 		objects.add(object);
 	}
 
-	public void removeDynamicObject(FieldObject object) {
+	public void removeFieldObject(FieldObject object) {
 		// when Tank leave MapBlock, it also remove itself from the MapBlock
 		// If MapBlock has a Turf, then reset the Turf after the tank leave
 		if (object instanceof Character) {
@@ -58,5 +61,18 @@ public class MapBlock {
 	public static Dimension getSize() {
 		return size;
 	}
+
+	public Point getLocation() {
+		return location;
+	}
+
+	public void setLocation(Point location) {
+		this.location = location;
+	}
+
+	public Rectangle getRectangle() {
+		return new Rectangle(location.x, location.y, size.width, size.height);
+	}
+
 
 }

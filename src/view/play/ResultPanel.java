@@ -2,13 +2,18 @@ package view.play;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.ImageIcon;
+
+import model.game.Result;
+import model.game.Team;
 import view.PanelEnum;
 import view.base.Button;
+import view.base.Label;
 import view.base.Panel;
 import view.base.extend.AbstractView;
 
 public class ResultPanel extends AbstractView{	
-//	private Result result;
+	private Result result;
 	
 	//to be removed
 	private Button nextButton;
@@ -16,6 +21,9 @@ public class ResultPanel extends AbstractView{
 	private Button exitButton;
 	
 	private void setComponents(){
+		
+		
+		
 		//to be removed
 		nextButton=new Button("next");
 		nextButton.setActionCommand(nextButton.getName());
@@ -26,7 +34,7 @@ public class ResultPanel extends AbstractView{
 		exitButton.addActionListener(this);
 		
 		add(nextButton);
-		add(exitButton);		
+		add(exitButton);
 	}
 	
 	public ResultPanel(){
@@ -42,6 +50,20 @@ public class ResultPanel extends AbstractView{
 		case "exit":
 			getDisplayPanel().back();
 			break;
+		}
+	}
+	
+	private class TeamResultPanel extends Panel{
+		private ImageIcon statusIcon;
+		private Label teamMoney;
+		private Label teamTurf;
+		private PlayerResultPanel playerResults[];
+
+		public TeamResultPanel(Team team){
+			
+		}
+		private class PlayerResultPanel{
+			
 		}
 	}
 }

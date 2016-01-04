@@ -99,7 +99,7 @@ public class ClientModel {
 	}
 
 	public void requestSetLocation(int x, int y) {
-		assert x >= 0 && y >= 0 : "[ClientModel] requestSetLocation x&y error : [" + x + "] [" + y + "]";
+//		assert x >= 0 && y >= 0 : "[ClientModel] requestSetLocation x&y error : [" + x + "] [" + y + "]";
 		Point location = new Point();
 		location.x = x;
 		location.y = y;
@@ -232,9 +232,9 @@ public class ClientModel {
 		}
 		decoder.decode(jsonObj);
 	}
-
 	private void initPlayerRespawn() {
-		game.getPlayer(1).setRespawn(1, 1);
+//		game.getPlayer(1).setRespawn(1, 1);
+		game.getPlayer(1).getCharacter().setRespawn(new Point(1, 1));
 		// game.getPlayer(2).setRespawn(2, 1);
 		// game.getPlayer(3).setRespawn(1, 2);
 		// game.getPlayer(4).setRespawn(18, 18);
@@ -253,6 +253,9 @@ public class ClientModel {
 			}
 		}
 		initPlayerRespawn();
+		for(int i=0; i<room.getPlayerList().size(); i++){
+			game.getPlayer(i+1).getCharacter().respawn();
+		}
 		game.getPlayer(1).getCharacter().getLocation().x = 32;
 		game.getPlayer(1).getCharacter().getLocation().y = 32;
 		playPanel.startGame();

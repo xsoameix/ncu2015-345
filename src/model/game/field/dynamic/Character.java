@@ -9,6 +9,8 @@ public class Character extends FieldObject {
 	private int direction = 1;
 	private int playerID = -1;
 
+	private Point respawn;
+	
 	public Character() {
 		// TODO Auto-generated constructor stub
 	}
@@ -45,6 +47,24 @@ public class Character extends FieldObject {
 
 	public void setDirection(int direction) {
 		this.direction = direction;
+	}
+
+
+	@Override
+	public void say() {
+		System.out.println("Tank");
+	}
+	public void setRespawn(Point point){
+		respawn=point;
+	}
+	public void respawn() {
+		setLocation(respawn);
+	}
+
+	@Override
+	public void collusion(FieldObject otherObject) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

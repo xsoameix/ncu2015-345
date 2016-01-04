@@ -60,7 +60,7 @@ public class GamePanel extends AbstractView{
 			}
 		}
 	}
-	private int unitSize=8;
+	private int unitSize=4;
 	private Point moveUnit;
 	private Point moveUnits[]={
 			new Point(0, -unitSize),
@@ -80,22 +80,18 @@ public class GamePanel extends AbstractView{
 		newPoint.translate(moveUnit.x, moveUnit.y);
 		return newPoint;
 	}
-	
-	private boolean firing=false;
+
 	public void requestInputFireKey(){
-//		if(firing){
 		clientModel.requestFire();
-//			firing=false;
-//		}
 	}
 	public void pressFireKey(){
-//		requestInputFireKey();
 	}
 	public void releaseFireKey(){
 		requestInputFireKey();
 	}
 	
 	private void setComponents(){
+		
 		GridBagLayout gridBagLayout=new GridBagLayout();
 
 		setLayout(gridBagLayout);	
@@ -144,7 +140,7 @@ public class GamePanel extends AbstractView{
 		personalPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		fieldPanel=new FieldPanel();
 		fieldPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		miniMapPanel=new MiniMapPanel(fieldPanel);
+		miniMapPanel=new MiniMapPanel(fieldPanel.getMapPanel());
 		miniMapPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		menuButton=new Button("Menu");
 		menuButton.addActionListener(new ActionListener() {
@@ -188,15 +184,12 @@ public class GamePanel extends AbstractView{
 		KeyBinding keyBinding=clientModel.getSetting().getKeyBinding();
 		for(KeyStroke keyStroke: keyBinding.keys())
 			getInputMap().put(keyStroke, keyBinding.get(keyStroke));
-		setInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, getInputMap());
+		setInputMap(WHEN_FOCUSED, getInputMap());
 		
 		//team and players
 //		teamPanel.setTeam(clientModel.getGame().getTeam(clientModel.getIndividual().getTeamID()));
 		teamPanel.setTeam(clientModel.getGame().getTeam(1));
 		addPlayers(clientModel.getRoom().getPlayerList());
-		
-		//set field
-		fieldPanel.setObstacles(clientModel.getGame().getField().getObstacles());
 		
 		//render and key
 		renderThread.start();
@@ -204,6 +197,7 @@ public class GamePanel extends AbstractView{
 		
 		//switch panel
 		getDisplayPanel().next();
+		fieldPanel.setup();
 		fieldPanel.setFocusable(true);
 	
 	}
@@ -212,14 +206,16 @@ public class GamePanel extends AbstractView{
 		for(int i=0; i<size; i++){
 //			CharacterView characterView=new CharacterView(playerList.get(i).getCharacter());
 			fieldPanel.addCharacter(playerList.get(i).getCharacter());
-			if(playerList.get(i).getID()==clientModel.getIndividual().getID())
+			if(playerList.get(i).getID()==clientModel.getIndividual().getID()){
 				character=playerList.get(i).getCharacter();
+				clientModel.getIndividual().setCharacter(character);
+			}
 		}
 	}
 
 	public void gameOver(Result result) {
 		getDisplayPanel().next();
 		renderThread.end();
-		keyInputTimer.cancel();
+		keyInputTimer.end();
 	}
 }

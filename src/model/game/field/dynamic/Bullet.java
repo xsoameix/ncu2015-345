@@ -40,4 +40,15 @@ public class Bullet extends FieldObject {
 		return rect;
 	}
 
+	@Override
+	public void say() {
+		System.out.println("Bullet");
+	}
+
+	@Override
+	public void collusion(FieldObject otherObject) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

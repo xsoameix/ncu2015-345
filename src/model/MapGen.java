@@ -16,7 +16,6 @@ public class MapGen {
 	private AtomicInteger atomicInteger;
 
 	public MapGen(AtomicInteger atomicInteger) {
-		// TODO Auto-generated constructor stub
 		this.atomicInteger = atomicInteger;
 	}
 
@@ -46,17 +45,15 @@ public class MapGen {
 		for (int i = 0; i < mapX; i++) {
 			setObstacle(i, 19);
 		}
-		for (int i = 1; i < mapX - 1; i++) {
+		for (int i = 1; i < mapY - 1; i++) {
 			setObstacle(0, i);
 		}
-		for (int i = 1; i < mapX - 1; i++) {
+		for (int i = 1; i < mapY - 1; i++) {
 			setObstacle(19, i);
 		}
-		setObstacle(2,1);
 	}
 
 	private void setObstacle(int x, int y) {
-
 		field.addObstacle(new Obstacle(atomicInteger.getAndIncrement(), new Point(0 + x * MapBlock.getSize().width, 0 + y * MapBlock.getSize().height)));
 	}
 
